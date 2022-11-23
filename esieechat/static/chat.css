@@ -1,8 +1,4 @@
-.card-header:first-child {
-    border-radius: 0;
-}
-
-.chatcontainer {
+.card {
     position: absolute;
     border-color: #062849;
     border-width: 10px;
@@ -11,6 +7,10 @@
     width: 22%;
     right: 0;
     bottom: 0;
+}
+
+.card-header:first-child {
+    border-radius: 0;
 }
 
 .text-header {
