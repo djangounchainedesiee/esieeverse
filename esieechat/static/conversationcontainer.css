@@ -1,20 +1,21 @@
-.card {
+.conversationcontainer {
     position: absolute;
     border-color: #062849;
-    border-width: 10px;
+    border-width: 1%;
     border-style: solid;
-    height: 330px; 
+    height: 330px;
     width: 22%;
     right: 0;
     bottom: 0;
 }
 
 .card-header:first-child {
-    border-radius: 0;
+    border-radius: 2px;
 }
 
 .text-header {
     background-color: #062849;
     text-align: center;
     border-color: #062849;
+    border-radius: 2px;
 }

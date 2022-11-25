@@ -24,10 +24,9 @@ def create_conversation(request):
                     idConversation=conv.id, idUtilisateur=userId)
                 convUser.save()
 
-            return HttpResponseRedirect('chat/selectconversation.html')
-    print('form : ', form)
+            return HttpResponseRedirect('conversation/selectconversation.html')
     context = {'form': form}
-    return render(request, 'chat/createconversation.html', context)
+    return render(request, 'conversation/createconversation.html', context)
 
 
 def select_conversation(request):
@@ -37,4 +36,8 @@ def select_conversation(request):
         pk__in=[conversationsUtilisateurs])
 
     context = {'conversations': conversations}
-    return render(request, 'chat/selectconversation.html', context)
+    return render(request, 'conversation/selectconversation.html', context)
+
+def view_conversation(request, id):
+    context = {'messages': []}
+    return render(request, 'conversation/viewconversation.html', context)
