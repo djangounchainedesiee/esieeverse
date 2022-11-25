@@ -1,5 +1,15 @@
+.send-message-form{
+   position: absolute;
+   bottom: 0;
+   width: 95%;
+}
+
 .send-icon{
     position: absolute;
-    bottom: 2%;
-    left: 2%;
+    bottom: 10%;
+    right: 5%;
+}
+
+.message-input {
+    width: 150%;
 }

@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 <div>
-  <link rel="stylesheet" href="{% static 'conversationcontainer.css' %}">
   <ul class="list-group">
     {% for conversation in conversations %}
       <a class="list-group-item list-group-item-action" href="{% url 'esieechat:view' conversation.id %}">

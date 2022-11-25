@@ -1,5 +1,27 @@
 from django import forms
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User
+from .models import Message
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (Layout, Row, Column)
+
+
 class ConversationUtilisateursForm(forms.Form):
-        nomConversation = forms.CharField(label='Nom de la conversation', max_length=20)
-        utilisateurs = forms.ModelChoiceField(label='Choisissez des utilisateurs', queryset=User.objects.filter(groups__name='etudiants'))
+    nomConversation = forms.CharField(
+        label='Nom de la conversation', max_length=20)
+    utilisateurs = forms.ModelChoiceField(
+        label='Choisissez des utilisateurs', queryset=User.objects.filter(groups__name='etudiants'))
+
+
+class MessageForm(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.form_method = 'POST'
+		self.helper.layout = Layout(
+			Row(Column('contenu', css_class='form-control')),
+		)
+		self.fields['contenu'].widget.attrs = {'rows': 2}
+
+	class Meta:
+		model = Message
+		fields = ['contenu']
