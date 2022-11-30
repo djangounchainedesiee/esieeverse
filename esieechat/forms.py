@@ -6,9 +6,9 @@ from crispy_forms.layout import (Layout, Row, Column)
 
 
 class ConversationUtilisateursForm(forms.Form):
-    nomConversation = forms.CharField(
+    nom_conversation = forms.CharField(
         label='Nom de la conversation', max_length=20)
-    utilisateurs = forms.ModelChoiceField(
+    utilisateurs = forms.ModelMultipleChoiceField(
         label='Choisissez des utilisateurs', queryset=User.objects.filter(groups__name='etudiants'))
 
 

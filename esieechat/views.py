@@ -10,18 +10,21 @@ from django.contrib.auth.models import User
 
 def create_conversation(request):
     form = ConversationUtilisateursForm()
+    print('form : ' , form)
     if request.method == 'POST':
         form = ConversationUtilisateursForm(request.POST)
 
         if form.is_valid():
             print('Create conversation form is valid ! ')
-            nom_conversation = form.cleaned_data['nom']
-            users_id = form.cleaned_data['utilisateurs']
+            nom_conversation = form.cleaned_data['nom_conversation']
+            users = form.cleaned_data['utilisateurs']
 
             conv = Conversation(nom=nom_conversation)
+            
+            print('Save conversation : ', conv)
             conv.save()
-            for user_id in users_id:
-                conv_user = ConvUtilisateur(conversation_id=conv.id, utilisateur_id=user_id)
+            for user in users:
+                conv_user = ConvUtilisateur(conversation_id=conv.id, utilisateur_id=user.id)
                 conv_user.save()
 
             return HttpResponseRedirect('conversation/selectconversation.html')
@@ -31,7 +34,7 @@ def create_conversation(request):
 
 def select_conversation(request):
     conversations_utilisateurs = ConvUtilisateur.objects.filter(
-        utilisateur_id=request.user.id).values('idConversation')
+        utilisateur_id=request.user.id).values('conversation_id')
     conversations = Conversation.objects.filter(
         pk__in=[conversations_utilisateurs])
 
