@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'esieechat',
     'esieeverse',
+    'publication',
     'crispy_forms',
 ]
 

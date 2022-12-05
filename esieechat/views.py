@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 from .forms import ConversationUtilisateursForm, MessageForm
-from .models import ConvUtilisateur, Conversation, Message
+from .models import Conversation, Message
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -15,29 +14,27 @@ def create_conversation(request):
         form = ConversationUtilisateursForm(request.POST)
 
         if form.is_valid():
-            print('Create conversation form is valid ! ')
             nom_conversation = form.cleaned_data['nom_conversation']
             users = form.cleaned_data['utilisateurs']
 
             conv = Conversation(nom=nom_conversation)
             
             print('Save conversation : ', conv)
-            conv.save()
+            
             for user in users:
-                conv_user = ConvUtilisateur(conversation_id=conv.id, utilisateur_id=user.id)
-                conv_user.save()
+                conv.utilisateurs.add(user)
+            
+            conv.utilisateurs.add(request.user)
+            conv.save()
 
-            return HttpResponseRedirect('conversation/selectconversation.html')
+            return redirect('esieechat:select')
+
     context = {'form': form}
     return render(request, 'conversation/createconversation.html', context)
 
 
 def select_conversation(request):
-    conversations_utilisateurs = ConvUtilisateur.objects.filter(
-        utilisateur_id=request.user.id).values('conversation_id')
-    conversations = Conversation.objects.filter(
-        pk__in=[conversations_utilisateurs])
-
+    conversations = Conversation.objects.all().values('conversation_id')
     context = {'conversations': conversations}
     return render(request, 'conversation/selectconversation.html', context)
 
@@ -50,7 +47,7 @@ def view_conversation(request, id):
 
         if form.is_valid():
             contenu_message = form.cleaned_data['contenu']
-            message = Message(contenu=contenu_message)
+            message = Message(contenu=contenu_message, utilisateur=request.user, conversation_id=id)
             message.save()
 
     messages = Message.objects.filter(conversation_id=id)
