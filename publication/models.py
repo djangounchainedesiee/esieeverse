@@ -1,5 +1,4 @@
 from django.db import models
-from esieeverse.models import Utilisateur
 
 # Create your models here.
 class Publication(models.Model):
@@ -16,3 +15,6 @@ class Evenement(Publication):
 class Choix(models.Model):
     nom = models.CharField(max_length=10)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.nom}"

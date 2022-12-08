@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 def create_conversation(request):
     form = ConversationUtilisateursForm()
-    print('form : ' , form)
+    #print('form : ' , form)
     if request.method == 'POST':
         form = ConversationUtilisateursForm(request.POST)
 
@@ -19,12 +19,15 @@ def create_conversation(request):
 
             conv = Conversation(nom=nom_conversation)
             
-            print('Save conversation : ', conv)
+            
+            print('Users : ', users)
             
             for user in users:
+                print('User : ', user)
                 conv.utilisateurs.add(user)
             
             conv.utilisateurs.add(request.user)
+            print('Save conversation : ', conv)
             conv.save()
 
             return redirect('esieechat:select')
@@ -34,7 +37,7 @@ def create_conversation(request):
 
 
 def select_conversation(request):
-    conversations = Conversation.objects.all().values('conversation_id')
+    conversations = Conversation.objects.all().values('id')
     context = {'conversations': conversations}
     return render(request, 'conversation/selectconversation.html', context)
 

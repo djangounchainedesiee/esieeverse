@@ -10,7 +10,7 @@ class ConversationUtilisateursForm(forms.Form):
     nom_conversation = forms.CharField(
         label='Nom de la conversation', max_length=20)
     utilisateurs = forms.ModelMultipleChoiceField(
-        label='Choisissez des utilisateurs', queryset=Utilisateur.objects.filter(user_id__in=User.objects.filter(groups__name='etudiants').values('id')))
+        label='Choisissez des utilisateurs', queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')))
 
 
 class MessageForm(forms.ModelForm):
