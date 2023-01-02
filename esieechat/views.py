@@ -21,14 +21,15 @@ def create_conversation(request):
             
             
             print('Users : ', users)
-            
+            conv.save()
+
             for user in users:
                 print('User : ', user)
                 conv.utilisateurs.add(user)
             
-            conv.utilisateurs.add(request.user)
+            #conv.utilisateurs.add(request.user)
             print('Save conversation : ', conv)
-            conv.save()
+            #conv.save()
 
             return redirect('esieechat:select')
 
@@ -37,7 +38,7 @@ def create_conversation(request):
 
 
 def select_conversation(request):
-    conversations = Conversation.objects.all().values('id')
+    conversations = Conversation.objects.all()
     context = {'conversations': conversations}
     return render(request, 'conversation/selectconversation.html', context)
 
@@ -56,6 +57,7 @@ def view_conversation(request, id):
     messages = Message.objects.filter(conversation_id=id)
     context = {
         'form': form, 
-        'messages': messages
+        'messages': messages,
+        'utilisateur' : request.user
     }
     return render(request, 'conversation/viewconversation.html', context)

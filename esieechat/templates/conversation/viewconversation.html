@@ -5,9 +5,15 @@
 <div>
     <link rel="stylesheet" href="{% static 'viewconversation.css' %}">
 
-    <div>
-        {% for message in messages %}
-        {% endfor %}
+    <div class="chat">
+        <div class="chat-history">
+            {% for message in messages %}
+            <div class="speech-bubble">
+                <p><strong>{{ message.utilisateur.first_name }}{{ message.utilisateur.date_heure }}</strong></p>
+                <p>{{ message.contenu }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     <div>
         <form class="send-message-form" action="#" method="POST">
