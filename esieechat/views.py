@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from .forms import ConversationUtilisateursForm, MessageForm
 from .models import Conversation, Message
+from esieeverse.models import Utilisateur
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -51,13 +52,16 @@ def view_conversation(request, id):
 
         if form.is_valid():
             contenu_message = form.cleaned_data['contenu']
-            message = Message(contenu=contenu_message, utilisateur=request.user, conversation_id=id)
+            print("User : ", request.user.utilisateur)
+            message = Message(contenu=contenu_message, utilisateur=request.user.utilisateur, conversation_id=id)
+            print("Enregistrement du message : ", message)
             message.save()
 
     messages = Message.objects.filter(conversation_id=id)
     context = {
         'form': form, 
         'messages': messages,
-        'utilisateur' : request.user
+        'utilisateur_connecte' : request.user,
+        'view_id': id
     }
     return render(request, 'conversation/viewconversation.html', context)

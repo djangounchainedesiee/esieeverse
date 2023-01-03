@@ -3,7 +3,8 @@
     border-color: #062849;
     border-width: 1%;
     border-style: solid;
-    height: 330px;
+    height: 450px;
+    max-height: 450px;
     width: 22%;
     right: 0;
     bottom: 0;
