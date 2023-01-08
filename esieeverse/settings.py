@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'authentification',
     'crispy_forms',
     'rest_framework',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
