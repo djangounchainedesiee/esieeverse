@@ -1,0 +1,39 @@
+{% extends 'conversation/conversationcontainer.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <link rel="stylesheet" href="{% static 'viewconversation.css' %}">
+
+    <div class="chat">
+        {% for message in messages %}
+            <div class="speech-bubble" style="{% if message.utilisateur.user != utilisateur_connecte %} left: 45% {% endif %}">
+                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur.user == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
+                    {{ message.contenu }}
+                </p>
+                <p class="speech-bubble-info" >{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
+            </div>
+            {% endfor %}
+    </div>
+    <div>
+        <form class="send-message-form" action="#" method="POST">
+            {% csrf_token %}
+
+            <div class="form-row col-md-6">
+                <div class="form-group message-input">
+                    {{ form.contenu|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn send-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-send" viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
