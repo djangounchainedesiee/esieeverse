@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'esieechat',
     'esieeverse',
     'publication',
+    'authentification',
     'crispy_forms',
 ]
 
