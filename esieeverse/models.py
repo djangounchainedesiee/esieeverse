@@ -16,7 +16,6 @@ class Classe(models.Model):
         return f"{self.nom}, {self.filiere}"
 
 class Promotion(models.Model):
-    annee_debut = models.PositiveSmallIntegerField(default=1900, validators=[MinValueValidator(1900)])
     annee_fin = models.PositiveSmallIntegerField(default=1900, validators=[MinValueValidator(1900)])
     filieres = models.ManyToManyField(Filiere)
 
