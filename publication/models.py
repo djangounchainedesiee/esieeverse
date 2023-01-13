@@ -4,7 +4,7 @@ from django.db import models
 class Publication(models.Model):
     texte = models.CharField(max_length=125)
     date = models.DateTimeField(auto_now=True)
-    contien_multimedia = models.BooleanField(default=False)
+    contient_multimedia = models.BooleanField(default=False)
     nb_likes = models.PositiveSmallIntegerField(default=0)
     nb_dislikes = models.PositiveSmallIntegerField(default=0)
 
@@ -14,6 +14,7 @@ class Evenement(Publication):
 
 class Choix(models.Model):
     nom = models.CharField(max_length=10)
+    nb_choisis = models.IntegerField(default=0)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
     nb_choisis = models.IntegerField(default=0)
 

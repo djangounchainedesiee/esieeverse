@@ -6,8 +6,6 @@ from esieeverse.models import Utilisateur
 from django.contrib.auth.models import User
 
 # Create your views here.
-
-
 def create_conversation(request):
     form = ConversationUtilisateursForm()
     #print('form : ' , form)
@@ -28,9 +26,7 @@ def create_conversation(request):
                 print('User : ', user)
                 conv.utilisateurs.add(user)
             
-            #conv.utilisateurs.add(request.user)
             print('Save conversation : ', conv)
-            #conv.save()
 
             return redirect('esieechat:select')
 
