@@ -16,6 +16,7 @@ class Choix(models.Model):
     nom = models.CharField(max_length=10)
     nb_choisis = models.IntegerField(default=0)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    nb_choisis = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.nom}"
