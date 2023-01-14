@@ -5,13 +5,11 @@ from .models import Message
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (Layout, Row, Column)
 
-
 class ConversationUtilisateursForm(forms.Form):
     nom_conversation = forms.CharField(
         label='Nom de la conversation', max_length=20)
     utilisateurs = forms.ModelMultipleChoiceField(
         label='Choisissez des utilisateurs', queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')))
-
 
 class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -26,3 +24,13 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['contenu']
+
+
+class ConversationAddUtilisateurForm(forms.Form):
+    def __init__(self, conversation_id, *args,**kwargs):
+        self.conversation_id = conversation_id
+        super().__init__(*args, **kwargs)
+        self.fields['utilisateurs'] = forms.ModelMultipleChoiceField(
+            label='Choisissez des utilisateurs', 
+            queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')).exclude(conversation__id=self.conversation_id)
+        )

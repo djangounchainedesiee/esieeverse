@@ -9,7 +9,7 @@ from . import views
 
 urlpatterns = [
     #path('', include(router.urls)),
-    path('messageList/<int:conversation_id>', views.MessageList.as_view()),
+    path('messageList/<int:conversation_id>', views.MessageList.as_view(), name="api_conversation_list"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
