@@ -22,4 +22,25 @@
         <a href="{% url 'login' %}">Se connecter</a>
     </small>
   </div>
+
+  <script>
+    // Get the select elements
+    var fillière = document.getElementById("id_ma_promotion");
+    var cursus = document.getElementById("id_cursus");
+    var cursus_label = cursus.innerHTML;
+
+    //Trouver absolument comment récuperer l'id d'un label
+  
+    // Add an event listener to the country select
+    fillière.addEventListener("change", function() {
+      if (this.value === "3"||this.value ==="4"||this.value ==="5") {
+        cursus.style.display = "block";
+        cursus_label.style.display = "block";
+      } else {
+        cursus.style.display = "none";
+        cursus_label.style.display = "none";
+      }
+    });
+  </script>
+
 {% endblock %}
