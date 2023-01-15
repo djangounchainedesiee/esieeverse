@@ -64,11 +64,10 @@ def view_conversation(request, id):
             message.save()
             return redirect('esieechat:view', id=id)
 
-    messages = Message.objects.filter(conversation_id=id)
+    #messages = Message.objects.filter(conversation_id=id)
     context = {
         'form': form, 
-        'messages': messages,
-        'utilisateur_connecte' : request.user,
+        'utilisateur_connecte' : request.user.utilisateur,
         'conversation_id': id,
         'view': 'view_conversation'
     }
