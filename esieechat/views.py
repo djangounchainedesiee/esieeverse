@@ -52,6 +52,9 @@ def view_conversation(request, id):
     """
     Vue permettant d'afficher un Chat avec l'ensemble des messages envoyés dans la conversation
     """
+    if not Conversation.objects.filter(id=id).exists():
+        return redirect('esieechat:select')
+
     form = MessageForm()
     
     if request.method == 'POST':
@@ -62,11 +65,12 @@ def view_conversation(request, id):
             contenu_message = form.cleaned_data['contenu']
             message = Message(contenu=contenu_message, utilisateur=request.user.utilisateur, conversation_id=id)
             message.save()
-            return redirect('esieechat:view', id=id)
+            return redirect('esieechat:select')
 
-    #messages = Message.objects.filter(conversation_id=id)
+    messages = Message.objects.filter(conversation_id=id)
     context = {
         'form': form, 
+        'messages': messages,
         'utilisateur_connecte' : request.user.utilisateur,
         'conversation_id': id,
         'view': 'view_conversation'

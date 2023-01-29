@@ -5,15 +5,15 @@
 <div>
     <link rel="stylesheet" href="{% static 'viewconversation.css' %}">
 
-    <div class="chat">
-        {% comment %} {% for message in messages %}
-            <div class="speech-bubble" style="{% if message.utilisateur.user != utilisateur_connecte %} left: 45% {% endif %}">
-                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur.user == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
+    <div id="chat-messages-container" class="chat">
+        {% for message in messages %}
+            <div class="speech-bubble" style="{% if message.utilisateur == utilisateur_connecte %} left: 45% {% endif %}">
+                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
                     {{ message.contenu }}
                 </p>
                 <p class="speech-bubble-info" >{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
             </div>
-        {% endfor %} {% endcomment %}
+        {% endfor %}
     </div>
     <div>
         {% comment %} <form class="send-message-form" action="" method="POST">
@@ -64,13 +64,18 @@
         console.log("La connexion avec le websocket du chat à été fermée !");
         };
         
+        /**
+        * Lorsque l'utilisateur appuie sur la touche entré lorsqu'il écrit dans le input field celà envoi le message
+        */
         document.querySelector("#id_contenu").onkeyup = (e) => {
             if (e.key == 'Enter') {
                 document.querySelector("#btn-envoi-message-chat").click();
             }
         };
 
-        // Envoi un message lorsque l'utilisateur clic sur le bouton
+        /**
+        * Envoi un message lorsque l'utilisateur clic sur le bouton
+        */
         document.querySelector("#btn-envoi-message-chat").onclick = (e) => {
             var contenu = document.querySelector("#id_contenu").value;
 
@@ -78,17 +83,24 @@
                 contenu: contenu,
                 conversation_id: {{ conversation_id }},
                 utilisateur : {
-                    id: {{ request.user.utilisateur.id }},
-                    nom: "{{ request.user.utilisateur }}"
+                    id: {{ utilisateur_connecte.id }},
+                    nom: "{{ utilisateur_connecte.user.last_name }}"
                 },
                 date_heure: ""
             }));
+
+            document.querySelector("#id_contenu").value = "";
         };
 
-
+        /**
+        * Lorsqu'on reçoit un message du websocket, alors on l'affiche en HTML
+        */
         chatSocket.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log('On message data : ', data);
+
+            var chat = document.getElementById('chat-messages-container');
+
             var div = document.createElement("div");
 
             const { contenu, conversation_id, utilisateur: { id, nom }, date_heure } = data;
@@ -97,7 +109,7 @@
             const speechBubble = document.createElement("div");
             speechBubble.classList.add("speech-bubble");
 
-            if (id !== utilisateur_connecte_id) {
+            if (id === utilisateur_connecte_id) {
                 speechBubble.style.left = "45%";
             }
 
@@ -115,6 +127,8 @@
             speechBubbleInfo.classList.add("speech-bubble-info");
             speechBubbleInfo.innerText = nom + " " + date_heure;
             speechBubble.appendChild(speechBubbleInfo);
+
+            chat.appendChild(speechBubble);
         };
     </script>
 </div>
