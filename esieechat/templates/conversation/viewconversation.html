@@ -5,18 +5,18 @@
 <div>
     <link rel="stylesheet" href="{% static 'viewconversation.css' %}">
 
-    <div class="chat">
+    <div id="chat-messages-container" class="chat">
         {% for message in messages %}
-            <div class="speech-bubble" style="{% if message.utilisateur.user != utilisateur_connecte %} left: 45% {% endif %}">
-                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur.user == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
+            <div class="speech-bubble" style="{% if message.utilisateur == utilisateur_connecte %} left: 45% {% endif %}">
+                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
                     {{ message.contenu }}
                 </p>
                 <p class="speech-bubble-info" >{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
             </div>
-            {% endfor %}
+        {% endfor %}
     </div>
     <div>
-        <form class="send-message-form" action="#" method="POST">
+        {% comment %} <form class="send-message-form" action="" method="POST">
             {% csrf_token %}
 
             <div class="form-row col-md-6">
@@ -24,7 +24,7 @@
                     {{ form.contenu|as_crispy_field }}
                 </div>
                 <div class="form-group col-md-6">
-                    <button type="submit" class="btn send-icon">
+                    <button type="submit" id="btn-envoi-message-chat" class="btn send-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-send" viewBox="0 0 16 16">
                             <path
@@ -33,7 +33,103 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> {% endcomment %}
+        <div class="send-message-form">
+            {% csrf_token %}
+
+            <div class="form-row col-md-6">
+                <div class="form-group message-input">
+                    {{ form.contenu|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="submit" id="btn-envoi-message-chat" class="btn send-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-send" viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + {{ conversation_id }} + '/')
+
+        chatSocket.onopen = (e) => {
+            console.log("La connexion avec le websocket du chat à été ouverte !");
+        };
+        
+        chatSocket.onclose = (e) => {
+        console.log("La connexion avec le websocket du chat à été fermée !");
+        };
+        
+        /**
+        * Lorsque l'utilisateur appuie sur la touche entré lorsqu'il écrit dans le input field celà envoi le message
+        */
+        document.querySelector("#id_contenu").onkeyup = (e) => {
+            if (e.key == 'Enter') {
+                document.querySelector("#btn-envoi-message-chat").click();
+            }
+        };
+
+        /**
+        * Envoi un message lorsque l'utilisateur clic sur le bouton
+        */
+        document.querySelector("#btn-envoi-message-chat").onclick = (e) => {
+            var contenu = document.querySelector("#id_contenu").value;
+
+            chatSocket.send(JSON.stringify({ 
+                contenu: contenu,
+                conversation_id: {{ conversation_id }},
+                utilisateur : {
+                    id: {{ utilisateur_connecte.id }},
+                    nom: "{{ utilisateur_connecte.user.last_name }}"
+                },
+                date_heure: ""
+            }));
+
+            document.querySelector("#id_contenu").value = "";
+        };
+
+        /**
+        * Lorsqu'on reçoit un message du websocket, alors on l'affiche en HTML
+        */
+        chatSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            console.log('On message data : ', data);
+
+            var chat = document.getElementById('chat-messages-container');
+
+            var div = document.createElement("div");
+
+            const { contenu, conversation_id, utilisateur: { id, nom }, date_heure } = data;
+            const utilisateur_connecte_id = {{ utilisateur_connecte.id }};
+
+            const speechBubble = document.createElement("div");
+            speechBubble.classList.add("speech-bubble");
+
+            if (id === utilisateur_connecte_id) {
+                speechBubble.style.left = "45%";
+            }
+
+            const speechBubbleContent = document.createElement("p");
+            speechBubbleContent.classList.add("speech-bubble-content");
+
+            speechBubbleContent.style.backgroundColor = (id === utilisateur_connecte_id)
+            ? "#FF9D4F"
+            : "#FFDE8F";     
+
+            speechBubbleContent.innerText = contenu;
+            speechBubble.appendChild(speechBubbleContent);
+
+            const speechBubbleInfo = document.createElement("p");
+            speechBubbleInfo.classList.add("speech-bubble-info");
+            speechBubbleInfo.innerText = nom + " " + date_heure;
+            speechBubble.appendChild(speechBubbleInfo);
+
+            chat.appendChild(speechBubble);
+        };
+    </script>
 </div>
 {% endblock %}

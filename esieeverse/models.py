@@ -20,7 +20,7 @@ class Promotion(models.Model):
     filieres = models.ManyToManyField(Filiere)
 
     def __str__(self):
-        return f"{self.annee_debut} {self.annee_fin}"
+        return f"{self.annee_fin}"
 
 class Utilisateur(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
