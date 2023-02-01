@@ -4,12 +4,9 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from esieechat.routing import websocket_urlpatterns
 import os
 
-# application = ProtocolTypeRouter({
-#     'http': get_asgi_application(),
-#     'websocket': URLRouter(
-#         urlpatterns
-#     )
-# })
+"""
+Routeur Protocolaire (WS) pour les websocket
+"""
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'esieeverse.settings')
 

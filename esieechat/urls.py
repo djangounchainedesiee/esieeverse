@@ -9,6 +9,3 @@ urlpatterns = [
     path('view/<str:id>/', views.view_conversation, name="view"),
     path('<str:id>/people/add/', views.add_people_in_conversation, name="add_people"),
 ]
-
-# path('conversation/<int:id>/', views.conversation, name='conversation')
-# path('message/<int:id>/', views.message, name='message')
