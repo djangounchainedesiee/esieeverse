@@ -4,7 +4,7 @@ class SignUpForm(forms.Form):
 
     Prénom = forms.CharField(label='Prénom', max_length=150)
 
-    Nom = forms.CharField(label='Nom ', max_length=150)
+    Nom = forms.CharField(label='Nom', max_length=150)
 
     email = forms.EmailField(max_length=254, help_text = 'Requis. Entrez une adresse mail valide.')
 

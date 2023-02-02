@@ -1,5 +1,85 @@
 {% extends "base.html" %}
 {% block content %}
+<html>
+  <head>
+    <title> Page d'inscription</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #ffffff;
+      }
+
+      h2 {
+        margin: 20px 0;
+        color: #1e90ff;
+        font-weight: bold;
+      }
+
+      form {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px #1e90ff;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0px 0px 5px #1e90ff;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #1e90ff;
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+    background-color: #0080ff;
+    }
+
+      .alert {
+        color: #dc3545;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+
+
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0px 0px 5px #1e90ff;
+      }
+
+
+      
+    </style>
+  </head>
+  <body>
+
+
+
+
     <h2>S'inscrire</h2>    
     <form method="post">
         {% csrf_token %}
@@ -14,8 +94,14 @@
             {% endfor %}
           {% endfor %}
          </table>
-        <button type="submit">s'inscrire</button>       
+         <input type="submit" value="S'inscrire">
+         <br></br>
+         <center><div class="g-signin2" data-onsuccess="onSignIn">S'inscrire avec Google</div>         </center>
     </form>
+    <div>
+     
+    </div>
+
     <div>
     <small>
         Déjà inscrit.e?
@@ -41,6 +127,15 @@
         cursus_label.style.display = "none";
       }
     });
+
+
+    function onSignIn(googleUser) {
+        // Récupérer les informations d'identification de l'utilisateur
+        var profile = googleUser.getBasicProfile();
+        console.log("ID token: " + googleUser.getAuthResponse().id_token);
+        console.log("Nom: " + profile.getName());
+        console.log("Email: " + profile.getEmail());
+      }
   </script>
 
 {% endblock %}
