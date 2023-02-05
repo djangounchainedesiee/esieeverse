@@ -5,6 +5,9 @@ import os
 
 # Create your models here.
 class Publication(models.Model):
+    """
+    Modèle représentant la table Promotion
+    """
     texte = models.CharField(max_length=125)
     date = models.DateTimeField(auto_now=True)
     image = models.ImageField(null=True, upload_to='media/')
@@ -13,10 +16,16 @@ class Publication(models.Model):
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
 
 class Evenement(Publication):
+    """
+    Modèle représentant la table Evènement
+    """
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
 
 class Choix(models.Model):
+    """
+    Modèle représentant la table Choix
+    """
     nom = models.CharField(max_length=10)
     nb_choisis = models.IntegerField(default=0)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
