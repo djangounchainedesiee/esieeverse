@@ -29,7 +29,7 @@ class Utilisateur(models.Model):
     promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
     abonnements = models.ManyToManyField('Utilisateur', blank=True, related_name='abonnements_utilisateur')
     banis = models.ManyToManyField('Utilisateur', blank=True, related_name='utilisateur_bannis')
-    photo_de_profile = models.ImageField(null=True)
+    photo_de_profile = models.ImageField(null=True, upload_to='media/')
 
     def __str__(self):
         return f"{self.user.get_full_name()}"

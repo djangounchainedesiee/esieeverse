@@ -3,11 +3,10 @@
     border-color: #062849;
     border-width: 1%;
     border-style: solid;
-    height: 450px;
-    max-height: 450px;
     width: 40%;
-    right: 0;
-    bottom: 0;
+    height: 500px;
+    margin-top: 1%;
+    margin-left: 2%;
 }
 
 .card-header{
@@ -17,6 +16,11 @@
 
 .card-header:first-child {
     border-radius: 2px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 10vw;
 }
 
 .text-header {

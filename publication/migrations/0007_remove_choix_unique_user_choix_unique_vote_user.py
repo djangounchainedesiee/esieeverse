@@ -10,6 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RemoveConstraint(
+            model_name='choix',
+            name='unique_user',
+        ),
         migrations.AddConstraint(
             model_name='choix',
             constraint=models.UniqueConstraint(fields=('id', 'evenement', 'utilisateur'), name='unique_vote_user'),

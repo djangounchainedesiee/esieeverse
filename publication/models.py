@@ -7,10 +7,11 @@ import os
 class Publication(models.Model):
     texte = models.CharField(max_length=125)
     date = models.DateTimeField(auto_now=True)
-    image = models.ImageField(null=True)
-    nb_likes = models.PositiveSmallIntegerField(default=0)
-    nb_dislikes = models.PositiveSmallIntegerField(default=0)
+    image = models.ImageField(null=True, upload_to='media/')
+    likes = models.ManyToManyField(Utilisateur, related_name='likes_utilisateur', blank=True)
+    dislikes = models.ManyToManyField(Utilisateur, related_name='dislikes_utilisateur', blank=True)
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+
 class Evenement(Publication):
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
