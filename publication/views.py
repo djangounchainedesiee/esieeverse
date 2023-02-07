@@ -7,9 +7,9 @@ from esieeverse.models import Utilisateur
 def display(request: HttpRequest) -> HttpResponse:
     publications = Publication.objects.all().exclude(utilisateur_id=request.user.utilisateur)
     print(request.user.utilisateur.photo_de_profile)
-
+    
     context = {
-        'publications': publications
+        'publications': publications,
     }
     
     return render(request, 'publication/displaypublications.html', context)
