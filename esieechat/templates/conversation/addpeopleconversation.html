@@ -3,20 +3,17 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div>
-    <link rel="stylesheet" href="{% static 'createconversation.css' %}">
-    <form class="creer-conversation-form" method="POST" action="#">
+    <link rel="stylesheet" href="{% static 'addpeopleconversation.css' %}">
+    <form class="ajouter-utilisateur-conversation-form" method="POST" action="">
         {% csrf_token %}
-        <div class="form-group">  
-            {{ form.nom_conversation|as_crispy_field }}
-        </div>
         <div class="form-group ">
             {{ form.utilisateurs|as_crispy_field }}
         </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Créer une conversation</button>
+        <div class="text-center ">
+            <button type="submit" class="btn btn-primary">Ajouter un utilisateur</button>
         </div>
         <div class="arrow-left">
-            <a  href="{% url 'esieechat:select' %}" class="btn" role="button">
+            <a  href="{% url 'esieechat:view' id=conversation_id %}" class="btn" role="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
