@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'publication',
     'authentification',
     'crispy_forms',
+    'rest_framework',
+    'django_filters',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -73,8 +76,15 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'esieeverse.asgi.application'
 WSGI_APPLICATION = 'esieeverse.wsgi.application'
 
+# Channel layers for websocket
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -109,6 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
