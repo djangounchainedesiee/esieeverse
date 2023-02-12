@@ -30,17 +30,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, code: str):
-        """
-        Est appelé lorsque la connexion avec le websocket est fermé
+        """Est appelé lorsque la connexion avec le websocket est fermé
+
+        Args:
+            code (str): Code de déconnexion
         """
         await self.channel_layer.group_discard(
             self.conversation_id,
             self.channel_name
         )
 
-    async def receive(self, text_data):
-        """
-        Est appelé lorsqu'on reçoit un message d'un client connecté au websocket
+    async def receive(self, text_data: object):
+        """Est appelé lorsqu'on reçoit un message d'un client connecté au websocket
+
+        Args:
+            text_data (object): Données reçu du client du websocket
         """
         print('Receive Message : ', text_data)
         message_json: dict = json.loads(text_data)
@@ -63,9 +67,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'date_heure': date_heure
         })
 
-    async def send_message(self, event):
-        """
-        Est appelé lorsqu'on reçoit un message du groupe du channel @see receive
+    async def send_message(self, event: dict):
+        """Est appelé lorsqu'on reçoit un message du groupe du channel @see receive
+
+        Args:
+            event (dict): Evènement/Message réçu d'un des client websocket du groupe
         """
         print('Send Message : ', event)
         contenu = event['contenu']
