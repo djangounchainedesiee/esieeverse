@@ -27,7 +27,6 @@ class Choix(models.Model):
     Modèle représentant la table Choix
     """
     nom = models.CharField(max_length=10)
-    nb_choisis = models.IntegerField(default=0)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
     
