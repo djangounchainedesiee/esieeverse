@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('conversation/', include('esieechat.urls')),
+    path('auth/', include('authentification.urls')),
     path('publication/', include('publication.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
