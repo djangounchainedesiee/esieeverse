@@ -121,10 +121,12 @@
     fillière.addEventListener("change", function() {
       if (this.value === "3"||this.value ==="4"||this.value ==="5") {
         cursus.style.display = "block";
-        cursus_label.style.display = "block";
+        //cursus_label.style.display = "block";
+        cursus.parentNode.parentNode.style.display="block";
       } else {
         cursus.style.display = "none";
-        cursus_label.style.display = "none";
+        //cursus_label.style.display = "none";
+        cursus.parentNode.parentNode.style.display="none";
       }
     });
 
