@@ -7,8 +7,8 @@
 
     <div id="chat-messages-container" class="chat">
         {% for message in messages %}
-            <div class="speech-bubble" style="{% if message.utilisateur == utilisateur_connecte %} left: 45% {% endif %}">
-                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
+            <div class="speech-bubble" style="{% if message.utilisateur == request.user.utilisateur %} left: 45% {% endif %}">
+                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur == request.user.utilisateur %} #FF9D4F {% else %} #FFDE8F {% endif %}">
                     {{ message.contenu }}
                 </p>
                 <p class="speech-bubble-info" >{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
@@ -83,8 +83,8 @@
                 contenu: contenu,
                 conversation_id: {{ conversation_id }},
                 utilisateur : {
-                    id: {{ utilisateur_connecte.id }},
-                    nom: "{{ utilisateur_connecte.user.last_name }}"
+                    id: {{ request.user.utilisateur.id }},
+                    nom: "{{ request.user.last_name }}"
                 },
                 date_heure: ""
             }));
@@ -104,7 +104,7 @@
             var div = document.createElement("div");
 
             const { contenu, conversation_id, utilisateur: { id, nom }, date_heure } = data;
-            const utilisateur_connecte_id = {{ utilisateur_connecte.id }};
+            const utilisateur_connecte_id = {{ request.user.utilisateur.id }};
 
             const speechBubble = document.createElement("div");
             speechBubble.classList.add("speech-bubble");
