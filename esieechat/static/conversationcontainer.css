@@ -10,13 +10,23 @@
     bottom: 0;
 }
 
+.card-header{
+    background-color: #062849;
+    border-color: #062849;
+}
+
 .card-header:first-child {
     border-radius: 2px;
 }
 
 .text-header {
-    background-color: #062849;
     text-align: center;
-    border-color: #062849;
     border-radius: 2px;
+}
+
+.add-people-icon{
+    position: absolute;
+    color: white;
+    top: 2%;
+    right: 5%;
 }
