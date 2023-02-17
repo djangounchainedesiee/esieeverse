@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from .forms import ConversationUtilisateursForm, MessageForm, ConversationAddUtilisateurForm
 from .models import Conversation, Message
@@ -47,7 +48,7 @@ def create_conversation(request: HttpRequest) -> (HttpResponse | HttpResponseRed
 
     context = {
         'form': form,
-        'return_arrow_btn_url': "esieechat:select"
+        'return_arrow_btn_url': reverse('esieechat:select')
     }
     return render(request, 'conversation/createconversation.html', context)
 
@@ -66,7 +67,8 @@ def select_conversation(request: HttpRequest) -> HttpResponse:
 
     conversations = Conversation.objects.all()
     context = {
-        'conversations': conversations
+        'conversations': conversations,
+        'return_arrow_btn_url': reverse('esieechat:create')
     }
     return render(request, 'conversation/selectconversation.html', context)
 
@@ -98,7 +100,7 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
         'conversation_id': id_conversation,
         'utilisateurs_conversation': utilisateur_conversation.all(),
         'view': 'view_conversation',
-        'return_arrow_btn_url': "esieechat:select"
+        'return_arrow_btn_url': reverse('esieechat:select')
     }
     return render(request, 'conversation/viewconversation.html', context)
 
@@ -135,7 +137,7 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> (H
     context = {
         'form': form,
         'conversation_id': id_conversation,
-        'return_arrow_btn_url': reverse('esieechat:view', id_conversation=id_conversation)
+        'return_arrow_btn_url': reverse('esieechat:view', kwargs={'id_conversation': id_conversation})
     }
     return render(request, 'conversation/addpeopleconversation.html', context)
 
