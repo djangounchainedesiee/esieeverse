@@ -7,7 +7,7 @@ from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
 
 # Create your views here.
-def create_conversation(request: HttpRequest) -> (HttpResponse | HttpResponseRedirect) :
+def create_conversation(request: HttpRequest) -> HttpResponse:
     """Affiche une vue permettant de créer une nouvelle conversation. 
 
     L'utilisateur pourra choisir avec qui il créer la conversation et comment elle se nommera
@@ -104,7 +104,7 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
     }
     return render(request, 'conversation/viewconversation.html', context)
 
-def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> (HttpResponse | HttpResponseRedirect):
+def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> HttpResponse:
     """Permet d'ajouter des personnes à la conversation
 
     Args:
@@ -141,7 +141,7 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> (H
     }
     return render(request, 'conversation/addpeopleconversation.html', context)
 
-def delete_people_in_conversation(request: HttpRequest, id_conversation: int, id_utilisateur: int) -> (HttpResponse | HttpResponseRedirect):
+def delete_people_in_conversation(request: HttpRequest, id_conversation: int, id_utilisateur: int) -> HttpResponse:
     """Permet de supprimer un utilisateur à la conversation
 
     Args:

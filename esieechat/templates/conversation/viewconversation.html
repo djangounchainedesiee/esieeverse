@@ -96,14 +96,14 @@
             chatSocket.send(JSON.stringify({
                 contenu: contenu,
                 conversation_id: {{ conversation_id }},
-            utilisateur : {
-            id: { { request.user.utilisateur.id } },
-            nom: "{{ request.user.last_name }}"
-        },
-        date_heure: ""
+                utilisateur : {
+                    id: {{ request.user.utilisateur.id }},
+                    nom: "{{ request.user.last_name }}"
+                 },
+                 date_heure: ""
             }));
 
-        document.querySelector("#id_contenu").value = "";
+            document.querySelector("#id_contenu").value = "";
         };
 
         /**
@@ -118,32 +118,31 @@
             var div = document.createElement("div");
 
             const { contenu, conversation_id, utilisateur: { id, nom }, date_heure } = data;
-            const utilisateur_connecte_id = {{ request.user.utilisateur.id }
-        };
+            const utilisateur_connecte_id = {{ request.user.utilisateur.id }}
 
-        const speechBubble = document.createElement("div");
-        speechBubble.classList.add("speech-bubble");
+            const speechBubble = document.createElement("div");
+            speechBubble.classList.add("speech-bubble");
 
-        if (id === utilisateur_connecte_id) {
-            speechBubble.classList.add("speech-bubble-right");
-        }
+            if (id === utilisateur_connecte_id) {
+                speechBubble.classList.add("speech-bubble-right");
+            }
 
-        const speechBubbleContent = document.createElement("p");
-        speechBubbleContent.classList.add("speech-bubble-content");
+            const speechBubbleContent = document.createElement("p");
+            speechBubbleContent.classList.add("speech-bubble-content");
 
-        speechBubbleContent.style.backgroundColor = (id === utilisateur_connecte_id)
-            ? "#FF9D4F"
-            : "#FFDE8F";
+            speechBubbleContent.style.backgroundColor = (id === utilisateur_connecte_id)
+                ? "#FF9D4F"
+                : "#FFDE8F";
 
-        speechBubbleContent.innerText = contenu;
-        speechBubble.appendChild(speechBubbleContent);
+            speechBubbleContent.innerText = contenu;
+            speechBubble.appendChild(speechBubbleContent);
 
-        const speechBubbleInfo = document.createElement("p");
-        speechBubbleInfo.classList.add("speech-bubble-info");
-        speechBubbleInfo.innerText = nom + " " + date_heure;
-        speechBubble.appendChild(speechBubbleInfo);
+            const speechBubbleInfo = document.createElement("p");
+            speechBubbleInfo.classList.add("speech-bubble-info");
+            speechBubbleInfo.innerText = nom + " " + date_heure;
+            speechBubble.appendChild(speechBubbleInfo);
 
-        chat.appendChild(speechBubble);
+            chat.appendChild(speechBubble);
         };
     </script>
 </div>
