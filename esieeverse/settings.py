@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'esieeverse',
     'publication',
     'authentification',
+    'home',
     'crispy_forms',
     'rest_framework',
     'django_filters',
