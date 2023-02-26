@@ -39,6 +39,8 @@ class Utilisateur(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
+    filiere = models.ForeignKey(Filiere, on_delete=models.CASCADE)
+    classe = models.ForeignKey(Classe, on_delete=models.CASCADE)
     abonnements = models.ManyToManyField('Utilisateur', blank=True, related_name='abonnements_utilisateur')
     banis = models.ManyToManyField('Utilisateur', blank=True, related_name='utilisateur_bannis')
     photo_de_profile = models.ImageField(null=True, upload_to='media/')
