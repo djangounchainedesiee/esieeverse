@@ -10,7 +10,7 @@ class Publication(models.Model):
     """
     texte = models.CharField(max_length=125)
     date = models.DateTimeField(auto_now=True)
-    image = models.ImageField(null=True, upload_to='media/')
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
     likes = models.ManyToManyField(Utilisateur, related_name='likes_utilisateur', blank=True)
     dislikes = models.ManyToManyField(Utilisateur, related_name='dislikes_utilisateur', blank=True)
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
