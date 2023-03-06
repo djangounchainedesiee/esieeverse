@@ -688,41 +688,9 @@
                                                 </ul>
                                             </div>
                                             <!-- Shortcuts -->
-                                            <div class="widget">
-                                                <h4 class="widget-title">
-                                                    Recent Activity
-                                                </h4>
-                                                <ul class="activitiez">
-                                                    <li>
-                                                        <div class="activity-meta">
-                                                            <i>10 hours Ago</i>
-                                                            <span><a href="#" title="">Commented on Video posted </a></span>
-                                                            <h6>
-                                                                by <a href="#">Emmanuel Macron</a>
-                                                            </h6>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="activity-meta">
-                                                            <i>30 Days Ago</i>
-                                                            <span><a href="#" title="">Posted your status. “Hello guys, how are you?”</a></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="activity-meta">
-                                                            <i>2 Years Ago</i>
-                                                            <span><a href="#" title="">Share a video on her timeline.</a></span>
-                                                            <h6>
-                                                                "<a href="#">you are so funny mr.been.</a>"
-                                                            </h6>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- recent activites -->
                                             <div class="widget stick-widget">
                                                 <h4 class="widget-title">
-                                                    Who's follow
+                                                    Mes Abonnés
                                                 </h4>
                                                 <ul class="followers">
                                                     <li>
@@ -933,12 +901,10 @@
                                             </div>
                                             <div class="widget friend-list stick-widget">
                                                 <h4 class="widget-title">
-                                                    Friends
+                                                    Mes abonnés
                                                 </h4>
-                                                <div id="searchDir">
-                                                </div>
                                                 <ul id="people-list" class="friendz-list">
-                                                    {% for abonne  in request.user.utilisateur.abonnements.all %}
+                                                    {% for abonnement in request.user.utilisateur.abonnements.all %}
                                                         {% include 'home/friend.html' %}
                                                     {% endfor %}
                                                 </ul>

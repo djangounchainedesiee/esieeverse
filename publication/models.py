@@ -6,7 +6,7 @@ import os
 # Create your models here.
 class Publication(models.Model):
     """
-    Modèle représentant la table Promotion
+    Modèle représentant la table Publication
     """
     titre = models.CharField(max_length=125)
     contenu = models.TextField(max_length=300)
