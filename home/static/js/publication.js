@@ -1,4 +1,4 @@
-const CSFR_TOKEN = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const CSFR_TOKEN = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
 
 const handleSuccess = (response) => {
     var badge = $(`#user-post-${response.id} .publication-action-buttons .like ins`);
@@ -15,7 +15,7 @@ $(document).ready(function () {
         url: "/publication/like/" + id_publication + "/",
         type: "POST",
         data: {
-            csrfmiddlewaretoken: CSFR_TOKEN,
+            csrfmiddlewaretoken: CSFR_TOKEN ,
         },
         success: handleSuccess,
         });

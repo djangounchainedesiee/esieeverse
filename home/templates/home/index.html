@@ -693,61 +693,9 @@
                                                     Mes Abonnés
                                                 </h4>
                                                 <ul class="followers">
-                                                    <li>
-                                                        <figure>
-                                                            <img src="" alt="">
-                                                        </figure>
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a href="#" title="">Ayoub</a>
-                                                            </h4>
-                                                            <a href="#" title="" class="underline">Add Friend</a>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <figure>
-                                                            <img src="" alt="">
-                                                        </figure>
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a href="#" title="">Remi</a>
-                                                            </h4>
-                                                            <a href="#" title="" class="underline">Add Friend</a>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <figure>
-                                                            <img src="" alt="">
-                                                        </figure>
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a href="#" title="">Etienne</a>
-                                                            </h4>
-                                                            <a href="#" title="" class="underline">Add Friend</a>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <figure>
-                                                            <img src="" alt="">
-                                                        </figure>
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a href="#" title="">Chang</a>
-                                                            </h4>
-                                                            <a href="#" title="" class="underline">Add Friend</a>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <figure>
-                                                            <img src="" alt="">
-                                                        </figure>
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a href="#" title="">Ilyes</a>
-                                                            </h4>
-                                                            <a href="#" title="" class="underline">Add Friend</a>
-                                                        </div>
-                                                    </li>
+                                                    {% for abonne in abonnes %}
+                                                    {% include 'home/abonne.html' %}
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                             <!-- who's following -->
@@ -901,11 +849,11 @@
                                             </div>
                                             <div class="widget friend-list stick-widget">
                                                 <h4 class="widget-title">
-                                                    Mes abonnés
+                                                    Mes abonnements
                                                 </h4>
                                                 <ul id="people-list" class="friendz-list">
                                                     {% for abonnement in request.user.utilisateur.abonnements.all %}
-                                                        {% include 'home/friend.html' %}
+                                                        {% include 'home/abonnement.html' %}
                                                     {% endfor %}
                                                 </ul>
                                                 <div class="chat-box">

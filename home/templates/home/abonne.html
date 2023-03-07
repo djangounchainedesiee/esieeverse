@@ -5,9 +5,8 @@
     <div class="friend-meta">
         <h4>
             {% comment %} {% url 'profil:home' utilisateur_id=abonnement.id %} {% endcomment %}
-            <a href="">{{ abonne.get_full_name }}</a>
+            <a href="">{{ abonne.user.first_name }}</a>
         </h4>
-        {% comment %} {% url 'home:add_friend' utilisateur_id=abonne.id %} {% endcomment %}
-        <a href="home:add_friend" title="" class="underline">Ajouter</a>
+        <a id="{{ abonne.id }}" href="{% url 'home:add_friend' id_utilisateur=abonne.id %}" class="underline">Ajouter</a>
     </div>
 </li>
