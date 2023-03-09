@@ -1,0 +1,12 @@
+<li>
+    <figure>
+        <img src="{{ abonne.photo_de_profile.url }}" alt="{{ abonne.photo_de_profile.name }}">
+    </figure>
+    <div class="friend-meta">
+        <h4>
+            {% comment %} {% url 'profil:home' utilisateur_id=abonnement.id %} {% endcomment %}
+            <a href="">{{ abonne.user.first_name }}</a>
+        </h4>
+        <a id="{{ abonne.id }}" href="{% url 'home:add_friend' id_utilisateur=abonne.id %}" class="underline">Ajouter</a>
+    </div>
+</li>

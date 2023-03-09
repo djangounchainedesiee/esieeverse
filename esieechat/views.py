@@ -6,6 +6,9 @@ from .models import Conversation, Message
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
 
+def home_view(request,*args,**kwargs):
+    return render(request,"index.html",{})
+
 # Create your views here.
 def create_conversation(request: HttpRequest) -> HttpResponse:
     """Affiche une vue permettant de créer une nouvelle conversation. 
