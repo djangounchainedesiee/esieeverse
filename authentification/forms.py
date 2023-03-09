@@ -27,5 +27,8 @@ class SignUpForm(forms.Form):
     )
     cursus = forms.ChoiceField(widget=forms.RadioSelect, choices=Cursus_Type)
 
+    CHOICES = [('FR','Réseaux et sécurité'),('FE','Systèmes embarqués'),('FI','Informatique et applications'),('FG','Génie industriel'),('FT','Energies') ]
+    ma_filliere= forms.ChoiceField(choices=CHOICES, initial='1')
+
 
  # 

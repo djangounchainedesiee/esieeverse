@@ -111,20 +111,37 @@
 
   <script>
     // Get the select elements
-    var fillière = document.getElementById("id_ma_promotion");
+    var promo = document.getElementById("id_ma_promotion");
     var cursus = document.getElementById("id_cursus");
     var cursus_label = cursus.innerHTML;
 
     //Trouver absolument comment récuperer l'id d'un label
   
     // Add an event listener to the country select
-    fillière.addEventListener("change", function() {
+    promo.addEventListener("change", function() {
       if (this.value === "3"||this.value ==="4"||this.value ==="5") {
         cursus.style.display = "block";
-        cursus_label.style.display = "block";
+        //cursus_label.style.display = "block";
+        cursus.parentNode.parentNode.style.display="block";
       } else {
         cursus.style.display = "none";
-        cursus_label.style.display = "none";
+        //cursus_label.style.display = "none";
+        cursus.parentNode.parentNode.style.display="none";
+      }
+    });
+
+    var filliere = document.getElementById("id_ma_filliere");
+
+    // Add an event listener to the country select
+    cursus.addEventListener("change", function() {
+      if (this.value === "apprentissage") {
+        fillière.style.display = "block";
+        //cursus_label.style.display = "block";
+        filliere.parentNode.parentNode.style.display="block";
+      } else {
+        filliere.style.display = "none";
+        //cursus_label.style.display = "none";
+        filliere.parentNode.parentNode.style.display="none";
       }
     });
 
