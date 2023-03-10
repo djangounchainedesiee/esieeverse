@@ -6,21 +6,26 @@ import os
 # Create your models here.
 class Publication(models.Model):
     """
-    Modèle représentant la table Promotion
+    Modèle représentant la table Publication
     """
-    texte = models.CharField(max_length=125)
+    titre = models.CharField(max_length=125)
+    contenu = models.TextField(max_length=300)
     date = models.DateTimeField(auto_now=True)
-    image = models.ImageField(null=True, upload_to='media/')
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
     likes = models.ManyToManyField(Utilisateur, related_name='likes_utilisateur', blank=True)
     dislikes = models.ManyToManyField(Utilisateur, related_name='dislikes_utilisateur', blank=True)
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
 
-class Evenement(Publication):
+class Evenement(models.Model):
     """
     Modèle représentant la table Evènement
     """
+    titre = models.CharField(max_length=125)
+    contenu = models.TextField(max_length=300)
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
+    utilisateur_inscrits = models.ManyToManyField(Utilisateur, blank=True)
 
 class Choix(models.Model):
     """
@@ -28,12 +33,7 @@ class Choix(models.Model):
     """
     nom = models.CharField(max_length=10)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    utilisateur = models.ManyToManyField(Utilisateur, blank=True)
     
-    class Meta:
-        constraints=[
-            models.UniqueConstraint(fields=['id', 'evenement', 'utilisateur'], name='unique_vote_user')
-        ]
-
     def __str__(self):
         return f"{self.nom}"

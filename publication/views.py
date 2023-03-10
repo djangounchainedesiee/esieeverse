@@ -3,17 +3,6 @@ from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseFor
 from .models import Publication
 from esieeverse.models import Utilisateur
 
-# Create your views here.
-def display(request: HttpRequest) -> HttpResponse:
-    publications = Publication.objects.all().exclude(utilisateur_id=request.user.utilisateur)
-    print(request.user.utilisateur.photo_de_profile)
-    
-    context = {
-        'publications': publications,
-    }
-    
-    return render(request, 'publication/displaypublications.html', context)
-
 def like(request: HttpRequest, id_publication: int) -> JsonResponse:
     """Fonction permettant de liker une publication
 
