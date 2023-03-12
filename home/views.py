@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
 from rest_framework.response import Response
 from publication.models import Publication
 from esieeverse.models import Utilisateur
+from esieeverse.utils import check_utilisateur_auth
 import requests
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -15,6 +16,9 @@ def home_view(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Affiche la vue de la page principale
     """
+    if not check_utilisateur_auth(request):
+        return redirect('auth:login')
+
     publications = Publication.objects.filter(auteur_id__in=request.user.utilisateur.abonnements.all()).exclude(auteur_id=request.user.utilisateur)
     abonnes = Utilisateur.objects.filter(abonnements=request.user.utilisateur)
 
@@ -42,14 +46,14 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
     utilisateur: Utilisateur = request.user.utilisateur
     
     response: Response = requests.post( 
-        reverse('api:abonnement'), 
+        f'http://127.0.0.1:8000/api/abonnements/', 
         data={'id_utilisateur': utilisateur.id, 'id_utilisateur_to_add': id_utilisateur}, 
-        cookies={'csrftoken': csrfmiddlewaretoken}
+        cookies={'csrfmiddlewaretoken': csrfmiddlewaretoken}
     )
 
     if response.status_code != 200:
-        return HttpResponseBadRequest(f"Erreur lors de l'appel à l'api. Code {response.status_code} : {response.status_text}")
-    
+        return HttpResponse(f"Erreur lors de l'appel à l'api", status=response.status_code)
+
     data = {
         'id_utilisateur_to_add': id_utilisateur,
     }

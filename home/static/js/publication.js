@@ -1,6 +1,6 @@
-const CSFR_TOKEN = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
+const CSFR_TOKEN_PUBLICATION = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
 
-const handleSuccess = (response) => {
+const handleSuccessPublication = (response) => {
     var badge = $(`#user-post-${response.id} .publication-action-buttons .like ins`);
     badge.text(response.nb_likes);
     console.log('Badge like : ', badge)
@@ -15,9 +15,9 @@ $(document).ready(function () {
         url: "/publication/like/" + id_publication + "/",
         type: "POST",
         data: {
-            csrfmiddlewaretoken: CSFR_TOKEN ,
+            csrfmiddlewaretoken: CSFR_TOKEN_PUBLICATION ,
         },
-        success: handleSuccess,
+        success: handleSuccessPublication,
         });
     });
 
@@ -27,10 +27,10 @@ $(document).ready(function () {
         url: "/publication/dislike/" + id_publication + "/",
         type: "POST",
         data: {
-          csrfmiddlewaretoken: CSFR_TOKEN,
+          csrfmiddlewaretoken: CSFR_TOKEN_PUBLICATION,
         },
         dataType: "json",
-        success: handleSuccess,
+        success: handleSuccessPublication,
       });
     });
 });

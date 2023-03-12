@@ -13,10 +13,12 @@
               sizes="16x16">
         <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/add_friend.css' %}">
         <link rel="stylesheet" href="{% static 'css/color.css' %}">
         <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     </head>
     <body>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!--<div class="se-pre-con"></div>-->
         <div class="theme-layout">
             <div class="responsive-header">
@@ -696,6 +698,7 @@
                                                     {% for abonne in abonnes %}
                                                     {% include 'home/abonne.html' %}
                                                     {% endfor %}
+                                                    <script src="{% static 'js/abonne.js' %}"></script>
                                                 </ul>
                                             </div>
                                             <!-- who's following -->
@@ -756,7 +759,6 @@
                                             {% for publication in publications %}
                                             {% include "home/publication.html" %}
                                             {% endfor %}
-                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                             <script src="{% static 'js/publication.js' %}"></script>
                                         </div>
                                     </div>

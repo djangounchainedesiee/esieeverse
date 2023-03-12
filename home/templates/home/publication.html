@@ -10,7 +10,7 @@
                 />
             </figure>
             <div class="friend-name">
-                <ins><a href="#" title="">{{ request.user.first_name }}</a></ins>
+                <ins><a href="#" title="">{{ publication.auteur.user.first_name }}</a></ins>
                 <span>publié: {{ publication.date }}</span>
             </div>
             <div class="post-meta">
@@ -18,6 +18,10 @@
                 <img src="{{ publication.image.url }}" alt="{{ publication.image.name }}"/>
                 {% endif %}
                 <div class="we-video-info">
+                    <div class="description">
+                        <h6>{{ publication.titre }}</h6>
+                        <p>{{ publication.contenu }}</p>
+                    </div>
                     <ul class="publication-action-buttons">
                         {% csrf_token %}
                         <li>
@@ -80,9 +84,6 @@
                             </div>
                         </li>
                     </ul>
-                </div>
-                <div class="description">
-                    <p>{{ publication.texte }}</p>
                 </div>
             </div>
         </div>
