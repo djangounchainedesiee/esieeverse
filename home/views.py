@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
 from rest_framework.response import Response
-from publication.models import Publication
+from publication.models import Publication, Evenement
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
 import requests
@@ -20,10 +20,12 @@ def home_view(request: HttpRequest) -> HttpResponse:
         return redirect('auth:login')
 
     publications = Publication.objects.filter(auteur_id__in=request.user.utilisateur.abonnements.all()).exclude(auteur_id=request.user.utilisateur)
+    evenements = Evenement.objects.filter(auteur_id__in=request.user.utilisateur.abonnements.all()).exclude(auteur_id=request.user.utilisateur)
     abonnes = Utilisateur.objects.filter(abonnements=request.user.utilisateur)
 
     context = {
         'publications': publications,
+        'evenements': evenements,
         'abonnes': abonnes
     }
 
