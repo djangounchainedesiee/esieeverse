@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
-from django.db.models.query import QuerySet
+from django.db.models import Count
 from rest_framework.response import Response
 from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
-from typing import List
+from typing import List, Dict, Union
 import requests
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -20,10 +20,18 @@ def home_view(request: HttpRequest) -> HttpResponse:
     """
     if not check_utilisateur_auth(request):
         return redirect('auth:login')
+    
+    utilisateur: Utilisateur = request.user.utilisateur
 
-    publications = Publication.objects.filter(auteur_id__in=request.user.utilisateur.abonnements.all()).exclude(auteur_id=request.user.utilisateur)
-    evenements = Evenement.objects.filter(auteur_id__in=request.user.utilisateur.abonnements.all()).exclude(auteur_id=request.user.utilisateur)
-    abonnes = Utilisateur.objects.filter(abonnements=request.user.utilisateur)
+    publications = Publication.objects.filter(auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+    evenements = Evenement.objects.filter(auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+    abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
+
+    for evenement in evenements:
+        choixs_evenement = Choix.objects.filter(evenement=evenement, utilisateurs=utilisateur)
+        evenement.user_has_voted = choixs_evenement.exists()
+        evenement.total_votes = sum([choix.utilisateurs.all().count() for choix in choixs_evenement])
+
 
     context = {
         'publications': publications,
@@ -81,11 +89,13 @@ def voter(request: HttpRequest, id_choix: int):
         return HttpResponse(f"Erreur lors de l'appel à l'api", status=response.status_code)
     
     evenement: Evenement = Choix.objects.get(id=id_choix).evenement
-    choixs_evenement: List[Choix] = list(evenement.choix_set.all().values())
+    choixs_evenement: List[Dict[str, Union[int, str]]] = list(evenement.choix_set.annotate(nb_votes=Count('utilisateurs')).values('id', 'nom', 'nb_votes'))
+
+    total_votes: int = sum([choix['nb_votes'] for choix in choixs_evenement])
 
     data = {
         'choixs': choixs_evenement,
-        'id_choix': id_choix
+        'total_votes': total_votes,
     }
 
     return JsonResponse(data)

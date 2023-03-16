@@ -2,31 +2,56 @@
     <div id="user-event-{{ evenement.id }}" class="user-post">
         <div class="friend-info">
             <figure>
-                <img
-                    class="rounded-circle pull-left"
-                    src="{{ evenement.auteur.photo_de_profile.url }}"
-                    style="width: 90px"
-                    alt="{{ evenement.auteur.photo_de_profile.name }}"
-                />
+                <img class="rounded-circle pull-left"
+                     src="{{ evenement.auteur.photo_de_profile.url }}"
+                     style="width: 90px"
+                     alt="{{ evenement.auteur.photo_de_profile.name }}"/>
             </figure>
             <div class="friend-name">
                 <ins><a href="#" title="">{{ evenement.auteur.user.first_name }}</a></ins>
                 <span>Evènement du {{ evenement.date_debut }} au {{ evenement.date_fin }} ; Nombre de participant : {{ evenement.utilisateur_inscrits.all.count }}</span>
             </div>
             <div class="post-meta">
-                {% if evenement.image %}
-                <img src="{{ evenement.image.url }}" alt="{{ evenement.image.name }}"/>
-                {% endif %}
+                {% if evenement.image %}<img src="{{ evenement.image.url }}" alt="{{ evenement.image.name }}"/>{% endif %}
                 {% if evenement.choix_set.all.count > 0 %}
-                <div class="evenement-choixs">
-                    {% csrf_token %}
-                    {% for choix in evenement.choix_set.all %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choix" id="{{ choix.id }}" data-pk="{{ choix.id }}">
-                        <label class="form-check-label" for="{{ choix.nom }}">{{ choix.nom }}</label>
+                    {% load custom_filters %}
+                    <div class="evenement-choixs">
+                        {% csrf_token %}
+                        {% for choix in evenement.choix_set.all %}
+                            {% if evenement.user_has_voted %}
+                                <div class="form-check d-flex align-items-center">
+                                    <label class="form-check-label mr-3"
+                                           id="evenement-label-choix-{{ choix.id }}"
+                                           for="{{ choix.nom }}">
+                                        {{ choix.nom }}
+                                    </label>
+                                    <div class="progress flex-grow-1">
+                                        <div class="progress-bar bg-success"
+                                             role="progressbar"
+                                             style="width: {{ choix.utilisateurs.count|percentage:evenement.total_votes }}%"
+                                             aria-valuenow="{{ choix.id }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="{{ evenement.total_votes }}">
+                                             {{ choix.utilisateurs.count|percentage:evenement.total_votes }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="choix"
+                                           id="evenement-choix-{{ choix.id }}"
+                                           data-pk="{{ choix.id }}">
+                                    <label class="form-check-label mr-3"
+                                           id="evenement-label-choix-{{ choix.id }}"
+                                           for="{{ choix.nom }}">
+                                        {{ choix.nom }}
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
                 {% endif %}
                 <div class="we-video-info">
                     <div class="description">
@@ -36,13 +61,19 @@
                     <ul class="evenement-action-buttons">
                         {% csrf_token %}
                         <li>
-                            <span class="like" data-toggle="tooltip" title="like" data-pk="{{ evenement.id }}">
+                            <span class="like"
+                                  data-toggle="tooltip"
+                                  title="like"
+                                  data-pk="{{ evenement.id }}">
                                 <i class="ti-heart"></i>
                                 <ins>{{ evenement.likes.count }}</ins>
                             </span>
                         </li>
                         <li>
-                            <span class="dislike" data-toggle="tooltip" title="dislike" data-pk="{{ evenement.id }}">
+                            <span class="dislike"
+                                  data-toggle="tooltip"
+                                  title="dislike"
+                                  data-pk="{{ evenement.id }}">
                                 <i class="ti-heart-broken"></i>
                                 <ins>{{ evenement.dislikes.count }}</ins>
                             </span>
