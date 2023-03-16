@@ -7,6 +7,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('abonnements/', views.Abonnements.as_view(), name="abonnements"),
+    path('choixs/', views.Choixs.as_view(), name="choix"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -18,13 +18,15 @@
                 <img src="{{ evenement.image.url }}" alt="{{ evenement.image.name }}"/>
                 {% endif %}
                 {% if evenement.choix_set.all.count > 0 %}
-                {% for choix in evenement.choix_set.all %}
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="choix" id="{{ choix.nom }}">
-                    <label class="form-check-label" for="{{ choix.nom }}">{{ choix.nom }}</label>
+                <div class="evenement-choixs">
+                    {% csrf_token %}
+                    {% for choix in evenement.choix_set.all %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choix" id="{{ choix.id }}" data-pk="{{ choix.id }}">
+                        <label class="form-check-label" for="{{ choix.nom }}">{{ choix.nom }}</label>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Voter</button>
                 {% endif %}
                 <div class="we-video-info">
                     <div class="description">

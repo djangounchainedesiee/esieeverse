@@ -91,13 +91,15 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
     if not check_utilisateur_auth(request):
         return redirect('auth:login')
 
-    if not Conversation.objects.filter(id=id_conversation).exists():
+    conversations = Conversation.objects.filter(id=id_conversation)
+
+    if not conversations.exists():
         return redirect('esieechat:select')
 
     form = MessageForm()
 
     messages = Message.objects.filter(conversation_id=id_conversation)
-    utilisateur_conversation = Conversation.objects.filter(id=id_conversation)[0].utilisateurs
+    utilisateur_conversation = conversations[0].utilisateurs
 
     context = {
         'form': form, 
@@ -132,7 +134,7 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
             
             users = form.cleaned_data['utilisateurs']
 
-            conv = Conversation.objects.filter(id=id_conversation)[0]
+            conv = Conversation.objects.get(id=id_conversation)
 
             for user in users:
                 conv.utilisateurs.add(user)
@@ -162,8 +164,8 @@ def delete_people_in_conversation(request: HttpRequest, id_conversation: int, id
         redirect('auth:login')
 
     if request.method == 'POST' and request.POST.get('csrfmiddlewaretoken', None) != None:
-        conversation = Conversation.objects.filter(id=id_conversation)[0]
-        utilisateur_a_supprimer = Utilisateur.objects.filter(id=id_utilisateur)[0]
+        conversation = Conversation.objects.get(id=id_conversation)
+        utilisateur_a_supprimer = Utilisateur.objects.get(id=id_utilisateur)
         conversation.utilisateurs.remove(utilisateur_a_supprimer)
 
     return redirect('esieechat:view', id_conversation=id_conversation)

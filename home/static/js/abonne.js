@@ -14,7 +14,7 @@ $(document).ready(function () {
         url: "/add_friend/" + id_utilisateur + "/",
         type: "POST",
         data: {
-            csrfmiddlewaretoken: CSFR_TOKEN_FOLLOWER ,
+            csrfmiddlewaretoken: CSFR_TOKEN_CHOIX ,
         },
         success: handleSuccessAbonne,
         });

@@ -34,7 +34,7 @@ class Choix(models.Model):
     """
     nom = models.CharField(max_length=10)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
-    utilisateur = models.ManyToManyField(Utilisateur, blank=True)
+    utilisateurs = models.ManyToManyField(Utilisateur, blank=True)
     
     def __str__(self):
         return f"{self.nom}"

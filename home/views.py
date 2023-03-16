@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
+from django.db.models.query import QuerySet
 from rest_framework.response import Response
-from publication.models import Publication, Evenement
+from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
+from typing import List
 import requests
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -42,7 +44,7 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
         HttpResponse: Redirige vers la vue principale
     """
     csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
-    if request.method != 'POST' or request.POST.get('csrfmiddlewaretoken', None) == None:
+    if request.method != 'POST' or csrfmiddlewaretoken == None:
         return HttpResponseForbidden("Le token CSRF est manquant")
 
     utilisateur: Utilisateur = request.user.utilisateur
@@ -58,6 +60,32 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
 
     data = {
         'id_utilisateur_to_add': id_utilisateur,
+    }
+
+    return JsonResponse(data)
+
+def voter(request: HttpRequest, id_choix: int):
+    csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
+    if request.method != 'POST' or csrfmiddlewaretoken == None:
+        return HttpResponseForbidden("Le token CSRF est manquant")
+    
+    utilisateur: Utilisateur = request.user.utilisateur
+
+    response: Response = requests.post( 
+        f'http://127.0.0.1:8000/api/choixs/', 
+        data={'id_utilisateur': utilisateur.id, 'id_choix_to_select': id_choix}, 
+        cookies={'csrfmiddlewaretoken': csrfmiddlewaretoken}
+    )
+
+    if response.status_code != 200:
+        return HttpResponse(f"Erreur lors de l'appel à l'api", status=response.status_code)
+    
+    evenement: Evenement = Choix.objects.get(id=id_choix).evenement
+    choixs_evenement: List[Choix] = list(evenement.choix_set.all().values())
+
+    data = {
+        'choixs': choixs_evenement,
+        'id_choix': id_choix
     }
 
     return JsonResponse(data)
