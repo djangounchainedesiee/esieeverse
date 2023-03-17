@@ -128,6 +128,8 @@
         cursus.style.display = "block";
         //cursus_label.style.display = "block";
         cursus.parentNode.parentNode.style.display="block";
+
+
       } else {
         cursus.style.display = "none";
         //cursus_label.style.display = "none";
@@ -161,7 +163,14 @@
 
         entreprise.style.display = "block";
         entreprise.parentNode.parentNode.style.display="block";
+
+        fieldOfStudyFieldTp.style.display = "none";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+        
+
       } else {
+
+
         // Otherwise, hide it
         fieldOfStudyFieldApp.style.display = "none";
         fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
@@ -195,10 +204,20 @@
       if (this.checked) {
         fieldOfStudyFieldTp.style.display = "block";
         fieldOfStudyFieldTp.parentNode.parentNode.style.display="block";
+
+
+        fieldOfStudyFieldApp.style.display = "none";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+
+        entreprise.style.display = "none";
+        entreprise.parentNode.parentNode.style.display="none";
+
       } else {
         // Otherwise, hide it
         fieldOfStudyFieldTp.style.display = "none";
         fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+
+
       }
     });    
     
