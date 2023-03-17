@@ -16,17 +16,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Classe',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=3)),
-            ],
-        ),
-        migrations.CreateModel(
             name='Filiere',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=3)),
+                ('nom', models.CharField(max_length=5)),
             ],
         ),
         migrations.CreateModel(
@@ -44,15 +37,9 @@ class Migration(migrations.Migration):
                 ('photo_de_profile', models.ImageField(null=True, upload_to='media/')),
                 ('abonnements', models.ManyToManyField(blank=True, related_name='abonnements_utilisateur', to='esieeverse.utilisateur')),
                 ('banis', models.ManyToManyField(blank=True, related_name='utilisateur_bannis', to='esieeverse.utilisateur')),
-                ('classe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='esieeverse.classe')),
                 ('filiere', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='esieeverse.filiere')),
                 ('promotion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='esieeverse.promotion')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
-        ),
-        migrations.AddField(
-            model_name='classe',
-            name='filiere',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='esieeverse.filiere'),
-        ),
+        )
     ]

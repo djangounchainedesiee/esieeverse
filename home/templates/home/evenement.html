@@ -28,11 +28,11 @@
                                     <div class="progress flex-grow-1">
                                         <div class="progress-bar bg-success"
                                              role="progressbar"
-                                             style="width: {{ choix.utilisateurs.count|percentage:evenement.total_votes }}%"
+                                             style="width: {{ choix.pourcentage }}%"
                                              aria-valuenow="{{ choix.id }}"
                                              aria-valuemin="0"
                                              aria-valuemax="{{ evenement.total_votes }}">
-                                             {{ choix.utilisateurs.count|percentage:evenement.total_votes }}%
+                                             {{ choix.pourcentage }}%
                                         </div>
                                     </div>
                                 </div>

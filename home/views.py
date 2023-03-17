@@ -86,16 +86,20 @@ def voter(request: HttpRequest, id_choix: int):
     )
 
     if response.status_code != 200:
-        return HttpResponse(f"Erreur lors de l'appel à l'api", status=response.status_code)
-    
-    evenement: Evenement = Choix.objects.get(id=id_choix).evenement
-    choixs_evenement: List[Dict[str, Union[int, str]]] = list(evenement.choix_set.annotate(nb_votes=Count('utilisateurs')).values('id', 'nom', 'nb_votes'))
+        return HttpResponse(f"Erreur lors de l'appel à l'api choixs", status=response.status_code)
 
-    total_votes: int = sum([choix['nb_votes'] for choix in choixs_evenement])
+    evenement: Evenement = Choix.objects.get(id=id_choix).evenement
+
+    response = requests.get(f'http://127.0.0.1:8000/api/evenements/{evenement.id}/choixs/')
+    
+    if response.status_code != 200:
+        return HttpResponse(f"Erreur lors de l'appel à l'api evenement pour récupérer ses choix ", status=response.status_code)
+
+    response_json: dict = response.json()
 
     data = {
-        'choixs': choixs_evenement,
-        'total_votes': total_votes,
+        'choixs': response_json['choixs_evenement'],
+        'total_votes': response_json['total_votes'],
     }
 
     return JsonResponse(data)

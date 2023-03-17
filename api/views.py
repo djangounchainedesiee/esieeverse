@@ -1,6 +1,11 @@
 from django.http import HttpRequest, HttpResponseForbidden, HttpResponseNotFound
+from django.db.models import Count
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from typing import Dict, List, Union
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from esieeverse.models import Utilisateur
 from publication.models import Choix, Evenement
 
@@ -42,33 +47,6 @@ class Choixs(APIView):
     """
     Vue APIView pour gérer les choix d'un évènement et d'un utilisateur
     """
-    def get(self, request: HttpRequest) -> Response:
-        """Renvoie les choix d'un évènement pour un utilisateur
-
-        Args:
-            request (HttpRequest): La requête HTTP contenant l'id de l'utilisateur et l'id de l'évènement
-
-        Returns:
-            Response: Réponse JSON
-        """
-        if request.COOKIES.get('csrfmiddlewaretoken', None) == None:
-            return HttpResponseForbidden("Le token CSRF est manquant")
-
-        id_utilisateur: int = request.GET.get('id_utilisateur')
-        id_evenement: int = request.GET.get('id_evenement')
-
-        try:
-            utilisateur: Utilisateur = Utilisateur.objects.get(id=id_utilisateur)
-            evenement: Evenement = Evenement.objects.get(id=id_evenement)
-        except Utilisateur.DoesNotExist:
-            return HttpResponseNotFound("L'utilisateur ou l'évènement n'a pas été trouvé !")
-        
-        choixs = Choix.objects.filter(evenement=evenement, utilisateurs=utilisateur)
-
-        data = [{'id': choix.id, 'nom': choix.nom} for choix in choixs]
-
-        return Response(data)
-
     def post(self, request: HttpRequest) -> Response:
         """Selectionne un choix pour un utilisateur
 
@@ -97,3 +75,30 @@ class Choixs(APIView):
         choix.save()
 
         return Response("Choix sélectionné")
+    
+@api_view(['GET'])
+def getAllChoixsWithTotalVotesByEvenement(request: HttpRequest, id_evenement: int) -> JsonResponse:
+    try:
+        evenement: Evenement = Evenement.objects.get(id=id_evenement)
+    except Evenement.DoesNotExist:
+        return HttpResponseNotFound(f"L'événement avec l'identifiant {id_evenement} n'a pas été trouvé !")
+
+    choixs_evenement = evenement.choix_set.annotate(nb_votes=Count('utilisateurs')).values('id', 'nom', 'nb_votes')
+    total_votes = sum([choix['nb_votes'] for choix in choixs_evenement])
+
+    choixs_evenement = [
+        {
+            'id': choix['id'],
+            'nom': choix['nom'],
+            'nb_votes': choix['nb_votes'],
+            'pourcentage': (int(choix['nb_votes']) * 100) / int(total_votes)  if total_votes > 0 else 0
+        }
+        for choix in choixs_evenement
+    ]
+
+    response_data = {
+        'total_votes': total_votes,
+        'choixs_evenement': choixs_evenement
+    }
+
+    return JsonResponse(response_data)
