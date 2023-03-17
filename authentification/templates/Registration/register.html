@@ -112,12 +112,16 @@
 
   <script>
     // Get the select elements
-    var filliere_app = document.getElementById("id_ma_filliere_app");
-    var filliere_tp = document.getElementById("id_ma_filliere_tp");
-    var entreprise = document.getElementById("id_entreprise");
+
     var promo = document.getElementById("id_ma_promotion");
     var cursus = document.getElementById("id_cursus");
 
+
+    cursus.style.display = "none";
+    cursus.parentNode.parentNode.style.display="none";
+    
+    
+    
     // Add an event listener to the country select
     promo.addEventListener("change", function() {
       if (this.value === "3"||this.value ==="4"||this.value ==="5") {
@@ -130,6 +134,83 @@
         cursus.parentNode.parentNode.style.display="none";
       }
     });
+
+
+
+    // Get the select element for the apprenticeship field
+    var apprentiField = document.getElementById("id_cursus_0");
+
+    // Get the select element for the field of study
+    var fieldOfStudyFieldApp = document.getElementById("id_ma_filliere_app");
+
+
+    var entreprise = document.getElementById("id_entreprise");
+
+    // Hide the field of study field by default
+    fieldOfStudyFieldApp.style.display = "none";
+    fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+    entreprise.style.display = "none";
+    entreprise.parentNode.parentNode.style.display="none";
+
+    // Add an event listener to the apprenticeship field
+    apprentiField.addEventListener("change", function() {
+      // If the apprenticeship field is checked, show the field of study field
+      if (this.checked) {
+        fieldOfStudyFieldApp.style.display = "block";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="block";
+
+        entreprise.style.display = "block";
+        entreprise.parentNode.parentNode.style.display="block";
+      } else {
+        // Otherwise, hide it
+        fieldOfStudyFieldApp.style.display = "none";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+
+        entreprise.style.display = "none";
+        entreprise.parentNode.parentNode.style.display="none";
+      }
+    });
+
+
+
+
+
+
+
+
+
+    // Get the select element for the Temps Plein field
+    var TpField = document.getElementById("id_cursus_1");
+
+    // Get the select element for the field of study
+    var fieldOfStudyFieldTp = document.getElementById("id_ma_filliere_tp");
+
+    // Hide the field of study field by default
+    fieldOfStudyFieldTp.style.display = "none";
+    fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+
+    // Add an event listener to the Temps plein field
+    TpField.addEventListener("change", function() {
+      // If the Temps plein field is checked, show the field of study field
+      if (this.checked) {
+        fieldOfStudyFieldTp.style.display = "block";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="block";
+      } else {
+        // Otherwise, hide it
+        fieldOfStudyFieldTp.style.display = "none";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+      }
+    });    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
 
 
     /*
