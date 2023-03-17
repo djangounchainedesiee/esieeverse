@@ -82,6 +82,7 @@
 
     <h2>S'inscrire</h2>    
     <form method="post">
+
         {% csrf_token %}
         <table>
         {% for field in form %}
@@ -111,12 +112,12 @@
 
   <script>
     // Get the select elements
+    var filliere_app = document.getElementById("id_ma_filliere_app");
+    var filliere_tp = document.getElementById("id_ma_filliere_tp");
+    var entreprise = document.getElementById("id_entreprise");
     var promo = document.getElementById("id_ma_promotion");
     var cursus = document.getElementById("id_cursus");
-    var cursus_label = cursus.innerHTML;
 
-    //Trouver absolument comment récuperer l'id d'un label
-  
     // Add an event listener to the country select
     promo.addEventListener("change", function() {
       if (this.value === "3"||this.value ==="4"||this.value ==="5") {
@@ -130,22 +131,8 @@
       }
     });
 
-    var filliere = document.getElementById("id_ma_filliere");
 
-    // Add an event listener to the country select
-    cursus.addEventListener("change", function() {
-      if (this.value === "apprentissage") {
-        fillière.style.display = "block";
-        //cursus_label.style.display = "block";
-        filliere.parentNode.parentNode.style.display="block";
-      } else {
-        filliere.style.display = "none";
-        //cursus_label.style.display = "none";
-        filliere.parentNode.parentNode.style.display="none";
-      }
-    });
-
-
+    /*
     function onSignIn(googleUser) {
         // Récupérer les informations d'identification de l'utilisateur
         var profile = googleUser.getBasicProfile();
@@ -153,6 +140,7 @@
         console.log("Nom: " + profile.getName());
         console.log("Email: " + profile.getEmail());
       }
+      */
   </script>
 
 {% endblock %}
