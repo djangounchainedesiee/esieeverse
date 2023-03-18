@@ -25,7 +25,8 @@ class Evenement(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='media/')
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
-    utilisateur_inscrits = models.ManyToManyField(Utilisateur, blank=True)
+    utilisateur_inscrits = models.ManyToManyField(Utilisateur, blank=True, related_name='utilisateur_inscrits')
+    auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='auteur')
 
 class Choix(models.Model):
     """
@@ -33,7 +34,7 @@ class Choix(models.Model):
     """
     nom = models.CharField(max_length=10)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
-    utilisateur = models.ManyToManyField(Utilisateur, blank=True)
+    utilisateurs = models.ManyToManyField(Utilisateur, blank=True)
     
     def __str__(self):
         return f"{self.nom}"
