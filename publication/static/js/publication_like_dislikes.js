@@ -1,4 +1,4 @@
-const CSFR_TOKEN_PUBLICATION = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
+const CSFR_TOKEN_PUBLICATION = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '';
 
 /**
  * Gère le succès de l'appel de la vue like / dislike et ajoute les champs nécessaire 

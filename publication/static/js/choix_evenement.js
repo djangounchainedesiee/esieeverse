@@ -1,4 +1,4 @@
-const CSFR_TOKEN_CHOIX = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
+const CSFR_TOKEN_CHOIX = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '';
 
 /**
  * Gère le succès de l'appel au vote et ajoute les champs nécessaire 

@@ -21,10 +21,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!--<div class="se-pre-con"></div>-->
         <div class="theme-layout">
-            {% include 'home/topbar-telephone.html' %}
-            <!-- responsive header -->
-            {% include 'home/topbar.html' %}
-            <!-- topbar -->
+            {% include 'home/navbar.html' %}
             <section>
                 <div class="gap gray-bg">
                     <div class="container-fluid">
@@ -132,102 +129,19 @@
                                         <!-- add post new box -->
                                         <div class="loadMore">
                                             {% for evenement in evenements %}
-                                            {% include "home/evenement.html" %}
+                                            {% include "publication/evenement.html" %}
                                             {% endfor %}
-                                            <script src="{% static 'js/choix.js' %}"></script>
+                                            <script src="{% static 'js/choix_evenement.js' %}"></script>
                                             {% for publication in publications %}
-                                            {% include "home/publication.html" %}
+                                            {% include "publication/publication.html" %}
                                             {% endfor %}
-                                            <script src="{% static 'js/publication.js' %}"></script>
+                                            <script src="{% static 'js/publication_like_dislikes.js' %}"></script>
                                         </div>
                                     </div>
                                     <!-- centerl meta -->
                                     <div class="col-lg-3">
                                         <aside class="sidebar static">
-                                            <div class="widget">
-                                                <h4 class="widget-title">
-                                                    Your page
-                                                </h4>
-                                                <div class="your-page">
-                                                    <figure>
-                                                        <a href="#" title="">
-                                                            <img src="" alt="">
-                                                        </a>
-                                                    </figure>
-                                                    <div class="page-meta">
-                                                        <a href="#" title="" class="underline">OUAHIB LE HIBOU</a>
-                                                        <span><i class="ti-comment"></i><a href="#" title="">Messages <em>9</em></a></span>
-                                                        <span><i class="ti-bell"></i><a href="#" title="">Notifications <em>2</em></a></span>
-                                                    </div>
-                                                    <div class="page-likes">
-                                                        <ul class="nav nav-tabs likes-btn">
-                                                            <li class="nav-item">
-                                                                <a class="active" href="#" data-toggle="tab">likes</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="" href="#" data-toggle="tab">views</a>
-                                                            </li>
-                                                        </ul>
-                                                        <!-- Tab panes -->
-                                                        <div class="tab-content">
-                                                            <div class="tab-pane active fade show " id="link1">
-                                                                <span><i class="ti-heart"></i>884</span>
-                                                                <a href="#" title="weekly-likes">35 new likes this week</a>
-                                                                <div class="users-thumb-list">
-                                                                    <a href="#" title="Anderw" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="frank" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Sara" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Amy" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Ema" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Sophie" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Maria" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="tab-pane fade" id="link2">
-                                                                <span><i class="ti-eye"></i>440</span>
-                                                                <a href="#" title="weekly-likes">440 new views this week</a>
-                                                                <div class="users-thumb-list">
-                                                                    <a href="#" title="Anderw" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="frank" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Sara" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Amy" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Ema" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Sophie" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                    <a href="#" title="Maria" data-toggle="tooltip">
-                                                                        <img src="" alt="">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            {% include 'home/statistiques.html' %}
                                             <div class="widget friend-list stick-widget">
                                                 <h4 class="widget-title">
                                                     Mes abonnements

@@ -1,4 +1,4 @@
-const CSFR_TOKEN_FOLLOWER = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : NULL;
+const CSFR_TOKEN_FOLLOWER = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '';
 
 const handleSuccessAbonne = function (response) {
     const ADD_FRIEND = $(`#id-utilisateur-${response.id_utilisateur_to_add} .friend-meta .add_friend`);

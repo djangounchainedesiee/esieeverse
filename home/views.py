@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
-from typing import List, Dict, Union
 import requests
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -32,11 +31,19 @@ def home_view(request: HttpRequest) -> HttpResponse:
         evenement.user_has_voted = choixs_evenement.exists()
         evenement.total_votes = sum([choix.utilisateurs.all().count() for choix in choixs_evenement])
 
+    agregate_utilisateur_publications = Publication.objects.filter(auteur=utilisateur).aggregate(total_likes=Count('likes'), total_dislikes=Count('dislikes'))
+
+    statistiques_utilisateur = {
+        'nb_messages_envoye_utilisateur': request.user.utilisateur.message_set.all().count(),
+        'total_likes': agregate_utilisateur_publications['total_likes'] or 0,
+        'total_dislikes': agregate_utilisateur_publications['total_dislikes'] or 0
+    }
 
     context = {
         'publications': publications,
         'evenements': evenements,
-        'abonnes': abonnes
+        'abonnes': abonnes,
+        'statistiques_utilisateur': statistiques_utilisateur,
     }
 
     return render(request,"home/index.html", context)

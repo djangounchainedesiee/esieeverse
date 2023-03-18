@@ -44,5 +44,5 @@ class ConversationAddUtilisateurForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['utilisateurs'] = forms.ModelMultipleChoiceField(
             label='Choisissez des utilisateurs', 
-            queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')).exclude(conversation__id=self.conversation_id)
+            queryset=Utilisateur.objects.all().exclude(conversation__id=self.conversation_id)
         )
