@@ -82,6 +82,7 @@
 
     <h2>S'inscrire</h2>    
     <form method="post">
+
         {% csrf_token %}
         <table>
         {% for field in form %}
@@ -96,7 +97,7 @@
          </table>
          <input type="submit" value="S'inscrire">
          <br></br>
-         <center><div class="g-signin2" data-onsuccess="onSignIn">S'inscrire avec Google</div>         </center>
+         <center><div class="g-signin2" data-onsuccess="onSignIn">S'inscrire avec Google</div>      </center>
     </form>
     <div>
      
@@ -111,18 +112,24 @@
 
   <script>
     // Get the select elements
+
     var promo = document.getElementById("id_ma_promotion");
     var cursus = document.getElementById("id_cursus");
-    var cursus_label = cursus.innerHTML;
 
-    //Trouver absolument comment récuperer l'id d'un label
-  
+
+    cursus.style.display = "none";
+    cursus.parentNode.parentNode.style.display="none";
+    
+    
+    
     // Add an event listener to the country select
     promo.addEventListener("change", function() {
       if (this.value === "3"||this.value ==="4"||this.value ==="5") {
         cursus.style.display = "block";
         //cursus_label.style.display = "block";
         cursus.parentNode.parentNode.style.display="block";
+
+
       } else {
         cursus.style.display = "none";
         //cursus_label.style.display = "none";
@@ -130,22 +137,102 @@
       }
     });
 
-    var filliere = document.getElementById("id_ma_filliere");
 
-    // Add an event listener to the country select
-    cursus.addEventListener("change", function() {
-      if (this.value === "apprentissage") {
-        fillière.style.display = "block";
-        //cursus_label.style.display = "block";
-        filliere.parentNode.parentNode.style.display="block";
+
+    // Get the select element for the apprenticeship field
+    var apprentiField = document.getElementById("id_cursus_0");
+
+    // Get the select element for the field of study
+    var fieldOfStudyFieldApp = document.getElementById("id_ma_filliere_app");
+
+
+    var entreprise = document.getElementById("id_entreprise");
+
+    // Hide the field of study field by default
+    fieldOfStudyFieldApp.style.display = "none";
+    fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+    entreprise.style.display = "none";
+    entreprise.parentNode.parentNode.style.display="none";
+
+    // Add an event listener to the apprenticeship field
+    apprentiField.addEventListener("change", function() {
+      // If the apprenticeship field is checked, show the field of study field
+      if (this.checked) {
+        fieldOfStudyFieldApp.style.display = "block";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="block";
+
+        entreprise.style.display = "block";
+        entreprise.parentNode.parentNode.style.display="block";
+
+        fieldOfStudyFieldTp.style.display = "none";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+        
+
       } else {
-        filliere.style.display = "none";
-        //cursus_label.style.display = "none";
-        filliere.parentNode.parentNode.style.display="none";
+
+
+        // Otherwise, hide it
+        fieldOfStudyFieldApp.style.display = "none";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+
+        entreprise.style.display = "none";
+        entreprise.parentNode.parentNode.style.display="none";
       }
     });
 
 
+
+
+
+
+
+
+
+    // Get the select element for the Temps Plein field
+    var TpField = document.getElementById("id_cursus_1");
+
+    // Get the select element for the field of study
+    var fieldOfStudyFieldTp = document.getElementById("id_ma_filliere_tp");
+
+    // Hide the field of study field by default
+    fieldOfStudyFieldTp.style.display = "none";
+    fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+
+    // Add an event listener to the Temps plein field
+    TpField.addEventListener("change", function() {
+      // If the Temps plein field is checked, show the field of study field
+      if (this.checked) {
+        fieldOfStudyFieldTp.style.display = "block";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="block";
+
+
+        fieldOfStudyFieldApp.style.display = "none";
+        fieldOfStudyFieldApp.parentNode.parentNode.style.display="none";
+
+        entreprise.style.display = "none";
+        entreprise.parentNode.parentNode.style.display="none";
+
+      } else {
+        // Otherwise, hide it
+        fieldOfStudyFieldTp.style.display = "none";
+        fieldOfStudyFieldTp.parentNode.parentNode.style.display="none";
+
+
+      }
+    });    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+    /*
     function onSignIn(googleUser) {
         // Récupérer les informations d'identification de l'utilisateur
         var profile = googleUser.getBasicProfile();
@@ -153,6 +240,7 @@
         console.log("Nom: " + profile.getName());
         console.log("Email: " + profile.getEmail());
       }
+      */
   </script>
 
 {% endblock %}
