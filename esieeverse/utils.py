@@ -7,4 +7,4 @@ def check_utilisateur_auth(request: HttpRequest) -> bool:
     Args:
         request (HttpRequest): La requête contenant l'utilisateur
     """
-    return request.user.is_authenticated or request.user.utilisateur is not None
+    return request.user.is_authenticated or (hasattr(request.user, 'utilisateur') and request.user.utilisateur is not None)

@@ -1,0 +1,44 @@
+<div class="central-meta item">
+    <div id="user-post-{{ publication.id }}" class="user-post">
+        <div class="friend-info">
+            <figure>
+                <img
+                    class="rounded-circle pull-left"
+                    src="{{ publication.auteur.photo_de_profile.url }}"
+                    style="width: 90px"
+                    alt="{{ publication.auteur.photo_de_profile.name }}"
+                />
+            </figure>
+            <div class="friend-name">
+                <ins><a href="#" title="">{{ publication.auteur.user.first_name }}</a></ins>
+                <span>publié: {{ publication.date }}</span>
+            </div>
+            <div class="post-meta">
+                {% if publication.image %}
+                <img src="{{ publication.image.url }}" alt="{{ publication.image.name }}"/>
+                {% endif %}
+                <div class="we-video-info">
+                    <div class="description">
+                        <h6>{{ publication.titre }}</h6>
+                        <p>{{ publication.contenu }}</p>
+                    </div>
+                    <ul class="publication-action-buttons">
+                        {% csrf_token %}
+                        <li>
+                            <span class="like" data-toggle="tooltip" title="like" data-pk="{{ publication.id }}">
+                                <i class="ti-heart"></i>
+                                <ins>{{ publication.likes.count }}</ins>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dislike" data-toggle="tooltip" title="dislike" data-pk="{{ publication.id }}">
+                                <i class="ti-heart-broken"></i>
+                                <ins>{{ publication.dislikes.count }}</ins>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

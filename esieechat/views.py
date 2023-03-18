@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest
 from .forms import ConversationUtilisateursForm, MessageForm, ConversationAddUtilisateurForm
 from .models import Conversation, Message
 from esieeverse.models import Utilisateur
@@ -23,12 +23,14 @@ def create_conversation(request: HttpRequest) -> HttpResponse:
         HttpResponseRedirect: Redirige l'utilisateur à la selection des conversation
     """
     if not check_utilisateur_auth(request):
-        return redirect('/')
+        return redirect('auth:login')
+    
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
 
-    form = ConversationUtilisateursForm()
+    form = ConversationUtilisateursForm(utilisateur_connecte=utilisateur_connecte)
 
     if request.method == 'POST':
-        form = ConversationUtilisateursForm(request.POST)
+        form = ConversationUtilisateursForm(request.POST, utilisateur_connecte=utilisateur_connecte)
 
         if form.is_valid():
             """ 
@@ -45,7 +47,7 @@ def create_conversation(request: HttpRequest) -> HttpResponse:
             for user in users:
                 conv.utilisateurs.add(user)
             
-            conv.utilisateurs.add(request.user.utilisateur)
+            conv.utilisateurs.add(utilisateur_connecte)
 
             return redirect('esieechat:select')
 
@@ -66,7 +68,7 @@ def select_conversation(request: HttpRequest) -> HttpResponse:
         HttpResponse: Affiche la vue selectconversation
     """
     if not check_utilisateur_auth(request):
-        return redirect('/')
+        return redirect('auth:login')
 
     conversations = Conversation.objects.all()
     context = {
@@ -87,15 +89,17 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
         HttpResponse: Affiche la vue pour afficher la conversation
     """
     if not check_utilisateur_auth(request):
-        return redirect('/')
+        return redirect('auth:login')
 
-    if not Conversation.objects.filter(id=id_conversation).exists():
+    conversations = Conversation.objects.filter(id=id_conversation)
+
+    if not conversations.exists():
         return redirect('esieechat:select')
 
     form = MessageForm()
 
     messages = Message.objects.filter(conversation_id=id_conversation)
-    utilisateur_conversation = Conversation.objects.filter(id=id_conversation)[0].utilisateurs
+    utilisateur_conversation = conversations[0].utilisateurs
 
     context = {
         'form': form, 
@@ -119,7 +123,7 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
         HttpResponseRedirect: Redirige vers la conversation quand le formulaire est valide
     """
     if not check_utilisateur_auth(request):
-        redirect('/')
+        redirect('auth:login')
 
     form = ConversationAddUtilisateurForm(id_conversation)
 
@@ -130,7 +134,7 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
             
             users = form.cleaned_data['utilisateurs']
 
-            conv = Conversation.objects.filter(id=id_conversation)[0]
+            conv = Conversation.objects.get(id=id_conversation)
 
             for user in users:
                 conv.utilisateurs.add(user)
@@ -157,11 +161,11 @@ def delete_people_in_conversation(request: HttpRequest, id_conversation: int, id
         HttpResponseRedirect: Redirige vers la conversation quand le formulaire est valide
     """
     if not check_utilisateur_auth(request):
-        redirect('/')
+        redirect('auth:login')
 
     if request.method == 'POST' and request.POST.get('csrfmiddlewaretoken', None) != None:
-        conversation = Conversation.objects.filter(id=id_conversation)[0]
-        utilisateur_a_supprimer = Utilisateur.objects.filter(id=id_utilisateur)[0]
+        conversation = Conversation.objects.get(id=id_conversation)
+        utilisateur_a_supprimer = Utilisateur.objects.get(id=id_utilisateur)
         conversation.utilisateurs.remove(utilisateur_a_supprimer)
 
     return redirect('esieechat:view', id_conversation=id_conversation)
