@@ -27,9 +27,7 @@ def home_view(request: HttpRequest) -> HttpResponse:
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     for evenement in evenements:
-        choixs_evenement = Choix.objects.filter(evenement=evenement, utilisateurs=utilisateur)
-        evenement.user_has_voted = choixs_evenement.exists()
-        evenement.total_votes = sum([choix.utilisateurs.all().count() for choix in choixs_evenement])
+        evenement.user_has_voted = Choix.objects.filter(evenement=evenement, utilisateurs=utilisateur).exists()
 
     agregate_utilisateur_publications = Publication.objects.filter(auteur=utilisateur).aggregate(total_likes=Count('likes'), total_dislikes=Count('dislikes'))
 
