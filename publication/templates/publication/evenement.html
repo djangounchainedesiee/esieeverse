@@ -56,6 +56,11 @@
                     <div class="description">
                         <h6>{{ evenement.titre }}</h6>
                         <p>{{ evenement.contenu }}</p>
+                        {% if evenement.auteur != request.user.utilisateur  %}
+                        <a id="btn-inscription-evenement-{{ evenement.id }}" href="" class="btn btn-link">
+                            S'inscrire
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
