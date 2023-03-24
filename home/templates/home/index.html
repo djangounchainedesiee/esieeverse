@@ -58,7 +58,7 @@
                                                 </ul>
                                             </div>
                                             <!-- Shortcuts -->
-                                            <div class="widget stick-widget">
+                                            <div class="widget">  <!-- pour que le block reste collé stick-widget-->
                                                 <h4 class="widget-title">
                                                     Mes Abonnés
                                                 </h4>
@@ -81,10 +81,11 @@
                                                 </figure>
                                                 <div class="newpst-input">
                                                     <form method="post">
+                                                        {% csrf_token %}
                                                         <label>Title: </label>
                                                         <input type="text" id="post_title" name="post_title"><br>
                                                         <label>Post content: </label><br>
-                                                        <textarea rows="2" id="post_content" placeholder="write something"></textarea>
+                                                        <textarea rows="2" id="post_content" name="post_content" placeholder="write something"></textarea>
                                                         <div class="attachments">
                                                             <ul>
                                                                 <li>
