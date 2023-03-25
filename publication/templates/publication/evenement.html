@@ -9,7 +9,11 @@
             </figure>
             <div class="friend-name">
                 <ins><a href="#" title="">{{ evenement.auteur.user.first_name }}</a></ins>
-                <span>Evènement du {{ evenement.date_debut }} au {{ evenement.date_fin }} ; Nombre de participant : {{ evenement.utilisateur_inscrits.all.count }}</span>
+                <span>
+                    Evènement du {{ evenement.date_debut }} au {{ evenement.date_fin }} ; Nombre de participant : 
+                    <a href="" data-toggle="modal" data-target="#participant-modal-{{ evenement.id }}">{{ evenement.utilisateur_inscrits.all.count }}</a>
+                    {% include "publication/evenement-modal-liste-participant.html" %}
+                </span>
             </div>
             <div class="post-meta">
                 {% if evenement.image %}<img src="{{ evenement.image.url }}" alt="{{ evenement.image.name }}"/>{% endif %}
