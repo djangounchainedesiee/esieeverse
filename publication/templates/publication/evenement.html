@@ -13,7 +13,7 @@
             </div>
             <div class="post-meta">
                 {% if evenement.image %}<img src="{{ evenement.image.url }}" alt="{{ evenement.image.name }}"/>{% endif %}
-                {% if evenement.choix_set.all.count > 0 %}
+                {% if  evenement.choix_set.all.count > 0 %}
                     <div class="evenement-choixs">
                         {% csrf_token %}
                         {% for choix in evenement.choix_set.all %}
@@ -41,7 +41,7 @@
                                            type="radio"
                                            name="choix"
                                            id="evenement-choix-{{ choix.id }}"
-                                           data-pk="{{ choix.id }}">
+                                           data-pk="{{ choix.id }}" />
                                     <label class="form-check-label mr-3"
                                            id="evenement-label-choix-{{ choix.id }}"
                                            for="{{ choix.nom }}">
@@ -56,10 +56,16 @@
                     <div class="description">
                         <h6>{{ evenement.titre }}</h6>
                         <p>{{ evenement.contenu }}</p>
-                        {% if evenement.auteur != request.user.utilisateur  %}
-                        <a id="btn-inscription-evenement-{{ evenement.id }}" href="" class="btn btn-link">
-                            S'inscrire
-                        </a>
+                        {% if evenement.auteur != request.user.utilisateur %}
+                        {% if evenement.user_has_joined %}
+                            <span>
+                                Inscris
+                            </span>
+                        {% else %}
+                            <span id="btn-inscription-evenement-{{ evenement.id }}" class="btn btn-link" data-pk="{{ evenement.id }}">
+                                S'inscrire
+                            </span>
+                        {% endif %}
                         {% endif %}
                     </div>
                 </div>
