@@ -87,3 +87,18 @@ def inscrire_evenement(request: HttpRequest, id_evenement: int):
     }
 
     return JsonResponse(data)
+
+def desinscrire_evenement(request: HttpRequest, id_evenement: int):
+    if request.method != 'POST' or request.POST.get('csrfmiddlewaretoken', None) == None:
+        return HttpResponseForbidden("Le token CSRF est manquant")
+    
+    utilisateur: Utilisateur = request.user.utilisateur
+    
+    evenement = Evenement.objects.get(id=id_evenement)
+    evenement.utilisateur_inscrits.remove(utilisateur)
+
+    data = {
+        'id_evenement': id_evenement,
+    }
+
+    return JsonResponse(data)

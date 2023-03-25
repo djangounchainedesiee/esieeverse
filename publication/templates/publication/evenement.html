@@ -58,11 +58,14 @@
                         <p>{{ evenement.contenu }}</p>
                         {% if evenement.auteur != request.user.utilisateur %}
                         {% if evenement.user_has_joined %}
-                            <span>
+                            <span id="text-inscris-evenement-{{ evenement.id }}">
                                 Inscris
                             </span>
+                            <span id="btn-desinscription-evenement-{{ evenement.id }}" class="btn btn-link desinscription" data-pk="{{ evenement.id }}">
+                                Se Désinscrire
+                            </span>
                         {% else %}
-                            <span id="btn-inscription-evenement-{{ evenement.id }}" class="btn btn-link" data-pk="{{ evenement.id }}">
+                            <span id="btn-inscription-evenement-{{ evenement.id }}" class="btn btn-link inscription" data-pk="{{ evenement.id }}">
                                 S'inscrire
                             </span>
                         {% endif %}
