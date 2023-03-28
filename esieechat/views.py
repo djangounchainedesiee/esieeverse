@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, HttpRequest
+from django.db.models import Q
 from .forms import ConversationUtilisateursForm, MessageForm, ConversationAddUtilisateurForm
 from .models import Conversation, Message
 from esieeverse.models import Utilisateur
@@ -54,6 +55,22 @@ def create_conversation(request: HttpRequest) -> HttpResponse:
     }
     return render(request, 'conversation/createconversation.html', context)
 
+def create_or_join_conversation_with_user(request: HttpRequest, id_utilisateur: int) -> HttpResponse:
+    if not check_utilisateur_auth(request):
+        return redirect('auth:login')
+    
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
+    utilisateur_to_send: Utilisateur = Utilisateur.objects.get(id=id_utilisateur)
+
+    conversations = Conversation.objects.filter(Q(utilisateurs=utilisateur_connecte) & Q(utilisateurs=utilisateur_to_send))
+
+    if not conversations.exists():
+        conversation = Conversation(nom=f"MP {utilisateur_connecte.user.first_name} to {utilisateur_to_send.user.first_name}")
+        conversation.save()
+    else:
+        conversation = conversation[0]
+
+    return redirect('esieechat:view', id_conversation=conversation.id)
 
 def select_conversation(request: HttpRequest) -> HttpResponse:    
     """Vue permettant à l'utilisateur de sélectionner sa conversation
