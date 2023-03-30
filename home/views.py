@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
+from publication.forms import PostForm
 import requests
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -22,13 +23,25 @@ def home_view(request: HttpRequest) -> HttpResponse:
     
     utilisateur: Utilisateur = request.user.utilisateur
 
+    if request.method == 'POST':
+
+        comment_form = PostForm(request.POST)
+        if comment_form.is_valid():
+            titre = comment_form.cleaned_data['titre']
+            contenu  = comment_form.cleaned_data['contenu']
+            pub = Publication(titre=titre, contenu=contenu, auteur=utilisateur)
+            pub.save()
+            comment_form = PostForm()
+
+    else:
+        comment_form = PostForm()
+
     publications = Publication.objects.filter(auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
     evenements = Evenement.objects.filter(auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     for evenement in evenements:
         evenement.user_has_voted = Choix.objects.filter(evenement=evenement, utilisateurs=utilisateur).exists()
-        evenement.user_has_joined = evenement.utilisateur_inscrits.contains(utilisateur)
 
     agregate_utilisateur_publications = Publication.objects.filter(auteur=utilisateur).aggregate(total_likes=Count('likes'), total_dislikes=Count('dislikes'))
 
@@ -39,6 +52,8 @@ def home_view(request: HttpRequest) -> HttpResponse:
     }
 
     context = {
+        'form': comment_form,
+        #'auteur': utilisateur,
         'publications': publications,
         'evenements': evenements,
         'abonnes': abonnes,

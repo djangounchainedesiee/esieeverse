@@ -82,10 +82,7 @@
                                                 <div class="newpst-input">
                                                     <form method="post">
                                                         {% csrf_token %}
-                                                        <label>Title: </label>
-                                                        <input type="text" id="post_title" name="post_title"><br>
-                                                        <label>Post content: </label><br>
-                                                        <textarea rows="2" id="post_content" name="post_content" placeholder="write something"></textarea>
+                                                        {{ form.as_p }}
                                                         <div class="attachments">
                                                             <ul>
                                                                 <li>
@@ -119,6 +116,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
+                                                        
                                                     </form>
                                                 </div>
                                             </div>
