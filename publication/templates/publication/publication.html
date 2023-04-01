@@ -14,13 +14,23 @@
                 <span>publié: {{ publication.date }}</span>
             </div>
             <div class="post-meta">
-                {% if publication.image %}
-                <img src="{{ publication.image.url }}" alt="{{ publication.image.name }}"/>
-                {% endif %}
+
+                
+                <!--
+                    Partie a corriger si le document mis est une image !!!!!!
+
+                    {% if publication.image %}
+                    <img src="{{ publication.image.url }}" alt="{{ publication.image.name }}"/>
+                    {% endif %}
+                -->
                 <div class="we-video-info">
                     <div class="description">
                         <h6>{{ publication.titre }}</h6>
                         <p>{{ publication.contenu }}</p>
+
+                        {% if publication.attachment %}
+                        <a href="{{ publication.attachment }}" download>{{ publication.attachment }}</a>
+                        {% endif %}
                     </div>
                     <ul class="publication-action-buttons">
                         {% csrf_token %}
