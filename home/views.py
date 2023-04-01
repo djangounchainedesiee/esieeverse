@@ -25,14 +25,17 @@ def home_view(request: HttpRequest) -> HttpResponse:
 
     if request.method == 'POST':
 
-        comment_form = PostForm(request.POST)
+        comment_form = PostForm(request.POST, request.FILES)
         if comment_form.is_valid():
             titre = comment_form.cleaned_data['titre']
             contenu  = comment_form.cleaned_data['contenu']
-            pub = Publication(titre=titre, contenu=contenu, auteur=utilisateur)
-            pub.save()
-            comment_form = PostForm()
+            
+            attached_file = comment_form.cleaned_data['attachment']
 
+            pub = Publication(titre=titre, contenu=contenu, attachment=attached_file, auteur=utilisateur)
+            pub.save()
+            
+        comment_form = PostForm()
     else:
         comment_form = PostForm()
 
@@ -53,7 +56,6 @@ def home_view(request: HttpRequest) -> HttpResponse:
 
     context = {
         'form': comment_form,
-        #'auteur': utilisateur,
         'publications': publications,
         'evenements': evenements,
         'abonnes': abonnes,

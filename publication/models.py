@@ -10,10 +10,13 @@ class Publication(models.Model):
     titre = models.CharField(max_length=125)
     contenu = models.TextField(max_length=300)
     date = models.DateTimeField(auto_now=True)
-    image = models.ImageField(null=True, blank=True, upload_to='media/')
+    attachment = models.FileField(null=True, blank=True, upload_to='media/')
     likes = models.ManyToManyField(Utilisateur, related_name='likes_utilisateur', blank=True)
     dislikes = models.ManyToManyField(Utilisateur, related_name='dislikes_utilisateur', blank=True)
     auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titre
 
 class Evenement(models.Model):
     """

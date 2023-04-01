@@ -75,48 +75,17 @@
                                     <!-- sidebar -->
                                     <div class="col-lg-6">
                                         <div class="central-meta">
-                                            <div class="new-postbox">
-                                                <figure>
-                                                    <img src="" alt="">
-                                                </figure>
+                                            <div class="sidebar">
+                                                <h5 class="widget-title">
+                                                    NOUVEAU POST
+                                                </h5>
                                                 <div class="newpst-input">
-                                                    <form method="post">
+                                                    <form method="post" enctype="multipart/form-data">
                                                         {% csrf_token %}
                                                         {{ form.as_p }}
-                                                        <div class="attachments">
-                                                            <ul>
-                                                                <li>
-                                                                    <i class="fa fa-music"></i>
-                                                                    <label class="fileContainer">
-                                                                        <input type="file">
-                                                                    </label>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="fa fa-image"></i>
-                                                                    <label class="fileContainer">
-                                                                        <input type="file">
-                                                                    </label>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="fa fa-video-camera"></i>
-                                                                    <label class="fileContainer">
-                                                                        <input type="file">
-                                                                    </label>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="fa fa-camera"></i>
-                                                                    <label class="fileContainer">
-                                                                        <input type="file">
-                                                                    </label>
-                                                                </li>
-                                                                <li>
-                                                                    <button type="submit">
-                                                                        Post
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        
+                                                        <button type="submit">
+                                                            Envoyer
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
