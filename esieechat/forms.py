@@ -11,7 +11,7 @@ class CreateConversationUtilisateursForm(forms.Form):
     def __init__(self, *args, **kwargs):
         utilisateur_connecte = kwargs.pop('utilisateur_connecte')
         super().__init__(*args, **kwargs)
-        self.fields['utilisateurs'].queryset = Utilisateur.objects.all().exclude(id=utilisateur_connecte.id)
+        self.fields['utilisateurs'].queryset = Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(id=utilisateur_connecte.id)
 
     nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
     utilisateurs = forms.ModelMultipleChoiceField(label='Choisissez des utilisateurs', queryset=Utilisateur.objects.none())
@@ -25,7 +25,7 @@ class EditConversationUtilisateursForm(forms.Form):
         utilisateur_connecte = kwargs.pop('utilisateur_connecte')
         super().__init__(*args, **kwargs)
         conversation: Conversation = Conversation.objects.get(id=id_conversation) 
-        self.fields['utilisateurs'].queryset = Utilisateur.objects.all().exclude(id=utilisateur_connecte.id)
+        self.fields['utilisateurs'].queryset = Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(id=utilisateur_connecte.id)
         self.fields['nom_conversation'].initial = conversation.nom
 
     nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
@@ -55,8 +55,9 @@ class ConversationAddUtilisateurForm(forms.Form):
     """
     def __init__(self, *args,**kwargs):
         self.id_conversation = kwargs.pop('id_conversation')
+        utilisateur_connecte = kwargs.pop('utilisateur_connecte')
         super().__init__(*args, **kwargs)
         self.fields['utilisateurs'] = forms.ModelMultipleChoiceField(
             label='Choisissez des utilisateurs', 
-            queryset=Utilisateur.objects.all().exclude(conversation_id=self.id_conversation)
+            queryset=Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(conversation=self.id_conversation)
         )

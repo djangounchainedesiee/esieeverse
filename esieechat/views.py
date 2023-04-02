@@ -193,10 +193,12 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
     if not check_utilisateur_auth(request):
         redirect('auth:login')
 
-    form = ConversationAddUtilisateurForm(id_conversation=id_conversation)
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
+
+    form = ConversationAddUtilisateurForm(id_conversation=id_conversation, utilisateur_connecte=utilisateur_connecte)
 
     if request.method == 'POST':
-        form = ConversationAddUtilisateurForm(request.POST, id_conversation=id_conversation)
+        form = ConversationAddUtilisateurForm(request.POST, id_conversation=id_conversation, utilisateur_connecte=utilisateur_connecte)
 
         if form.is_valid():
             
