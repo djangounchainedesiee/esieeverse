@@ -99,27 +99,28 @@ def edit_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
     
     form = EditConversationUtilisateursForm(utilisateur_connecte=utilisateur_connecte, id_conversation=id_conversation)
 
-    if form.is_valid():
-        """ 
-        Lorsque le formulaire est valide, on récupère les données afin de modifier la conversation dans la BDD, 
-        puis on redirige l'utilisateur vers la conversation.
-        """
+    if request.method == 'POST':
         form = EditConversationUtilisateursForm(request.POST, utilisateur_connecte=utilisateur_connecte, id_conversation=id_conversation)
+        if form.is_valid():
+            """ 
+            Lorsque le formulaire est valide, on récupère les données afin de modifier la conversation dans la BDD, 
+            puis on redirige l'utilisateur vers la conversation.
+            """
 
-        nom_conversation = form.cleaned_data['nom_conversation']
-        utilisateurs = form.cleaned_data['utilisateurs']
+            nom_conversation = form.cleaned_data['nom_conversation']
+            utilisateurs = form.cleaned_data['utilisateurs']
 
-        conversation: Conversation = Conversation.objects.get(id=id_conversation)
-        conversation.nom = nom_conversation
-        conversation.utilisateurs.clear()
+            conversation: Conversation = Conversation.objects.get(id=id_conversation)
+            conversation.nom = nom_conversation
+            conversation.utilisateurs.clear()
 
-        for utilisateur in utilisateurs:
-            conversation.utilisateurs.add(utilisateur)
-        conversation.utilisateurs.add(utilisateur_connecte)
+            for utilisateur in utilisateurs:
+                conversation.utilisateurs.add(utilisateur)
+            conversation.utilisateurs.add(utilisateur_connecte)
 
-        conversation.save()
+            conversation.save()
 
-        return redirect('esieechat:view', id_conversation=id_conversation)
+            return redirect('esieechat:view', id_conversation=id_conversation)
     
     context = {
         'form': form

@@ -26,6 +26,7 @@ class EditConversationUtilisateursForm(forms.Form):
         super().__init__(*args, **kwargs)
         conversation: Conversation = Conversation.objects.get(id=id_conversation) 
         self.fields['utilisateurs'].queryset = Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(id=utilisateur_connecte.id)
+        self.fields['utilisateurs'].initial = conversation.utilisateurs.all()
         self.fields['nom_conversation'].initial = conversation.nom
 
     nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
