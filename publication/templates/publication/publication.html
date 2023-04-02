@@ -25,7 +25,7 @@
                         <p>{{ publication.contenu }}</p>
 
                         {% if publication.attachment and not publication.attachment_is_displayable %}
-                        <a style="color: rgb(0, 102, 255);" href="{{ publication.attachment.url }}" download>{{ publication.attachment.name }}</a>
+                        <a style="color: rgb(0, 102, 255);" href="{{ publication.attachment.url }}" download>{{ publication.get_simple_attachment_name }}</a>
                         {% endif %}
                     </div>
                     <ul class="publication-action-buttons">
