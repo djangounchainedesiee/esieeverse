@@ -18,14 +18,14 @@
                 <img src="{{ publication.attachment.url }}" alt="{{ publication.attachment.name }}"/>
                 {% elif publication.attachment and publication.attachment_is_video %}
                 <video controls src="{{ publication.attachment.url }}" height="315"/>
-                {% endif %}
+                    {% endif %}
                 <div class="we-video-info">
                     <div class="description">
                         <h6>{{ publication.titre }}</h6>
                         <p>{{ publication.contenu }}</p>
 
                         {% if publication.attachment and not publication.attachment_is_displayable %}
-                        <a href="{{ publication.attachment.url }}" download>{{ publication.attachment.name }}</a>
+                        <a style="color: rgb(0, 102, 255);" href="{{ publication.attachment.url }}" download>{{ publication.attachment.name }}</a>
                         {% endif %}
                     </div>
                     <ul class="publication-action-buttons">
