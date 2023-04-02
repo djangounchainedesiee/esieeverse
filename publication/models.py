@@ -15,14 +15,18 @@ class Publication(models.Model):
     dislikes = models.ManyToManyField(Utilisateur, related_name='dislikes_utilisateur', blank=True)
     auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
 
-    def attachment_is_image(self):
+    def attachment_is_image(self) -> bool:
         return self.attachment.name.endswith(('jpg', 'jpeg', 'png', 'gif'))
     
-    def attachment_is_video(self):
+    def attachment_is_video(self) -> bool:
         return self.attachment.name.endswith(('.mp4', '.avi', '.wmv', '.mov', '.flv'))
     
     def attachment_is_displayable(self):
         return self.attachment_is_image() or self.attachment_is_video()
+    
+    def get_simple_attachment_name(self):
+        return self.attachment.name.replace("media/", "")
+    
 
     def __str__(self):
         return self.titre

@@ -15,7 +15,7 @@
             </div>
             <div class="post-meta">
                 {% if publication.attachment and publication.attachment_is_image %}
-                <img src="{{ publication.attachment.url }}" alt="{{ publication.attachment.name }}"/>
+                <img src="{{ publication.attachment.url }}" alt="{{ publication.get_simple_attachment_name }}"/>
                 {% elif publication.attachment and publication.attachment_is_video %}
                 <video controls src="{{ publication.attachment.url }}" height="315"/>
                 {% endif %}
@@ -25,7 +25,7 @@
                         <p>{{ publication.contenu }}</p>
 
                         {% if publication.attachment and not publication.attachment_is_displayable %}
-                        <a href="{{ publication.attachment.url }}" download>{{ publication.attachment.name }}</a>
+                        <a href="{{ publication.attachment.url }}" download>{{ publication.get_simple_attachment_name }}</a>
                         {% endif %}
                     </div>
                     <ul class="publication-action-buttons">
