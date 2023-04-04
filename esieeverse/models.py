@@ -8,7 +8,7 @@ class Filiere(models.Model):
     """
     Modèle représentant la table filière
     """
-    nom = models.CharField(max_length=3)
+    nom = models.CharField(max_length=4)
 
     def __str__(self):
         return f"{self.nom}"

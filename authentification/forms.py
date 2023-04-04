@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from esieeverse.models import Filiere
 
 class SignUpForm(forms.Form):
 
@@ -35,6 +36,9 @@ class SignUpForm(forms.Form):
 
     CHOICES_tp = [('INF','Informatique'),('CYB','Cybersécurité'),('DSIA','Datascience et intelligence artificielle'),('AIC','Artificial intelligence and cybersecurity'),('SE','Systèmes embarqués'), ('SEI','Systèmes électroniques intelligents'),('GI','Génie industriel'),('BIO','Biotechnologies et e-Santé'),('ENE','Energie')]
     ma_filliere_tp= forms.ChoiceField(choices=CHOICES_tp, initial='1')
+
+    
+
 
     entreprise = forms.CharField(max_length=100,  required=False, label="Nom de l'entreprise")
   
