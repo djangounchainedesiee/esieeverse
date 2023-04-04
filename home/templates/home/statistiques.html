@@ -1,0 +1,35 @@
+<div class="widget">
+  <h4 class="widget-title">Statistiques</h4>
+  <div class="your-page">
+    <figure>
+      <a href="#" title="">
+        <img
+          src="{{ request.user.utilisateur.photo_de_profile.url }}"
+          alt="{{ request.user.utilisateur.photo_de_profile.name }}"
+        />
+      </a>
+    </figure>
+    <div class="page-meta">
+      <a href="#" title="" class="underline"
+        >{{ request.user.get_full_name }}</a
+      >
+      <span
+        ><i class="ti-comment"></i
+        >Messages <em>{{ statistiques_utilisateur.nb_messages_envoye_utilisateur }}</em></span
+      >
+    </div>
+    <div class="page-likes">
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active fade show">
+          <span><i class="ti-heart"></i>{{ statistiques_utilisateur.total_likes }}</span>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active fade show">
+          <span><i class="ti-heart-broken" style="color: red"></i>{{ statistiques_utilisateur.total_dislikes }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

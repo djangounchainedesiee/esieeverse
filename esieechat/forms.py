@@ -9,10 +9,13 @@ class ConversationUtilisateursForm(forms.Form):
     """
     Représente un fomulaire perttant de créer une conversation en choisisant ses utilisations et son nom
     """
-    nom_conversation = forms.CharField(
-        label='Nom de la conversation', max_length=20)
-    utilisateurs = forms.ModelMultipleChoiceField(
-        label='Choisissez des utilisateurs', queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')))
+    def __init__(self, *args, **kwargs):
+        utilisateur_connecte = kwargs.pop('utilisateur_connecte')
+        super().__init__(*args, **kwargs)
+        self.fields['utilisateurs'].queryset = Utilisateur.objects.all().exclude(id=utilisateur_connecte.id)
+
+    nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
+    utilisateurs = forms.ModelMultipleChoiceField(label='Choisissez des utilisateurs', queryset=Utilisateur.objects.none())
 
 class MessageForm(forms.ModelForm):
     """
@@ -41,5 +44,5 @@ class ConversationAddUtilisateurForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['utilisateurs'] = forms.ModelMultipleChoiceField(
             label='Choisissez des utilisateurs', 
-            queryset=Utilisateur.objects.filter(user__in=User.objects.filter(groups__name='etudiants')).exclude(conversation__id=self.conversation_id)
+            queryset=Utilisateur.objects.all().exclude(conversation__id=self.conversation_id)
         )
