@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, HttpRequest
-from .forms import ConversationUtilisateursForm, MessageForm, ConversationAddUtilisateurForm
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseForbidden
+from django.db.models import QuerySet
+from .forms import CreateConversationUtilisateursForm, EditConversationUtilisateursForm, MessageForm, ConversationAddUtilisateurForm
 from .models import Conversation, Message
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
-
-def home_view(request,*args,**kwargs):
-    return render(request,"index.html",{})
 
 # Create your views here.
 def create_conversation(request: HttpRequest) -> HttpResponse:
@@ -27,10 +25,10 @@ def create_conversation(request: HttpRequest) -> HttpResponse:
     
     utilisateur_connecte: Utilisateur = request.user.utilisateur
 
-    form = ConversationUtilisateursForm(utilisateur_connecte=utilisateur_connecte)
+    form = CreateConversationUtilisateursForm(utilisateur_connecte=utilisateur_connecte)
 
     if request.method == 'POST':
-        form = ConversationUtilisateursForm(request.POST, utilisateur_connecte=utilisateur_connecte)
+        form = CreateConversationUtilisateursForm(request.POST, utilisateur_connecte=utilisateur_connecte)
 
         if form.is_valid():
             """ 
@@ -57,6 +55,78 @@ def create_conversation(request: HttpRequest) -> HttpResponse:
     }
     return render(request, 'conversation/createconversation.html', context)
 
+def create_or_join_conversation_with_user(request: HttpRequest, id_utilisateur: int) -> HttpResponseRedirect:
+    """Créer ou rejoint une conversation avec uniquement l'id de l'utilisateur passé en paramètre et l'utilisateur connecté
+
+    Args:
+        request (HttpRequest): La requête HTTP
+        id_utilisateur (int): L'id de l'utilisateur avec lequel on veut créer ou joindre une conversation
+
+    Returns:
+        HttpResponseRedirect: Une réponse HTTP de redirection vers la conversation créer ou joint
+    """
+    if not check_utilisateur_auth(request):
+        return redirect('auth:login')
+    
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
+    utilisateur_to_send: Utilisateur = Utilisateur.objects.get(id=id_utilisateur)
+
+    conversations: QuerySet = Conversation.objects.filter(utilisateurs=utilisateur_connecte).filter(utilisateurs=utilisateur_to_send)
+
+    if conversations.exists():
+        conversation = conversations[0]
+    else:
+        conversation = Conversation(nom=f"MP {utilisateur_connecte.user.first_name} - {utilisateur_to_send.user.first_name}")
+        conversation.save()
+
+        conversation.utilisateurs.add(utilisateur_connecte)
+        conversation.utilisateurs.add(utilisateur_to_send)
+
+    return redirect('esieechat:view', id_conversation=conversation.id)
+
+def edit_conversation(request: HttpRequest, id_conversation: int) -> HttpResponse:
+    """Permet de modifier la conversation passé en paramètre
+
+    Args:
+        request (HttpResponseRedirect): Une requête de redirection HTTP vers la vue de la conversation
+        id_conversation (int): L'id de la conversation
+
+    Returns:
+        HttpResponse: La réponse HTTP
+        HttpResponseForbidden: Si aucun token CSRF ou que la requête n'est pas post dans ce cas on retourne une erreur
+    """    
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
+    
+    form = EditConversationUtilisateursForm(utilisateur_connecte=utilisateur_connecte, id_conversation=id_conversation)
+
+    if request.method == 'POST':
+        form = EditConversationUtilisateursForm(request.POST, utilisateur_connecte=utilisateur_connecte, id_conversation=id_conversation)
+        if form.is_valid():
+            """ 
+            Lorsque le formulaire est valide, on récupère les données afin de modifier la conversation dans la BDD, 
+            puis on redirige l'utilisateur vers la conversation.
+            """
+
+            nom_conversation = form.cleaned_data['nom_conversation']
+            utilisateurs = form.cleaned_data['utilisateurs']
+
+            conversation: Conversation = Conversation.objects.get(id=id_conversation)
+            conversation.nom = nom_conversation
+            conversation.utilisateurs.clear()
+
+            for utilisateur in utilisateurs:
+                conversation.utilisateurs.add(utilisateur)
+            conversation.utilisateurs.add(utilisateur_connecte)
+
+            conversation.save()
+
+            return redirect('esieechat:view', id_conversation=id_conversation)
+    
+    context = {
+        'form': form
+    }
+
+    return render(request, 'conversation/editconversation.html', context)
 
 def select_conversation(request: HttpRequest) -> HttpResponse:    
     """Vue permettant à l'utilisateur de sélectionner sa conversation
@@ -96,16 +166,15 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
     if not conversations.exists():
         return redirect('esieechat:select')
 
-    form = MessageForm()
+    message_form = MessageForm()
 
     messages = Message.objects.filter(conversation_id=id_conversation)
-    utilisateur_conversation = conversations[0].utilisateurs
+    conversation: Conversation = conversations[0]
 
     context = {
-        'form': form, 
+        'message_form': message_form, 
         'messages': messages,
-        'conversation_id': id_conversation,
-        'utilisateurs_conversation': utilisateur_conversation.all(),
+        'conversation': conversation,
         'view': 'view_conversation',
         'return_arrow_btn_url': reverse('esieechat:select')
     }
@@ -125,10 +194,12 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
     if not check_utilisateur_auth(request):
         redirect('auth:login')
 
-    form = ConversationAddUtilisateurForm(id_conversation)
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
+
+    form = ConversationAddUtilisateurForm(id_conversation=id_conversation, utilisateur_connecte=utilisateur_connecte)
 
     if request.method == 'POST':
-        form = ConversationAddUtilisateurForm(id_conversation, request.POST)
+        form = ConversationAddUtilisateurForm(request.POST, id_conversation=id_conversation, utilisateur_connecte=utilisateur_connecte)
 
         if form.is_valid():
             
@@ -143,7 +214,6 @@ def add_people_in_conversation(request: HttpRequest, id_conversation: int) -> Ht
 
     context = {
         'form': form,
-        'conversation_id': id_conversation,
         'return_arrow_btn_url': reverse('esieechat:view', kwargs={'id_conversation': id_conversation})
     }
     return render(request, 'conversation/addpeopleconversation.html', context)
@@ -164,8 +234,8 @@ def delete_people_in_conversation(request: HttpRequest, id_conversation: int, id
         redirect('auth:login')
 
     if request.method == 'POST' and request.POST.get('csrfmiddlewaretoken', None) != None:
-        conversation = Conversation.objects.get(id=id_conversation)
-        utilisateur_a_supprimer = Utilisateur.objects.get(id=id_utilisateur)
+        conversation: Conversation = Conversation.objects.get(id=id_conversation)
+        utilisateur_a_supprimer: Utilisateur = Utilisateur.objects.get(id=id_utilisateur)
         conversation.utilisateurs.remove(utilisateur_a_supprimer)
 
     return redirect('esieechat:view', id_conversation=id_conversation)

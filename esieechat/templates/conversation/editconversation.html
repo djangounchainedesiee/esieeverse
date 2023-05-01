@@ -1,0 +1,20 @@
+{% extends 'conversation/conversationcontainer.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <link rel="stylesheet" href="{% static 'editconversation.css' %}">
+    <form class="edit-conversation-form" method="POST" action="#">
+        {% csrf_token %}
+        <div class="form-group">  
+            {{ form.nom_conversation|as_crispy_field }}
+        </div>
+        <div class="form-group ">
+            {{ form.utilisateurs|as_crispy_field }}
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Modifier la conversation</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
