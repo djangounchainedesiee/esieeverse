@@ -1,0 +1,45 @@
+{% load static %}
+<div class="topbar stick">
+    <div class="logo">
+        <a title="accueil" href="{% url 'home:home_view' %}">
+            <img src="{% static 'images/logo.png' %}" alt="logo">
+        </a>
+    </div>
+    <div class="top-area">
+        <ul class="main-menu">
+            <li>
+                <a href="{% url 'home:home_view' %}" title="accueil">Accueil</a>
+                <ul>
+                    <li>
+                        <a href="#" title="">Mon profil</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" title="">ESIEE MARKETPLACE</a>
+                <ul>
+                    <li>
+                        <a href="#" title="">Mon panier</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="setting-area">
+            <li>
+                <a href="{% url 'home:home_view' %}" title="Home"><i class="ti-home"></i></a>
+            </li>
+            <li>
+                <a href="{% url 'esieechat:select' %}" title="Messages"><i class="ti-comment"></i></a>
+            </li>
+        </ul>
+        <div class="user-img">
+            <img style="width: 32px; height: 32px" src="{{ request.user.utilisateur.photo_de_profile.url }}" alt="request.user.utilisateur.photo_de_profile.name">
+            <span class="status f-online"></span>
+            <div class="user-setting">
+                <a href="#" title=""><i class="ti-user"></i> Mon profil</a>
+                <a href="#" title=""><i class="ti-settings"></i>Paramètres de mon compte</a>
+                <a href="#" title=""><i class="ti-power-off"></i>Déconnexion,</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="central-meta item">
+    <div id="user-event-{{ evenement.id }}" class="user-post">
+        <div class="friend-info">
+            <figure>
+                <img class="rounded-circle pull-left"
+                     src="{{ evenement.auteur.photo_de_profile.url }}"
+                     style="width: 90px"
+                     alt="{{ evenement.auteur.photo_de_profile.name }}"/>
+            </figure>
+            <div class="friend-name">
+                <ins><a href="#" title="">{{ evenement.auteur.user.first_name }}</a></ins>
+                <span>
+                    Evènement du {{ evenement.date_debut }} au {{ evenement.date_fin }} ; Nombre de participant :
+                    <a href=""
+                       data-toggle="modal"
+                       data-target="#participant-modal-{{ evenement.id }}">{{ evenement.utilisateur_inscrits.all.count }}</a>
+                    {% include "publication/evenement-modal-liste-participant.html" %}
+                </span>
+            </div>
+            <div class="post-meta">
+                {% if evenement.attachment and evenement.attachment_is_image %}
+                    <img src="{{ evenement.attachment.url }}"
+                         alt="{{ evenement.get_simple_attachment_name }}"/>
+                {% elif evenement.attachment and evenement.attachment_is_video %}
+                    <video controls src="{{ evenement.attachment.url }}" height="315"/>
+                {% endif %}
+                {% if  evenement.choix_set.all.count > 0 %}
+                    <div class="evenement-choixs">
+                        {% csrf_token %}
+                        {% for choix in evenement.choix_set.all %}
+                            {% if evenement.user_has_voted %}
+                                <div class="form-check d-flex align-items-center">
+                                    <label class="form-check-label mr-3"
+                                           id="evenement-label-choix-{{ choix.id }}"
+                                           for="{{ choix.nom }}">
+                                        {{ choix.nom }}
+                                    </label>
+                                    <div class="progress flex-grow-1">
+                                        <div class="progress-bar bg-success"
+                                             role="progressbar"
+                                             style="width: {{ choix.pourcentage }}%"
+                                             aria-valuenow="{{ choix.id }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="{{ evenement.total_votes }}">
+                                            {{ choix.pourcentage }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="choix"
+                                           id="evenement-choix-{{ choix.id }}"
+                                           data-pk="{{ choix.id }}"/>
+                                    <label class="form-check-label mr-3"
+                                           id="evenement-label-choix-{{ choix.id }}"
+                                           for="{{ choix.nom }}">
+                                        {{ choix.nom }}
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="we-video-info">
+                    <div class="description">
+                        <h6>{{ evenement.titre }}</h6>
+                        <p>{{ evenement.contenu }}</p>
+                        {% if evenement.auteur != request.user.utilisateur %}
+                            {% if evenement.user_has_joined %}
+                                <span id="text-inscris-evenement-{{ evenement.id }}">Inscris</span>
+                                <span id="btn-desinscription-evenement-{{ evenement.id }}"
+                                      class="btn btn-link desinscription"
+                                      data-pk="{{ evenement.id }}">
+                                    Se Désinscrire
+                                </span>
+                            {% else %}
+                                <span id="btn-inscription-evenement-{{ evenement.id }}"
+                                      class="btn btn-link inscription"
+                                      data-pk="{{ evenement.id }}">
+                                    S'inscrire
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                        {% if evenement.attachment and not evenement.attachment_is_displayable %}
+                            <a style="color: rgb(0, 102, 255)"
+                               href="{{ evenement.attachment.url }}"
+                               download>{{ evenement.get_simple_attachment_name }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

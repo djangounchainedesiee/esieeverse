@@ -1,10 +1,14 @@
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
-router = routers.DefaultRouter()
-router.register(r'messageList', views.MessageListView)
+app_name = 'api'
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('abonnements/', views.Abonnements.as_view(), name="abonnements"),
+    path('choixs/', views.Choixs.as_view(), name="choix"),
+    path('evenements/<int:id_evenement>/choixs/', views.getAllChoixsWithTotalVotesByEvenement, name="choixs_by_evenement"),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

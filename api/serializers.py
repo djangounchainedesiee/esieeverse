@@ -1,15 +1,14 @@
 from esieechat.models import Conversation, Message
+from esieeverse.models import Utilisateur
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-class ConversationsSerizalize(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Conversation
-        fields = ['id', 'nom']
-
-class MessagesSerializer(serializers.HyperlinkedModelSerializer):
-    #url = serializers.HyperlinkedIdentityField(view_name='conversation-detail',source='profile',)
-    conversation =  ConversationsSerizalize()
-
-    class Meta:
-        model = Message
-        fields = ['id', 'contenu', 'date_heure', 'conversation']
+        model = User
+        fields = '__all__'
+class UtilisateurSerializer(serializers.HyperlinkedModelSerializer):
+        user = UserSerializer()
+        class Meta:
+            model = Utilisateur
+            fields = '__all__'

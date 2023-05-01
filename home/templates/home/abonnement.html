@@ -1,0 +1,10 @@
+<li>
+    <figure>
+        <img src="{{ abonnement.photo_de_profile.url }}" alt="{{ abonnement.photo_de_profile.name }}">
+        <span class="status f-off"></span>
+    </figure>
+    <div class="friendz-meta">
+        {% comment %} {% url 'profil:home' utilisateur_id=abonnement.id %} {% endcomment %}
+        <a href="">{{ abonnement.user.get_full_name }}</a>
+    </div>
+</li>

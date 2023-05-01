@@ -2,38 +2,148 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div>
+<div class="d-flex chat-view-container">
     <link rel="stylesheet" href="{% static 'viewconversation.css' %}">
-
-    <div class="chat">
+    <div id="chat-messages-container" class="chat-messages-container">
         {% for message in messages %}
-            <div class="speech-bubble" style="{% if message.utilisateur.user != utilisateur_connecte %} left: 45% {% endif %}">
-                <p class="speech-bubble-content" style="background-color: {% if message.utilisateur.user == utilisateur_connecte %} #FF9D4F {% else %} #FFDE8F {% endif %}">
-                    {{ message.contenu }}
-                </p>
-                <p class="speech-bubble-info" >{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
-            </div>
-            {% endfor %}
+        <div
+            class="speech-bubble {% if message.utilisateur == request.user.utilisateur %} speech-bubble-right {% endif %}">
+            <p class="speech-bubble-content"
+                style="background-color: {% if message.utilisateur == request.user.utilisateur %} #FF9D4F {% else %} #FFDE8F {% endif %}">
+                {{ message.contenu }}
+            </p>
+            <p class="speech-bubble-info">{{ message.utilisateur.user.last_name }} {{ message.date_heure }}</p>
+        </div>
+        {% endfor %}
     </div>
-    <div>
-        <form class="send-message-form" action="#" method="POST">
-            {% csrf_token %}
+    <div class="send-message-form">
+        {% csrf_token %}
 
-            <div class="form-row col-md-6">
-                <div class="form-group message-input">
-                    {{ form.contenu|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-6">
-                    <button type="submit" class="btn send-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-send" viewBox="0 0 16 16">
-                            <path
-                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
-                        </svg>
-                    </button>
-                </div>
+        <div class="form-row">
+            <div class="form-group message-input">
+                {{ message_form.contenu|as_crispy_field }}
             </div>
-        </form>
+            <div class="form-group">
+                <button type="submit" id="btn-envoi-message-chat" class="btn send-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-send" viewBox="0 0 16 16">
+                        <path
+                            d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
+    <div class="member-list">
+        Membres ({{ conversation.utilisateurs.all.count }})
+        <a class="add-people-icon" href="{% url 'esieechat:add_people' id_conversation=conversation.id  %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                <path
+                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path
+                    d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+            </svg>
+        </a>
+        <ul class="nav flex-column">
+            {% for utilisateur in conversation.utilisateurs.all %}
+            <li class="nav-item">
+                <div class="nav-link active">{{ utilisateur.user.get_full_name }}
+                    {% if utilisateur.id != request.user.utilisateur.id %}
+                    <form method="POST" action="{% url 'esieechat:delete_people' id_conversation=conversation.id id_utilisateur=utilisateur.id %}">
+                        {% csrf_token %}
+                        <button class="btn" type="submit"> 
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                            </svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + {{ conversation.id }} + '/')
+
+        chatSocket.onopen = (e) => {
+            console.log("La connexion avec le websocket du chat à été ouverte !");
+        };
+
+        chatSocket.onclose = (e) => {
+            console.log("La connexion avec le websocket du chat à été fermée !");
+        };
+
+        /**
+        * Lorsque l'utilisateur appuie sur la touche entré lorsqu'il écrit dans le input field celà envoi le message
+        */
+        document.querySelector("#id_contenu").onkeyup = (e) => {
+            if (e.key == 'Enter') {
+                document.querySelector("#btn-envoi-message-chat").click();
+            }
+        };
+
+        /**
+        * Envoi un message lorsque l'utilisateur clic sur le bouton
+        */
+        document.querySelector("#btn-envoi-message-chat").onclick = (e) => {
+            var contenu = document.querySelector("#id_contenu").value;
+
+            chatSocket.send(JSON.stringify({
+                contenu: contenu,
+                id_conversation: {{ conversation.id }},
+                utilisateur : {
+                    id: {{ request.user.utilisateur.id }},
+                    nom: "{{ request.user.last_name }}"
+                 },
+                 date_heure: ""
+            }));
+
+            document.querySelector("#id_contenu").value = "";
+        };
+
+        /**
+        * Lorsqu'on reçoit un message du websocket, alors on l'affiche en HTML
+        */
+        chatSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            console.log('On message data : ', data);
+
+            var chat = document.getElementById('chat-messages-container');
+
+            var div = document.createElement("div");
+
+            const { contenu, id_conversation, utilisateur: { id, nom }, date_heure } = data;
+            const utilisateur_connecte_id = {{ request.user.utilisateur.id }}
+
+            const speechBubble = document.createElement("div");
+            speechBubble.classList.add("speech-bubble");
+
+            if (id === utilisateur_connecte_id) {
+                speechBubble.classList.add("speech-bubble-right");
+            }
+
+            const speechBubbleContent = document.createElement("p");
+            speechBubbleContent.classList.add("speech-bubble-content");
+
+            speechBubbleContent.style.backgroundColor = (id === utilisateur_connecte_id)
+                ? "#FF9D4F"
+                : "#FFDE8F";
+
+            speechBubbleContent.innerText = contenu;
+            speechBubble.appendChild(speechBubbleContent);
+
+            const speechBubbleInfo = document.createElement("p");
+            speechBubbleInfo.classList.add("speech-bubble-info");
+            speechBubbleInfo.innerText = nom + " " + date_heure;
+            speechBubble.appendChild(speechBubbleInfo);
+
+            chat.appendChild(speechBubble);
+        };
+    </script>
 </div>
 {% endblock %}

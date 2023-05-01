@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'esieeverse',
     'publication',
     'authentification',
+    'home',
     'crispy_forms',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,15 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'esieeverse.asgi.application'
 WSGI_APPLICATION = 'esieeverse.wsgi.application'
 
+# Channel layers for websocket
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

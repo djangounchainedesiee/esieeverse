@@ -3,15 +3,9 @@
 }
 
 .creer-conversation-form {
-    font-size: 10px;
-}
-
-.arrow-left {
-    position: absolute;
-    bottom: 2%;
-    left: 2%;
+    font-size: 14px;    
 }
 
 .btn {
-    font-size: 10px;
+    font-size: 15px;
 }
