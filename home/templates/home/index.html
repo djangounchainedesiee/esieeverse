@@ -10,7 +10,7 @@
         <link rel="icon"
               href="{% static 'images/logo_esieeparis_blanc.png' %}"
               type="image/png"
-              sizes="16x16" />
+              sizes="16x16"/>
         <link rel="stylesheet" href="{% static 'css/main.css' %}" />
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/add_friend.css' %}" />
@@ -31,9 +31,7 @@
                                     <div class="col-lg-3">
                                         <aside class="sidebar static">
                                             <div class="widget">
-                                                <h4 class="widget-title">
-                                                    Shortcuts
-                                                </h4>
+                                                <h4 class="widget-title">Shortcuts</h4>
                                                 <ul class="naves">
                                                     <li>
                                                         <i class="ti-clipboard"></i>
@@ -58,13 +56,12 @@
                                                 </ul>
                                             </div>
                                             <!-- Shortcuts -->
-                                            <div class="widget">  <!-- pour que le block reste collé stick-widget-->
-                                                <h4 class="widget-title">
-                                                    Mes Abonnés
-                                                </h4>
+                                            <div class="widget">
+                                                <!-- pour que le block reste collé stick-widget-->
+                                                <h4 class="widget-title">Mes Abonnés</h4>
                                                 <ul class="followers">
                                                     {% for abonne in abonnes %}
-                                                    {% include 'home/abonne.html' %}
+                                                        {% include 'home/abonne.html' %}
                                                     {% endfor %}
                                                     <script src="{% static 'js/abonne.js' %}"></script>
                                                 </ul>
@@ -74,31 +71,16 @@
                                     </div>
                                     <!-- sidebar -->
                                     <div class="col-lg-6">
-                                        <div class="central-meta">
-                                            <div class="sidebar">
-                                                <h5 class="widget-title">
-                                                    NOUVEAU POST
-                                                </h5>
-                                                <div class="newpst-input">
-                                                    <form method="post" enctype="multipart/form-data">
-                                                        {% csrf_token %}
-                                                        {{ form.as_p }}
-                                                        <button type="submit">
-                                                            Envoyer
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% include 'home/create-post-form.html' %}
                                         <!-- add post new box -->
                                         <div class="loadMore">
                                             {% for evenement in evenements %}
-                                            {% include "publication/evenement.html" %}
+                                                {% include "publication/evenement.html" %}
                                             {% endfor %}
                                             <script src="{% static 'js/choix_evenement.js' %}"></script>
                                             <script src="{% static 'js/inscrire_desinscrire_evenement.js' %}"></script>
                                             {% for publication in publications %}
-                                            {% include "publication/publication.html" %}
+                                                {% include "publication/publication.html" %}
                                             {% endfor %}
                                             <script src="{% static 'js/publication_like_dislikes.js' %}"></script>
                                         </div>
@@ -108,9 +90,7 @@
                                         <aside class="sidebar static">
                                             {% include "home/statistiques.html" %}
                                             <div class="widget friend-list stick-widget">
-                                                <h4 class="widget-title">
-                                                    Mes abonnements
-                                                </h4>
+                                                <h4 class="widget-title">Mes abonnements</h4>
                                                 <ul id="people-list" class="friendz-list">
                                                     {% for abonnement in request.user.utilisateur.abonnements.all %}
                                                         {% include "home/abonnement.html" %}

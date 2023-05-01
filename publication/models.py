@@ -37,9 +37,9 @@ class Evenement(models.Model):
     """
     titre = models.CharField(max_length=125)
     contenu = models.TextField(max_length=300)
-    image = models.ImageField(null=True, blank=True, upload_to='media/')
-    date_debut = models.DateTimeField()
-    date_fin = models.DateTimeField()
+    attachment = models.FileField(null=True, blank=True, upload_to='media/')
+    date_debut = models.DateField()
+    date_fin = models.DateField()
     utilisateur_inscrits = models.ManyToManyField(Utilisateur, blank=True, related_name='utilisateur_inscrits')
     auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='auteur')
 
@@ -50,12 +50,24 @@ class Evenement(models.Model):
             float: Retourne le nombre de votes sur un évènement
         """
         return sum([choix.utilisateurs.all().count() for choix in self.choix_set.all()])  
+    
+    def attachment_is_image(self) -> bool:
+        return self.attachment.name.endswith(('jpg', 'jpeg', 'png', 'gif'))
+    
+    def attachment_is_video(self) -> bool:
+        return self.attachment.name.endswith(('.mp4', '.avi', '.wmv', '.mov', '.flv'))
+    
+    def attachment_is_displayable(self):
+        return self.attachment_is_image() or self.attachment_is_video()
+    
+    def get_simple_attachment_name(self):
+        return self.attachment.name.replace("media/", "")
 
 class Choix(models.Model):
     """
     Modèle représentant la table Choix
     """
-    nom = models.CharField(max_length=10)
+    nom = models.CharField(max_length=60)
     evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE)
     utilisateurs = models.ManyToManyField(Utilisateur, blank=True)
 
