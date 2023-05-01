@@ -40,3 +40,10 @@
     top: 1%;
     left: 5%;
 }
+
+.edit-btn{
+    position: absolute;
+    color: white;
+    top: 1%;
+    right: 5%;
+}

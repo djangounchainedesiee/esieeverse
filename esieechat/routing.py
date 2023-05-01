@@ -6,5 +6,5 @@ Route des urls vers les channels websoclets
 """
 
 websocket_urlpatterns = [
-    path('ws/chat/<str:conversation_id>/', consumers.ChatConsumer.as_asgi())
+    path('ws/chat/<str:id_conversation>/', consumers.ChatConsumer.as_asgi())
 ]

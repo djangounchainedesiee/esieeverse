@@ -1,18 +1,33 @@
 from django import forms
-from esieeverse.models import Utilisateur
-from django.contrib.auth.models import User
-from .models import Message
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (Layout, Row, Column)
+from esieeverse.models import Utilisateur
+from .models import Message, Conversation
 
-class ConversationUtilisateursForm(forms.Form):
+class CreateConversationUtilisateursForm(forms.Form):
     """
     Représente un fomulaire perttant de créer une conversation en choisisant ses utilisations et son nom
     """
     def __init__(self, *args, **kwargs):
         utilisateur_connecte = kwargs.pop('utilisateur_connecte')
         super().__init__(*args, **kwargs)
-        self.fields['utilisateurs'].queryset = Utilisateur.objects.all().exclude(id=utilisateur_connecte.id)
+        self.fields['utilisateurs'].queryset = Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(id=utilisateur_connecte.id)
+
+    nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
+    utilisateurs = forms.ModelMultipleChoiceField(label='Choisissez des utilisateurs', queryset=Utilisateur.objects.none())
+
+class EditConversationUtilisateursForm(forms.Form):
+    """
+    Représente un fomulaire perttant de créer une conversation en choisisant ses utilisations et son nom
+    """
+    def __init__(self, *args, **kwargs):
+        id_conversation = kwargs.pop('id_conversation')
+        utilisateur_connecte = kwargs.pop('utilisateur_connecte')
+        super().__init__(*args, **kwargs)
+        conversation: Conversation = Conversation.objects.get(id=id_conversation) 
+        self.fields['utilisateurs'].queryset = Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(id=utilisateur_connecte.id)
+        self.fields['utilisateurs'].initial = conversation.utilisateurs.all()
+        self.fields['nom_conversation'].initial = conversation.nom
 
     nom_conversation = forms.CharField(label='Nom de la conversation', max_length=20)
     utilisateurs = forms.ModelMultipleChoiceField(label='Choisissez des utilisateurs', queryset=Utilisateur.objects.none())
@@ -39,10 +54,11 @@ class ConversationAddUtilisateurForm(forms.Form):
     """
     Représente un fomulaire perttant d'ajouter un utilisateur à la conversation
     """
-    def __init__(self, conversation_id, *args,**kwargs):
-        self.conversation_id = conversation_id
+    def __init__(self, *args,**kwargs):
+        self.id_conversation = kwargs.pop('id_conversation')
+        utilisateur_connecte = kwargs.pop('utilisateur_connecte')
         super().__init__(*args, **kwargs)
         self.fields['utilisateurs'] = forms.ModelMultipleChoiceField(
             label='Choisissez des utilisateurs', 
-            queryset=Utilisateur.objects.all().exclude(conversation__id=self.conversation_id)
+            queryset=Utilisateur.objects.filter(id__in=utilisateur_connecte.abonnements.all()).exclude(conversation=self.id_conversation)
         )

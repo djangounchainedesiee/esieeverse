@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseForbidden
-from .models import Publication
+from django.http import HttpRequest, JsonResponse, HttpResponseForbidden
+from .models import Publication, Evenement
 from esieeverse.models import Utilisateur
 
 def like(request: HttpRequest, id_publication: int) -> JsonResponse:
@@ -69,6 +69,36 @@ def dislike(request: HttpRequest, id_publication: int) -> JsonResponse:
         'id': id_publication,
         'nb_likes': publication.likes.count(),
         'nb_dislikes': publication.dislikes.count(),
+    }
+
+    return JsonResponse(data)
+
+def inscrire_evenement(request: HttpRequest, id_evenement: int):
+    if request.method != 'POST' or request.POST.get('csrfmiddlewaretoken', None) == None:
+        return HttpResponseForbidden("Le token CSRF est manquant")
+    
+    utilisateur: Utilisateur = request.user.utilisateur
+    
+    evenement = Evenement.objects.get(id=id_evenement)
+    evenement.utilisateur_inscrits.add(utilisateur)
+
+    data = {
+        'id_evenement': id_evenement,
+    }
+
+    return JsonResponse(data)
+
+def desinscrire_evenement(request: HttpRequest, id_evenement: int):
+    if request.method != 'POST' or request.POST.get('csrfmiddlewaretoken', None) == None:
+        return HttpResponseForbidden("Le token CSRF est manquant")
+    
+    utilisateur: Utilisateur = request.user.utilisateur
+    
+    evenement = Evenement.objects.get(id=id_evenement)
+    evenement.utilisateur_inscrits.remove(utilisateur)
+
+    data = {
+        'id_evenement': id_evenement,
     }
 
     return JsonResponse(data)

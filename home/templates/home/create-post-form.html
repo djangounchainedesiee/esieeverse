@@ -1,0 +1,63 @@
+{% load static %}
+<div class="central-meta">
+    <div class="sidebar">
+        <ul class="nav nav-tabs" data-tabs="tabs">
+            <li class="nav-item">
+                <button class="nav-link active"
+                        aria-current="page"
+                        data-toggle="tab"
+                        data-target="#create-publication-form"
+                        type="button"
+                        role="tab">
+                    Nouvelle Publication
+                </button >
+            </li>
+            <li class="nav-item">
+                <button class="nav-link"
+                        data-toggle="tab"
+                        data-target="#create-evenement-form"
+                        type="button"
+                        role="tab">
+                    Nouvel Événement
+                </button >
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="create-publication-form"
+                 class="tab-pane fade show active"
+                 role="tabpanel">
+                <h5 class="widget-title">Nouvelle publication</h5>
+                <div class="newpst-input">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ create_publication_form.as_p }}
+                        <button type="submit">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+            <div id="create-evenement-form"
+                 class="tab-pane fade"
+                 role="tabpanel"
+                 aria-labelledby="nav-contact-tab">
+                <h5 class="widget-title">Nouvel évènement</h5>
+                <div class="newpst-input">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ create_evenement_form.as_p }}
+                        <div>
+                            <h6>Choix :</h6>
+                            <div id="form-evenement-choices-container">
+                                {% for choix_formset  in choixs_formset %}
+                                {{ choix_formset.as_p }}
+                                {% endfor %}
+                            </div>
+                            <script src="{% static 'js/ajouter_choix_form.js' %}"></script>
+                        </div>
+                        <button id="form-evenement-add-choice-btn" type="button">Ajouter un choix</button>
+                        <button type="submit">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
