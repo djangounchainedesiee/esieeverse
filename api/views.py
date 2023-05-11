@@ -83,15 +83,15 @@ def getAllChoixsWithTotalVotesByEvenement(request: HttpRequest, id_evenement: in
     except Evenement.DoesNotExist:
         return HttpResponseNotFound(f"L'événement avec l'identifiant {id_evenement} n'a pas été trouvé !")
 
-    choixs_evenement = evenement.choix_set.annotate(nb_votes=Count('utilisateurs')).values('id', 'nom', 'nb_votes')
-    total_votes = sum([choix['nb_votes'] for choix in choixs_evenement])
+    choixs_evenement = evenement.choix_set.all()
+    total_votes = evenement.total_votes()
 
     choixs_evenement = [
         {
-            'id': choix['id'],
-            'nom': choix['nom'],
-            'nb_votes': choix['nb_votes'],
-            'pourcentage': (int(choix['nb_votes']) * 100) / int(total_votes)  if total_votes > 0 else 0
+            'id': choix.id,
+            'nom': choix.nom,
+            'nb_votes': choix.nb_utilisateurs(),
+            'pourcentage': choix.pourcentage()
         }
         for choix in choixs_evenement
     ]

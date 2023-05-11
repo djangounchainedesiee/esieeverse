@@ -15,10 +15,9 @@ const handleSuccessChoix = function (response) {
         CHOIX_INPUT_FIELD.remove();
         
         // Calcul du pourcentage et création d'une barre de pourcentage
-        const POURCENTAGE_VOTE = (choix.nb_votes * 100) / TOTAL_VOTES;
         const PROGRESS_BAR_HTML = `
             <div class="progress flex-grow-1">
-                <div class="progress-bar bg-success" role="progressbar" style="width: ${POURCENTAGE_VOTE}%;" aria-valuenow="${choix.nb_votes}" aria-valuemin="0" aria-valuemax="${TOTAL_VOTES}">${POURCENTAGE_VOTE}%</div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: ${choix.pourcentage}%;" aria-valuenow="${choix.nb_votes}" aria-valuemin="0" aria-valuemax="${TOTAL_VOTES}">${choix.pourcentage}%</div>
             </div>
         `;
 

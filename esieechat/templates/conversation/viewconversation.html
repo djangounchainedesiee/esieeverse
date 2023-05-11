@@ -21,7 +21,7 @@
 
         <div class="form-row">
             <div class="form-group message-input">
-                {{ form.contenu|as_crispy_field }}
+                {{ message_form.contenu|as_crispy_field }}
             </div>
             <div class="form-group">
                 <button type="submit" id="btn-envoi-message-chat" class="btn send-icon">
@@ -35,8 +35,8 @@
         </div>
     </div>
     <div class="member-list">
-        Membres ({{ utilisateurs_conversation.count }})
-        <a class="add-people-icon" href="{% url 'esieechat:add_people' id_conversation=conversation_id  %}">
+        Membres ({{ conversation.utilisateurs.all.count }})
+        <a class="add-people-icon" href="{% url 'esieechat:add_people' id_conversation=conversation.id  %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-person-fill-add" viewBox="0 0 16 16">
                 <path
@@ -46,11 +46,11 @@
             </svg>
         </a>
         <ul class="nav flex-column">
-            {% for utilisateur in utilisateurs_conversation %}
+            {% for utilisateur in conversation.utilisateurs.all %}
             <li class="nav-item">
                 <div class="nav-link active">{{ utilisateur.user.get_full_name }}
                     {% if utilisateur.id != request.user.utilisateur.id %}
-                    <form method="POST" action="{% url 'esieechat:delete_people' id_conversation=conversation_id id_utilisateur=utilisateur.id %}">
+                    <form method="POST" action="{% url 'esieechat:delete_people' id_conversation=conversation.id id_utilisateur=utilisateur.id %}">
                         {% csrf_token %}
                         <button class="btn" type="submit"> 
                             <svg
@@ -68,7 +68,7 @@
         </ul>
     </div>
     <script>
-        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + {{ conversation_id }} + '/')
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + {{ conversation.id }} + '/')
 
         chatSocket.onopen = (e) => {
             console.log("La connexion avec le websocket du chat à été ouverte !");
@@ -95,7 +95,7 @@
 
             chatSocket.send(JSON.stringify({
                 contenu: contenu,
-                conversation_id: {{ conversation_id }},
+                id_conversation: {{ conversation.id }},
                 utilisateur : {
                     id: {{ request.user.utilisateur.id }},
                     nom: "{{ request.user.last_name }}"
@@ -117,7 +117,7 @@
 
             var div = document.createElement("div");
 
-            const { contenu, conversation_id, utilisateur: { id, nom }, date_heure } = data;
+            const { contenu, id_conversation, utilisateur: { id, nom }, date_heure } = data;
             const utilisateur_connecte_id = {{ request.user.utilisateur.id }}
 
             const speechBubble = document.createElement("div");
