@@ -28,14 +28,14 @@
             <a class="nav-link" href="#">{{user}},</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Déconnexion</a>
+            <a href="{% url 'auth:logout' %}">Se déconnecter</a>
           </li>
           {% else %}
           <li class="nav-item active">
-            <a class="nav-link" href="#">Connexion</a>
+            <a class="nav-link" href="{% url 'auth:login' %}">Connexion</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Inscription</a>
+            <a class="nav-link" href="{% url 'auth:register' %}">Inscription</a>
           </li>
           {% endif %}
         </ul>

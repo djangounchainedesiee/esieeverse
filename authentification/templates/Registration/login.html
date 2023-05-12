@@ -52,7 +52,6 @@
 </style>
 </head>
 <body>
-
 <h2>Se connecter </h2>
 <div>
     <form method="post">
@@ -83,6 +82,8 @@
     </small>
   </div>
 
-        
-{% endblock %}
+{% if next %}
+<p>Redirection vers {{ next }} après la connexion réussie</p>
+{% endif %}
 
+{% endblock %}

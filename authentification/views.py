@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 #from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from esieeverse.models import Filiere, Utilisateur, Promotion
 
@@ -45,3 +45,26 @@ def register(request):
     else:
         form = SignUpForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            if 'next' in request.GET:
+                return redirect(request.GET['next'])
+            else:
+                return redirect('home')
+        else:
+            error_message = 'Nom d\'utilisateur ou mot de passe incorrect'
+            return render(request, 'login.html', {'error_message': error_message})
+    else:
+        return render(request, 'login.html')
+    
+
+def logout_view(request):
+    logout(request)
+    return redirect('login/')
