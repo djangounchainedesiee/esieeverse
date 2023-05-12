@@ -1,7 +1,11 @@
 .conversationcontainer {
-    border-color: #062849;
+    border-color: #ffffff;
     border-width: 1%;
     border-style: solid;
+}
+
+.text-header{
+  color: #6c6f73;
 }
 
 .card{
@@ -9,12 +13,13 @@
 }
 
 .card-header{
-    background-color: #062849;
-    border-color: #062849;
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .card-body{
     height: 10%;
+    background-color: #f4f2f2;
 }
 
 
@@ -29,21 +34,21 @@
 
 .return-arrow-btn {
     position: absolute;
-    color: white;
+    color: #6c6f73;
     top: 1%;
     left: 7%;
 }
 
 .home-btn {
     position: absolute;
-    color: white;
+    color: #6c6f73;
     top: 1%;
     left: 5%;
 }
 
 .edit-btn{
     position: absolute;
-    color: white;
+    color: #6c6f73;
     top: 1%;
     right: 5%;
 }
