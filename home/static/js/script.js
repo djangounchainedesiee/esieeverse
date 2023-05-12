@@ -103,19 +103,7 @@ $('.notification-box > ul li > i.del').on("click", function(){
 		jQuery(".sidebar").children().removeClass("stick-widget");
 	}
 
-	if ($.isFunction($.fn.stick_in_parent)) {
-		$('.stick-widget').stick_in_parent({
-			parent: '#page-contents',
-			offset_top: 60,
-		});
-
-		
-		$('.stick').stick_in_parent({
-		    parent: 'body',
-            offset_top: 0,
-		});
-		
-	}
+	
 	
 /*--- topbar setting dropdown ---*/	
 	$(".we-page-setting").on("click", function() {
