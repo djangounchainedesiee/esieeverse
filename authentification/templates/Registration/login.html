@@ -1,89 +1,9 @@
-{% extends "base.html" %}
+
 {% block content %}
-<html>
-  <head>
-    <title> Page de connexion</title>
-    <style>
-      h2 {
-    margin: 20px 0;
-    color: #1e90ff;
-    font-weight: bold;
-  }
-
-  form {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px #1e90ff;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: none;
-    box-shadow: 0px 0px 5px #1e90ff;
-  }
-
-  input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #1e90ff;
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .alert {
-    color: #dc3545;
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #0080ff;
-    }
-
-
-</style>
-</head>
-<body>
-<h2>Se connecter </h2>
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-            <p class="alert alert-danger">{{ error }}</p>
-            {% endfor %}
-        {% endif %}
-        <table>
-        {% for field in form %}
-          <tr>
-            <td>{{ field.label_tag }}</td>
-            <td>{{ field }}</td>
-          </tr>
-          
-        {% endfor %}
-         </table>
-         <input type="submit" value="Se connecter">  
-
-    </form>
-</div>
-
-<div>
-    <small>
-      Pas encore inscrit.e?
-      <a href="{% url 'auth:register' %}">S'inscrire</a>
-    </small>
-  </div>
-
-{% if next %}
-<p>Redirection vers {{ next }} après la connexion réussie</p>
-{% endif %}
-
+  <h2>Connexion</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Se connecter</button>
+  </form>
 {% endblock %}

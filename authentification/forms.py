@@ -28,7 +28,7 @@ class SignUpForm(forms.Form):
     Cursus_Type = (
         ('apprentissage', 'Apprentissage'),
         ('temps plein', 'Temps Plein'),
-    )
+    )   
     cursus = forms.ChoiceField(widget=forms.RadioSelect, choices=Cursus_Type)
 
     CHOICES_app = [('FR','Réseaux et sécurité'),('FE','Systèmes embarqués'),('FI','Informatique et applications'),('FG','Génie industriel'),('FT','Energies') ]

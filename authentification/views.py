@@ -1,58 +1,45 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 #from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from esieeverse.models import Filiere, Utilisateur, Promotion
+from django.contrib.auth.models import User
 
-def register(request):
+def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            raw_password = form.cleaned_data.get('password1')
-            user.set_password(raw_password)
+            # Créer un nouvel utilisateur
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+
+            # Ajouter les autres données d'inscription à l'utilisateur
+            user.first_name = form.cleaned_data['Prénom']
+            user.last_name = form.cleaned_data['Nom']
+            user.profile_picture = form.cleaned_data['profile_picture']
+            user.ma_promotion = form.cleaned_data['ma_promotion']
+            user.cursus = form.cleaned_data['cursus']
+            user.ma_filliere_app = form.cleaned_data['ma_filliere_app']
+            user.ma_filliere_tp = form.cleaned_data['ma_filliere_tp']
+            user.entreprise = form.cleaned_data['entreprise']
             user.save()
-            login(request, user)
-            messages.success(request, f'Hello {user.username}, Your account has been created successfully!')
 
-            filiere_app_nom = form.cleaned_data.get('ma_filliere_app')
-            cursus_nom = form.cleaned_data.get('cursus')
-
-            if cursus_nom == 'apprentissage':
-                filiere_nom = form.cleaned_data.get('ma_filliere_app')
-            else:
-                filiere_nom = form.cleaned_data.get('ma_filliere_tp')
-
-            promotion_nom = form.cleaned_data.get('ma_promotion')
-
-            utilisateur = Utilisateur(filiere=Filiere.objects.get(nom=filiere_nom),
-                                      promotion=Promotion.objects.get(nom=promotion_nom),
-                                      photo_de_profile=form.cleaned_data.get('profile_picture'))
-            utilisateur.save()
-
-            return redirect('accounts')
+            # Rediriger vers la page de connexion
+            return redirect('home:home_view')
     else:
         form = SignUpForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'Registration/signup.html', {'form': form})
 
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if 'next' in request.GET:
-                return redirect(request.GET['next'])
-            else:
-                return redirect('home')
-        else:
-            error_message = 'Nom d\'utilisateur ou mot de passe incorrect'
-            return render(request, 'login.html', {'error_message': error_message})
-    else:
-        return render(request, 'login.html')
+class CustomLoginView(LoginView):
+    template_name = 'Registration/login.html'
+    form_class = AuthenticationForm
     
 
 def logout_view(request):
