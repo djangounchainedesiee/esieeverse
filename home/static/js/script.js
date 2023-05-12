@@ -6,7 +6,6 @@ jQuery(document).ready(function($) {
   $('.top-area > .setting-area > li').on("click",function(){
 	$(this).siblings().children('div').removeClass('active');
 	$(this).children('div').addClass('active');
-	return false;
   });
 //------- remove class active on body
   $("body *").not('.top-area > .setting-area > li').on("click", function() {

@@ -143,7 +143,6 @@ def select_conversation(request: HttpRequest) -> HttpResponse:
     conversations = Conversation.objects.all()
     context = {
         'conversations': conversations,
-        'return_arrow_btn_url': reverse('esieechat:create')
     }
     return render(request, 'conversation/selectconversation.html', context)
 
