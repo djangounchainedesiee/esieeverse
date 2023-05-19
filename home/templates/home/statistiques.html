@@ -2,16 +2,16 @@
   <h4 class="widget-title">Statistiques</h4>
   <div class="your-page">
     <figure>
-      <a href="#" title="">
+      <a href="{% url 'profil:view_profil' utilisateur.id %}" title="Profil">
         <img
-          src="{{ request.user.utilisateur.photo_de_profile.url }}"
-          alt="{{ request.user.utilisateur.photo_de_profile.name }}"
+          src="{{ utilisateur.photo_de_profile.url }}"
+          alt="{{ utilisateur.photo_de_profile.name }}"
         />
       </a>
     </figure>
     <div class="page-meta">
       <a href="#" title="" class="underline"
-        >{{ request.user.get_full_name }}</a
+        >{{ utilisateur.user.get_full_name }}</a
       >
       <span
         ><i class="ti-comment"></i

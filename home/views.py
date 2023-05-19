@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
+from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseForbidden
 from django.db.models import Count
 from rest_framework.response import Response
 from publication.models import Publication, Evenement, Choix
@@ -94,6 +93,7 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'evenements': evenements,
         'abonnes': abonnes,
         'statistiques_utilisateur': statistiques_utilisateur,
+        'utilisateur': utilisateur
     }
 
     return render(request, "home/index.html", context)
@@ -132,7 +132,16 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
     return JsonResponse(data)
 
 
-def voter(request: HttpRequest, id_choix: int):
+def voter(request: HttpRequest, id_choix: int) -> JsonResponse:
+    """Ajoute un ami à l'utilisateur
+
+    Args:
+        request (HttpRequest): La requête
+        id_choix (int): L'id du choix auquel voter
+
+    Returns:
+        HttpResponse: Redirige vers la page principal
+    """
     csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
     if request.method != 'POST' or csrfmiddlewaretoken == None:
         return HttpResponseForbidden("Le token CSRF est manquant")

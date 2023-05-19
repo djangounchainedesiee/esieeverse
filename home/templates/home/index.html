@@ -1,22 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <title>EsieeVerse</title>
-        <link rel="icon"
-              href="{% static 'images/logo_esieeparis_blanc.png' %}"
-              type="image/png"
-              sizes="16x16"/>
-        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/add_friend.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/color.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
-    </head>
+    {% include 'home/head.html' %}
     <body>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!--<div class="se-pre-con"></div>-->
@@ -30,31 +15,7 @@
                                 <div class="row" id="page-contents">
                                     <div class="col-lg-3">
                                         <aside class="sidebar static">
-                                            <div class="widget">
-                                                <h4 class="widget-title">Shortcuts</h4>
-                                                <ul class="naves">
-                                                    <li>
-                                                        <i class="ti-clipboard"></i>
-                                                        <a href="{% url 'home:home_view' %}" title="Accueil">Fil d'actualité</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="ti-files"></i>
-                                                        <a href="#" title="Profil">Mon profil</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="ti-user"></i>
-                                                        <a href="#" title="">Mes amis</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="ti-comments-smiley"></i>
-                                                        <a href="{% url 'esieechat:select' %}" title="">Messages</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="ti-power-off"></i>
-                                                        <a href="{% url 'auth:logout' %}" title="Deconnexion">Déconnexion</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            {% include 'home/shortcuts.html' %}
                                             <!-- Shortcuts -->
                                             <div class="widget">
                                                 <!-- pour que le block reste collé stick-widget-->
@@ -86,7 +47,6 @@
                                             <script src="{% static 'js/publication_like_dislikes.js' %}"></script>
                                         </div>
                                     </div>
-                                    <!-- centerl meta -->
                                     <div class="col-lg-3">
                                         <aside class="sidebar static">
                                             {% include "home/statistiques.html" %}
@@ -98,10 +58,8 @@
                                                     {% endfor %}
                                                 </ul>
                                             </div>
-                                            <!-- friends list sidebar -->
                                         </aside>
                                     </div>
-                                    <!-- sidebar -->
                                 </div>
                             </div>
                         </div>
@@ -110,10 +68,5 @@
             </section>
             {% include "home/footer.html" %}
         </div>
-        <script data-cfasync="false"
-                src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{% static 'js/main.min.js' %}"></script>
-        <script src="{% static 'js/script.js' %}"></script>
-        <script src="{% static 'js/map-init.js' %}"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8c55_YHLvDHGACkQscgbGLtLRdxBDCfI"></script>
     </body>
 </html>
