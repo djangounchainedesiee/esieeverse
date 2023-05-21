@@ -7,6 +7,7 @@ from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
 from publication.forms import CreatePublicationForm, CreateEvenementForm
+from django.contrib.auth.models import User
 import requests
 
 
@@ -87,6 +88,8 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'total_dislikes': agregate_utilisateur_publications['total_dislikes'] or 0
     }
 
+    noms_utilisateurs = User.objects.values_list('first_name', flat=True)
+
     context = {
         'create_publication_form': create_publication_form,
         'create_evenement_form': create_evenement_form,
@@ -94,6 +97,7 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'evenements': evenements,
         'abonnes': abonnes,
         'statistiques_utilisateur': statistiques_utilisateur,
+        'noms_utilisateurs': noms_utilisateurs
     }
 
     return render(request, "home/index.html", context)

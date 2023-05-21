@@ -12,7 +12,15 @@
                     </svg>
                 </span>
             </div>
-            
+
+
+            <input type="text" list="userlist" Placeholder="Search Users.." class="form-control" style="width:300px;">
+            <datalist id="userlist" >
+                {% for nom_utilisateur in noms_utilisateurs %}
+                <option value="{{nom_utilisateur}}">
+                {% endfor %}
+            </datalist>
+
         </div>
     </div>
 </div>
