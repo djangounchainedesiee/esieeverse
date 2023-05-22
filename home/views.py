@@ -87,7 +87,7 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'total_dislikes': agregate_utilisateur_publications['total_dislikes'] or 0
     }
 
-    noms_utilisateurs = User.objects.values_list('first_name', flat=True)
+    # noms_utilisateurs = User.objects.values_list('first_name', flat=True)
 
     context = {
         'create_publication_form': create_publication_form,
@@ -96,14 +96,22 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'evenements': evenements,
         'abonnes': abonnes,
         'statistiques_utilisateur': statistiques_utilisateur,
-<<<<<<< HEAD
-        'noms_utilisateurs': noms_utilisateurs
-=======
-        'utilisateur': utilisateur
->>>>>>> 0691630e991bb93c32d87bb1f1d415571c31a1b3
+        'utilisateur': utilisateur,
     }
 
     return render(request, "home/index.html", context)
+
+def search_user(request):
+    profil = request.GET.get('first_name')
+    payload = []
+    if profil:
+        profil_objs = User.objects.filter(first_name__icontains = profil).values()
+
+        for profil_obj in profil_objs:
+            payload.append(profil_obj)
+    
+    return JsonResponse({'status': 200, 'data': payload})
+
 
 
 def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
