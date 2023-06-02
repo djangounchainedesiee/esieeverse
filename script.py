@@ -1,4 +1,5 @@
 import random
+import string
 from django.contrib.auth.models import User
 from esieeverse.models import Filiere, Promotion, Utilisateur
 
@@ -48,7 +49,7 @@ def generate_users(num_users):
     for i in range(num_users):
         # Création d'un utilisateur Django
         username = usernames[i]
-        password = f'password{i}'
+        password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
         user = User.objects.create_user(username=username, password=password)
 
         # Sélection aléatoire d'une filière et d'une promotion
@@ -63,6 +64,7 @@ def generate_users(num_users):
         last_name = last_names[i % len(last_names)]
         user.first_name = first_name
         user.last_name = last_name
+        user.email = f''
         user.save()
 
 generate_users(50)
