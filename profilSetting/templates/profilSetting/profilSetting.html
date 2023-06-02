@@ -74,7 +74,11 @@
 								<div class="central-meta">
 									<div class="onoff-options">
 										<h5 class="f-title"><i class="ti-settings"></i>account setting</h5>
-										
+										<form method="post">
+											{% csrf_token %}
+											{{ form }}
+											<button type="submit" style = "margin :20px">Envoyer</button>
+										</form>
 									</div>
 								</div>	
 							</div><!-- centerl meta -->
@@ -85,6 +89,7 @@
 			</div>
 		</div>	
 	</section>
+
 
 {% include 'home/footer.html' %}
 	<div class="bottombar">
@@ -104,6 +109,7 @@
 	
 	<script src="js/main.min.js"></script>
 	<script src="js/script.js"></script>
+	
 
 </body>	
 
