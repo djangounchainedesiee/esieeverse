@@ -20,8 +20,12 @@ def profil_setting(request: HttpRequest) -> HttpResponse:
             password = setting_form.cleaned_data['password']
             photo_de_profile = setting_form.cleaned_data['photo_de_profile']
 
+            print('password : ', password)
+
             if password is not None and len(password) > 0:
-                if utilisateur.user.check_password(password): 
+                print('Changement mot de passe verif : ', utilisateur.user.check_password(str(password)))
+                if utilisateur.user.check_password(str(password)): 
+                    print('Changement mot de passe')
                     utilisateur.user.set_password(password) 
                 else:
                     context = {
