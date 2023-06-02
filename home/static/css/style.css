@@ -4537,7 +4537,7 @@ canvas {
 
 .btn-view.btn-load-more::before {
     color: #333;
-    content: "\f01e";
+    content: "\f063";
     font-family: fontawesome;
     left: 50%;
     opacity: 1;
