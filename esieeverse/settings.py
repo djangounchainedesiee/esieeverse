@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'publication',
     'authentification',
     'home',
+    'profil',
     'crispy_forms',
     'rest_framework',
     'django_filters',

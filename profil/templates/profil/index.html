@@ -3,13 +3,10 @@
 <html lang="en">
     {% include 'home/head.html' %}
     <body>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
-        
-        <!--<div class="se-pre-con"></div>-->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <div class="theme-layout">
             {% include 'home/navbar.html' %}
+            {% include 'profil/topbar.html' %}
             <section>
                 <div class="gap gray-bg">
                     <div class="container-fluid">
@@ -19,10 +16,9 @@
                                     <div class="col-lg-3">
                                         <aside class="sidebar static">
                                             {% include 'home/shortcuts.html' %}
-                                            <!-- Shortcuts -->
                                             <div class="widget">
                                                 <!-- pour que le block reste collé stick-widget-->
-                                                <h4 class="widget-title">Mes Abonnés</h4>
+                                                <h4 class="widget-title">Ils le/la suivent</h4>
                                                 <ul class="followers">
                                                     {% for abonne in abonnes %}
                                                         {% include 'home/abonne.html' %}
@@ -30,14 +26,10 @@
                                                     <script src="{% static 'js/abonne.js' %}"></script>
                                                 </ul>
                                             </div>
-                                            <!-- who's following -->
                                         </aside>
                                     </div>
                                     <!-- sidebar -->
                                     <div class="col-lg-6">
-                                        {% include 'home/searchUser.html' %}
-                                        {% include 'home/create-post-form.html' %}
-                                        <!-- add post new box -->
                                         <div class="loadMore">
                                             {% for evenement in evenements %}
                                                 {% include "publication/evenement.html" %}
@@ -54,9 +46,9 @@
                                         <aside class="sidebar static">
                                             {% include "home/statistiques.html" %}
                                             <div class="widget friend-list stick-widget">
-                                                <h4 class="widget-title">Mes abonnements</h4>
+                                                <h4 class="widget-title">Ses abonnements</h4>
                                                 <ul id="people-list" class="friendz-list">
-                                                    {% for abonnement in request.user.utilisateur.abonnements.all %}
+                                                    {% for abonnement in abonnements %}
                                                         {% include "home/abonnement.html" %}
                                                     {% endfor %}
                                                 </ul>
