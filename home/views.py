@@ -66,9 +66,9 @@ def home_view(request: HttpRequest) -> HttpResponse:
 
     # MAJ des publications/evenements/abonnnées sur la home page
     publications = Publication.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date')
     evenements = Evenement.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date_debut')
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     # Pour chaque choix on vérifie si l'utilisateur à déjà voté dessus
