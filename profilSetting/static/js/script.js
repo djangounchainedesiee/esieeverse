@@ -17,7 +17,6 @@ jQuery(document).ready(function($) {
 //--- user setting dropdown on topbar	
 $('.user-img').on('click', function() {
 	$('.user-setting').toggleClass("active");
-	return false;
 });	
 	
 //--- side message box	

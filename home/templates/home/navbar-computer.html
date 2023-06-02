@@ -11,15 +11,10 @@
                 <a href="{% url 'home:home_view' %}" title="accueil">Accueil</a>
                 <ul>
                     <li>
-                        <a href="#" title="">Mon profil</a>
+                        <a href="{% url 'profil:view_profil' request.user.utilisateur.id %}" title="Profil">Mon profil</a>
                     </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="">ESIEE MARKETPLACE</a>
-                <ul>
                     <li>
-                        <a href="#" title="">Mon panier</a>
+                        <a href="">Déconnexion</a>
                     </li>
                 </ul>
             </li>
@@ -31,15 +26,16 @@
             <li>
                 <a href="{% url 'esieechat:select' %}" title="Messages"><i class="ti-comment"></i></a>
             </li>
+            <li>
+                <a href="{% url 'profilSetting:profil_setting' %}" title="Profil Setting"><i class="ti-settings"></i></a>
+            </li>
+            <li>
+                <a href="#" title=""><i class="ti-power-off"></i></a>
+            </li>
         </ul>
-        <div class="user-img">
+        <a class="user-img" href="{% url 'profil:view_profil' request.user.utilisateur.id %}">
             <img style="width: 32px; height: 32px" src="{{ request.user.utilisateur.photo_de_profile.url }}" alt="request.user.utilisateur.photo_de_profile.name">
             <span class="status f-online"></span>
-            <div class="user-setting">
-                <a href="#" title=""><i class="ti-user"></i> Mon profil</a>
-                <a href="{% url 'profilSetting:profil_setting' %}" title="Profil Setting"><i class="ti-settings"></i>Paramètres de mon compte</a>
-                <a href="#" title=""><i class="ti-power-off"></i>Déconnexion</a>
-            </div>
-        </div>
+        </a>
     </div>
 </div>
