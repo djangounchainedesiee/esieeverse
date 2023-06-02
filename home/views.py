@@ -9,7 +9,6 @@ from publication.forms import CreatePublicationForm, CreateEvenementForm
 from django.contrib.auth.models import User
 import requests
 
-
 def home_view(request: HttpRequest) -> HttpResponse:
     """Génère la vue principale contenant le flux d'actualité de la personne
 

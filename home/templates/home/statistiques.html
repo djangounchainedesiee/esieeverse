@@ -10,7 +10,7 @@
       </a>
     </figure>
     <div class="page-meta">
-      <a href="#" title="" class="underline"
+      <a href="{% url 'profil:view_profil' utilisateur.id %}" class="underline"
         >{{ utilisateur.user.get_full_name }}</a
       >
       <span
