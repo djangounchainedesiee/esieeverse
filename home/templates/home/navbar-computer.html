@@ -14,7 +14,7 @@
                         <a href="{% url 'profil:view_profil' request.user.utilisateur.id %}" title="Profil">Mon profil</a>
                     </li>
                     <li>
-                        <a href="">Déconnexion</a>
+                        <a href="{% url 'auth:logout' %}">Déconnexion</a>
                     </li>
                 </ul>
             </li>
@@ -30,7 +30,7 @@
                 <a href="{% url 'profilSetting:profil_setting' %}" title="Profil Setting"><i class="ti-settings"></i></a>
             </li>
             <li>
-                <a href="#" title=""><i class="ti-power-off"></i></a>
+                <a href="{% url 'auth:logout' %}"><i class="ti-power-off"></i></a>
             </li>
         </ul>
         <a class="user-img" href="{% url 'profil:view_profil' request.user.utilisateur.id %}">

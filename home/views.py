@@ -105,10 +105,14 @@ def search_user(request):
     profil = request.GET.get('first_name')
     payload = []
     if profil:
-        profil_objs = User.objects.filter(first_name__icontains = profil).values()
+        profil_objs = Utilisateur.objects.filter(user__in = User.objects.filter(first_name__icontains = profil))
 
         for profil_obj in profil_objs:
-            payload.append(profil_obj)
+            profil_dict = {
+                'id': profil_obj.id,
+                'first_name': profil_obj.user.first_name,
+            }
+            payload.append(profil_dict)
     
     return JsonResponse({'status': 200, 'data': payload})
 
