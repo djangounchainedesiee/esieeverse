@@ -143,7 +143,6 @@ def select_conversation(request: HttpRequest) -> HttpResponse:
     conversations = Conversation.objects.all()
     context = {
         'conversations': conversations,
-        'return_arrow_btn_url': reverse('esieechat:create')
     }
     return render(request, 'conversation/selectconversation.html', context)
 
@@ -167,8 +166,9 @@ def view_conversation(request: HttpRequest, id_conversation: int) -> HttpRespons
         return redirect('esieechat:select')
 
     message_form = MessageForm()
+    utilisateur_connecte: Utilisateur = request.user.utilisateur
 
-    messages = Message.objects.filter(conversation_id=id_conversation)
+    messages = Message.objects.filter(conversation_id=id_conversation).exclude(utilisateur__in=utilisateur_connecte.banis.all())
     conversation: Conversation = conversations[0]
 
     context = {
