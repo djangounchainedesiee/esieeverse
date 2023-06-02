@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static 
-from home.views import home_view
 
 urlpatterns = [
     path('', include('home.urls')),
@@ -27,4 +26,5 @@ urlpatterns = [
     path('conversation/', include('esieechat.urls')),
     path('auth/', include('authentification.urls')),
     path('publication/', include('publication.urls')),
+    path('profil/', include('profil.urls')),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
