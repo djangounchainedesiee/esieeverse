@@ -1,116 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-	<title>Winku Social Network Toolkit</title>
-    <link rel="icon" href="images/fav.png" type="image/png" sizes="16x16"> 
-    
-    <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/color.css' %}">
-    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-
-</head>
-<body>
-<!--<div class="se-pre-con"></div>-->
-<div class="theme-layout">
-	
-	<div class="responsive-header">
-		<div class="mh-head first Sticky">
-			<span class="mh-btns-left">
-				<a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
-			</span>
-			<span class="mh-text">
-				<a href="newsfeed.html" title=""><img src="images/logo2.png" alt=""></a>
-			</span>
-			<span class="mh-btns-right">
-				<a class="fa fa-sliders" href="#shoppingbag"></a>
-			</span>
-		</div>
-		<div class="mh-head second">
-			<form class="mh-form">
-				<input placeholder="search" />
-				<a href="#/" class="fa fa-search"></a>
-			</form>
-		</div>
-		
-		
-	</div><!-- responsive header -->
-
-	</div><!-- topbar -->
-	
-	<section>
-		<div class="feature-photo">	
-			<div class="container-fluid">
-				<div class="row merged">
-					
-					<div class="col-lg-10 col-sm-9">
-						<div class="timeline-info">
-							<ul>
-								<li class="admin-name">
-								  <h5>{{ request.user.get_full_name }}</h5>
-								</li>
-								
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section><!-- top area -->
-
-	<section>
-		<div class="gap gray-bg">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="row" id="page-contents">
-							
-							<div class="col-lg-6">
-								<div class="central-meta">
-									<div class="onoff-options">
-										<h5 class="f-title"><i class="ti-settings"></i>account setting</h5>
-										<form method="post">
-											{% csrf_token %}
-											{{ form }}
-											<button type="submit" style = "margin :20px">Envoyer</button>
-										</form>
-									</div>
-								</div>	
-							</div><!-- centerl meta -->
-					
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>	
-	</section>
-
-
-{% include 'home/footer.html' %}
-	<div class="bottombar">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<span class="copyright"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></span>
-					<i><img src="images/credit-cards.png" alt=""></i>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-	<div class="side-panel">
-		<h4 class="panel-title">Account Setting</h4>
-		</div><!-- side panel -->	
-	
-	<script src="js/main.min.js"></script>
-	<script src="js/script.js"></script>
-	
-
-</body>	
-
+    {% load static %}
+    {% include 'home/head.html' %}
+    <body>
+        <!--<div class="se-pre-con"></div>-->
+        <div class="theme-layout">
+            {% comment %} {% include 'home/navbar.html' %} {% endcomment %}
+            {% include 'profilSetting/topbar.html' %}
+            <section>
+                <div class="gap gray-bg">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" id="page-contents">
+                                    <div class="col-lg-6">
+                                        <div class="central-meta">
+                                            <div class="onoff-options">
+                                                <h5 class="f-title">
+                                                    <i class="ti-settings"></i>Account Setting
+                                                </h5>
+                                                <form method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {{ setting_form.as_p }}
+                                                    <button type="submit" style = "margin :20px">Envoyer</button>
+                                                </form>
+                                                {% if error %}<div class="alert alert-danger d-flex align-items-center" role="alert">{{ error }}</div>{% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- centerl meta -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% include 'home/footer.html' %}
+        </div>
+    </body>
 </html>

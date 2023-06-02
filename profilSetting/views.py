@@ -11,21 +11,39 @@ def profil_setting(request: HttpRequest) -> HttpResponse:
         return redirect('auth:login')
 
     utilisateur: Utilisateur = request.user.utilisateur
-    form = SettingForm()
+    setting_form = SettingForm()
 
     if request.method == "POST":
-        form = SettingForm(request.POST,request.FILES)
+        setting_form = SettingForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            password = form.cleaned_data['password']
-            photo_Profile = form.cleaned_data['PhotoProfile']
-            print(photo_Profile)
+        if setting_form.is_valid():
+            password = setting_form.cleaned_data['password']
+            photo_de_profile = setting_form.cleaned_data['photo_de_profile']
 
-            utilisateur.user.set_password(password) 
-            utilisateur.photo_de_profile = photo_Profile
+            if password is not None and len(password) > 0:
+                if utilisateur.user.check_password(password): 
+                    utilisateur.user.set_password(password) 
+                else:
+                    context = {
+                        "setting_form": setting_form,
+                        "utilisateur": utilisateur,
+                        "error": "Votre nouveau mot de passe est similaire au précédant ou il n'est pas assez fort"
+                    }
+
+                    return render(request, 'profilSetting/profilSetting.html',  context)
+                    
+            if photo_de_profile is not None:
+                utilisateur.photo_de_profile = photo_de_profile
+
             utilisateur.save()
-            return redirect("profil:view_profil", id_utilisateur = utilisateur.id)
 
-    return render(request, 'profilSetting/profilSetting.html',  {"form": form})
+            return redirect("profil:view_profil", id_utilisateur = utilisateur.id)
+        
+    context = {
+        "setting_form": setting_form,
+        "utilisateur": utilisateur,
+    }
+
+    return render(request, 'profilSetting/profilSetting.html',  context)
 
 
