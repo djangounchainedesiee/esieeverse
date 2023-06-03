@@ -17,8 +17,8 @@ def view_profil(request: HttpRequest, id_utilisateur: int) -> HttpResponse:
     utilisateur: Utilisateur = Utilisateur.objects.get(id=id_utilisateur)
 
     # MAJ des publications/evenements/abonnnées sur la home page
-    publications = Publication.objects.filter(auteur=utilisateur)
-    evenements = Evenement.objects.filter(auteur=utilisateur)
+    publications = Publication.objects.filter(auteur=utilisateur).order_by('-date')
+    evenements = Evenement.objects.filter(auteur=utilisateur).order_by('-date_debut')
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     # Pour chaque choix on vérifie si l'utilisateur à déjà voté dessus

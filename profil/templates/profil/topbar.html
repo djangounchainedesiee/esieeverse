@@ -7,18 +7,19 @@
         </figure>
         <div class="add-btn">
             <span>{{ abonnes.count }} followers</span>
+            {% csrf_token %}
             {% if utilisateur != request.user.utilisateur %}
                 {% if utilisateur in request.user.utilisateur.abonnements.all %}
                     <span class="abonne"
                           data-toggle="tooltip"
                           title="Abonné"
-                          data-pk="{{ abonne.id }}"
+                          data-pk="{{ utilisateur.id }}"
                           class="underline">Abonné</span>
                 {% else %}
                     <span class="add_friend"
                           data-toggle="tooltip"
                           title="S'abonner"
-                          data-pk="{{ abonne.id }}"
+                          data-pk="{{ utilisateur.id }}"
                           class="underline">
                         S'abonner
                     </span>
