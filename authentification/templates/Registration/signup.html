@@ -1,0 +1,42 @@
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% block content %}
+  <h2>Inscription</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">S'inscrire</button>
+  </form>
+{% endblock %}
+
+
+    <div>
+    <small>
+        Déjà inscrit.e?
+        <a href="{% url 'auth:login' %}">Se connecter</a>
+    </small>
+  </div>
+
+  <script>
+
+
+
+    
+    
+    
+
+
+
+
+    /*
+    function onSignIn(googleUser) {
+        // Récupérer les informations d'identification de l'utilisateur
+        var profile = googleUser.getBasicProfile();
+        console.log("ID token: " + googleUser.getAuthResponse().id_token);
+        console.log("Nom: " + profile.getName());
+        console.log("Email: " + profile.getEmail());
+      }
+      */
+  </script>
+

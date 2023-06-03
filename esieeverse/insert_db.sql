@@ -13,3 +13,4 @@ INSERT INTO esieeverse_filiere (nom) VALUES
 ('GI'),
 ('BIO'),
 ('ENE');
+
