@@ -34,11 +34,11 @@ def signup(request):
             return redirect('home:home_view')
     else:
         form = SignUpForm()
-    return render(request, 'Registration/signup.html', {'form': form})
+    return render(request, 'registration/signup.html', {'form': form})
 
 
 class CustomLoginView(LoginView):
-    template_name = 'Registration/login.html'
+    template_name = 'registration/login.html'
     form_class = AuthenticationForm
     
 
