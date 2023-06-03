@@ -9,7 +9,6 @@ from publication.forms import CreatePublicationForm, CreateEvenementForm
 from django.contrib.auth.models import User
 import requests
 
-
 def home_view(request: HttpRequest) -> HttpResponse:
     """Génère la vue principale contenant le flux d'actualité de la personne
 
@@ -66,9 +65,9 @@ def home_view(request: HttpRequest) -> HttpResponse:
 
     # MAJ des publications/evenements/abonnnées sur la home page
     publications = Publication.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date')
     evenements = Evenement.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date_debut')
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     # Pour chaque choix on vérifie si l'utilisateur à déjà voté dessus
@@ -105,10 +104,14 @@ def search_user(request):
     profil = request.GET.get('first_name')
     payload = []
     if profil:
-        profil_objs = User.objects.filter(first_name__icontains = profil).values()
+        profil_objs = Utilisateur.objects.filter(user__in = User.objects.filter(first_name__icontains = profil))
 
         for profil_obj in profil_objs:
-            payload.append(profil_obj)
+            profil_dict = {
+                'id': profil_obj.id,
+                'first_name': profil_obj.user.first_name,
+            }
+            payload.append(profil_dict)
     
     return JsonResponse({'status': 200, 'data': payload})
 
