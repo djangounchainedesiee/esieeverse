@@ -110,6 +110,7 @@ def search_user(request):
             profil_dict = {
                 'id': profil_obj.id,
                 'first_name': profil_obj.user.first_name,
+                'last_name': profil_obj.user.last_name,
             }
             payload.append(profil_dict)
     
