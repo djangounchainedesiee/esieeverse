@@ -1,21 +1,29 @@
 <li id="id-utilisateur-{{ abonne.id }}">
     <figure>
-        <img src="{{ abonne.photo_de_profile.url }}" alt="{{ abonne.photo_de_profile.name }}">
+        <img src="{{ abonne.photo_de_profile.url }}"
+             alt="{{ abonne.photo_de_profile.name }}">
     </figure>
     <div class="friend-meta">
         {% csrf_token %}
         <h4>
-            {% comment %} {% url 'profil:home' utilisateur_id=abonnement.id %} {% endcomment %}
-            <a href="">{{ abonne.user.first_name }}</a>
+            <a href="{% url 'profil:view_profil' abonne.id %}">{{ abonne.user.first_name }}</a>
         </h4>
-        {% if abonne in request.user.utilisateur.abonnements.all %}
-        <span class="abonne" data-toggle="tooltip" title="Abonné" data-pk="{{ abonne.id }}" class="underline">
-            Abonné
-        </span>
-        {% else %}
-            <span class="add_friend" data-toggle="tooltip" title="S'abonner" data-pk="{{ abonne.id }}" class="underline">
-                S'abonner
-            </span>
+        {% if abonne != request.user.utilisateur %}
+            {% if abonne in request.user.utilisateur.abonnements.all %}
+                <span class="abonne"
+                      data-toggle="tooltip"
+                      title="Abonné"
+                      data-pk="{{ abonne.id }}"
+                      class="underline">Abonné</span>
+            {% else %}
+                <span class="add_friend"
+                      data-toggle="tooltip"
+                      title="S'abonner"
+                      data-pk="{{ abonne.id }}"
+                      class="underline">
+                    S'abonner
+                </span>
+            {% endif %}
         {% endif %}
     </div>
 </li>

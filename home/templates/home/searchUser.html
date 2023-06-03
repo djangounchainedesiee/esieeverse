@@ -1,0 +1,42 @@
+{% load static %}
+<div class="central-meta">
+    <div class="sidebar">
+        <div class="nav-item">
+            <h5 class="widget-title">Rechercher un membre</h5>            
+            <div id="autocomplete" class="autocomplete" [displayWith]="getOptionText">
+                <input class="autocomplete-input" id="inputBox"/>
+                <ul class="autocomplete-result-list"></ul>
+              </div>
+
+            <script>
+                new Autocomplete('#autocomplete', {
+                    search : input => {
+                        const url = `/search/?first_name=${input}`
+                        return new Promise(resolve => {
+                            fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                resolve(data.data)
+                            })
+                        })
+                    },
+                    renderResult: (result, props) => {
+                        return `
+                        <li ${props}>
+                            <div class="wiki-title">
+                                ${result.first_name}
+                            </div>
+                        </li>`
+                    },
+                    getResultValue: result => result.first_name,
+                    onSubmit : result => {
+                        window.open(`/profil/${result.id}/`, "_self")
+                    },
+                    minLength: 1
+                })
+            </script>
+            
+        </div>
+    </div>
+</div>
+

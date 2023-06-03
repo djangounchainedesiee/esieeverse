@@ -49,7 +49,6 @@ class MessageForm(forms.ModelForm):
         model = Message
         fields = ['contenu']
 
-
 class ConversationAddUtilisateurForm(forms.Form):
     """
     Représente un fomulaire perttant d'ajouter un utilisateur à la conversation

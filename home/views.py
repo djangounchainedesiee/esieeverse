@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponse, HttpResponseForbidden
+from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseForbidden
 from django.db.models import Count
 from rest_framework.response import Response
 from publication.models import Publication, Evenement, Choix
 from esieeverse.models import Utilisateur
 from esieeverse.utils import check_utilisateur_auth
 from publication.forms import CreatePublicationForm, CreateEvenementForm
+from django.contrib.auth.models import User
 import requests
-
 
 def home_view(request: HttpRequest) -> HttpResponse:
     """Génère la vue principale contenant le flux d'actualité de la personne
@@ -66,9 +65,9 @@ def home_view(request: HttpRequest) -> HttpResponse:
 
     # MAJ des publications/evenements/abonnnées sur la home page
     publications = Publication.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date')
     evenements = Evenement.objects.filter(
-        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur)
+        auteur_id__in=utilisateur.abonnements.all()).exclude(auteur_id=utilisateur).order_by('-date_debut')
     abonnes = Utilisateur.objects.filter(abonnements=utilisateur)
 
     # Pour chaque choix on vérifie si l'utilisateur à déjà voté dessus
@@ -87,6 +86,8 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'total_dislikes': agregate_utilisateur_publications['total_dislikes'] or 0
     }
 
+    # noms_utilisateurs = User.objects.values_list('first_name', flat=True)
+
     context = {
         'create_publication_form': create_publication_form,
         'create_evenement_form': create_evenement_form,
@@ -94,9 +95,26 @@ def home_view(request: HttpRequest) -> HttpResponse:
         'evenements': evenements,
         'abonnes': abonnes,
         'statistiques_utilisateur': statistiques_utilisateur,
+        'utilisateur': utilisateur,
     }
 
     return render(request, "home/index.html", context)
+
+def search_user(request):
+    profil = request.GET.get('first_name')
+    payload = []
+    if profil:
+        profil_objs = Utilisateur.objects.filter(user__in = User.objects.filter(first_name__icontains = profil))
+
+        for profil_obj in profil_objs:
+            profil_dict = {
+                'id': profil_obj.id,
+                'first_name': profil_obj.user.first_name,
+            }
+            payload.append(profil_dict)
+    
+    return JsonResponse({'status': 200, 'data': payload})
+
 
 
 def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
@@ -132,7 +150,16 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
     return JsonResponse(data)
 
 
-def voter(request: HttpRequest, id_choix: int):
+def voter(request: HttpRequest, id_choix: int) -> JsonResponse:
+    """Ajoute un ami à l'utilisateur
+
+    Args:
+        request (HttpRequest): La requête
+        id_choix (int): L'id du choix auquel voter
+
+    Returns:
+        HttpResponse: Redirige vers la page principal
+    """
     csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
     if request.method != 'POST' or csrfmiddlewaretoken == None:
         return HttpResponseForbidden("Le token CSRF est manquant")

@@ -245,7 +245,6 @@ section {
 }
 
 .pattern:before {
-    background: #088dcd url("../images/dot-pattern.png") repeat scroll 0 0;
     opacity: 0.45;
 }
 
@@ -2548,7 +2547,6 @@ footer .logo {
 }
 
 .theme-layout::before {
-    background: url(../images/dot-pattern.png);
     background-repeat: repeat;
     content: "";
     height: 100%;
@@ -4539,7 +4537,7 @@ canvas {
 
 .btn-view.btn-load-more::before {
     color: #333;
-    content: "\f01e";
+    content: "\f063";
     font-family: fontawesome;
     left: 50%;
     opacity: 1;

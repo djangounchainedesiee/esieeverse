@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$zqcsq9ny4%f)tjrkc_r-uls9)u(s57veq3ifd@mh%(7s9^qti'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '2(68e+wd$q9sv&a#gwz=^!2*ms+cenm+kygsb)twg^0-axtm81')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'publication',
     'authentification',
     'home',
+    'profilSetting',
     'crispy_forms',
     'rest_framework',
     'django_filters',
     'channels',
+    'profil'
 ]
 
 MIDDLEWARE = [
@@ -148,6 +150,7 @@ AUTHENTICATION_BACKENDS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -156,3 +159,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
