@@ -1,4 +1,4 @@
-FROM python:3.9.13
+FROM python:3.9.16
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ RUN python manage.py collectstatic
 
 EXPOSE 8000
 
-CMD ["gunicorn", "esieeverse.wsgi", "--bind", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
