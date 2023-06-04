@@ -150,7 +150,6 @@ def add_friend(request: HttpRequest, id_utilisateur: int) -> JsonResponse:
 
     return JsonResponse(data)
 
-
 def voter(request: HttpRequest, id_choix: int) -> JsonResponse:
     """Ajoute un ami à l'utilisateur
 

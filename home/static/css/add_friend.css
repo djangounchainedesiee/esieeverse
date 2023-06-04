@@ -1,3 +1,7 @@
 .add_friend {
     cursor: pointer;
 }
+
+.delete_friend {
+    cursor: pointer;
+}
