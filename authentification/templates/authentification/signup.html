@@ -1,42 +1,118 @@
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 {% block content %}
   <h2>Inscription</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div id="form-fields">
+      <div class="form-field">
+        {{ form.profile_picture.label_tag }}
+        {{ form.profile_picture }}
+      </div>
+      <div class="form-field">
+        {{ form.Prénom.label_tag }}
+        {{ form.Prénom }}
+      </div>
+      <div class="form-field">
+        {{ form.Nom.label_tag }}
+        {{ form.Nom }}
+      </div>
+      <div class="form-field">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+      <div class="form-field">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <div class="form-field">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </div>
+      <div class="form-field">
+        {{ form.password_confirm.label_tag }}
+        {{ form.password_confirm }}
+      </div>
+      <div class="form-field">
+        {{ form.ma_promotion.label_tag }}
+        {{ form.ma_promotion }}
+      </div>
+      <div class="form-field" id="cursus-field">
+        {{ form.cursus.label_tag }}
+        {{ form.cursus }}
+      </div>
+      <div class="form-field" id="filliere-app-field">
+        {{ form.ma_filliere_app.label_tag }}
+        {{ form.ma_filliere_app }}
+      </div>
+      <div class="form-field" id="filliere-tp-field">
+        {{ form.ma_filliere_tp.label_tag }}
+        {{ form.ma_filliere_tp }}
+      </div>
+      <div class="form-field" id="entreprise-field">
+        {{ form.entreprise.label_tag }}
+        {{ form.entreprise }}
+      </div>
+    </div>
     <button type="submit">S'inscrire</button>
   </form>
 {% endblock %}
 
 
-    <div>
-    <small>
-        Déjà inscrit.e?
-        <a href="{% url 'auth:login' %}">Se connecter</a>
-    </small>
-  </div>
+<div>
+  <small>
+    Déjà inscrit.e?
+    <a href="{% url 'auth:login' %}">Se connecter</a>
+  </small>
+</div>
 
-  <script>
+<script>
+  // Fonction pour afficher les champs en fonction des sélections
+  function afficherChamps() {
+    const promotion = document.getElementById("id_ma_promotion");
+    const cursus = document.querySelector('input[name="cursus"]:checked');
+    const maFilliereAppElement = document.getElementById("filliere-app-field");
+    const maFilliereTpElement = document.getElementById("filliere-tp-field");
+    const entrepriseElement = document.getElementById("entreprise-field");
 
+    if (
+      promotion.value === "E3" ||
+      promotion.value === "E4" ||
+      promotion.value === "E5"
+    ) {
+      // Afficher le champ "Cursus"
+      document.getElementById("cursus-field").style.display = "block";
 
+      if (cursus.value === "apprentissage") {
+        // Afficher le champ "Filière Apprentissage" et "Entreprise"
+        maFilliereAppElement.style.display = "block";
+        entrepriseElement.style.display = "block";
 
-    
-    
-    
+        // Cacher le champ "Filière Temps Plein"
+        maFilliereTpElement.style.display = "none";
+      } else if (cursus.value === "temps plein") {
+        // Afficher le champ "Filière Temps Plein"
+        maFilliereTpElement.style.display = "block";
 
-
-
-
-    /*
-    function onSignIn(googleUser) {
-        // Récupérer les informations d'identification de l'utilisateur
-        var profile = googleUser.getBasicProfile();
-        console.log("ID token: " + googleUser.getAuthResponse().id_token);
-        console.log("Nom: " + profile.getName());
-        console.log("Email: " + profile.getEmail());
+        // Cacher le champ "Filière Apprentissage" et "Entreprise"
+        maFilliereAppElement.style.display = "none";
+        entrepriseElement.style.display = "none";
       }
-      */
-  </script>
+    } else {
+      // Cacher tous les champs
+      document.getElementById("cursus-field").style.display = "none";
+      maFilliereAppElement.style.display = "none";
+      maFilliereTpElement.style.display = "none";
+      entrepriseElement.style.display = "none";
+    }
+  }
 
+  // Appel de la fonction au chargement de la page
+  window.addEventListener("DOMContentLoaded", afficherChamps);
+
+  // Appel de la fonction lorsque les sélections changent
+  document
+    .getElementById("id_ma_promotion")
+    .addEventListener("change", afficherChamps);
+  document
+    .querySelectorAll('input[name="cursus"]')
+    .forEach(radio => radio.addEventListener("change", afficherChamps));
+</script>

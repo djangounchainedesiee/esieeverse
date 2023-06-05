@@ -11,10 +11,10 @@ class SignUpForm(forms.Form):
 
     username = forms.CharField(max_length=150, label='Nom d\'utilisateur')
 
-    email = forms.EmailField(max_length=254, help_text = 'Requis. Entrez une adresse mail valide.')
+    email = forms.EmailField(max_length=254, help_text = 'Entrez une adresse mail ESIEE.')
     
-    password = forms.CharField(widget=forms.PasswordInput())
-    password_confirm = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(), label='Mot de passe')
+    password_confirm = forms.CharField(widget=forms.PasswordInput, label='Confirmation du mot de passe')
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get("password")
@@ -27,7 +27,7 @@ class SignUpForm(forms.Form):
     
     #champs information utilisateur
 
-    profile_picture = forms.ImageField(required=False, widget=forms.ClearableFileInput())
+    profile_picture = forms.ImageField(required=False, widget=forms.ClearableFileInput(),  label='Photo du profil')
 
     Prénom = forms.CharField(label='Prénom', max_length=150)
 
