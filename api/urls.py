@@ -7,6 +7,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('abonnements/', views.Abonnements.as_view(), name="abonnements"),
+    path('banis/', views.Banis.as_view(), name="banis"),
     path('choixs/', views.Choixs.as_view(), name="choix"),
     path('evenements/<int:id_evenement>/choixs/', views.getAllChoixsWithTotalVotesByEvenement, name="choixs_by_evenement"),
 ]

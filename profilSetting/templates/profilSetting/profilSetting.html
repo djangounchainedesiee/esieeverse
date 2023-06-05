@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% include 'home/head.html' %}
+    <body>
+        <!--<div class="se-pre-con"></div>-->
+        <div class="theme-layout">
+            {% include 'home/navbar.html' %}
+            {% include 'profilSetting/topbar.html' %}
+            <section>
+                <div class="gap gray-bg">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" id="page-contents">
+                                    <div class="col-lg-6">
+                                        <div class="central-meta">
+                                            <div class="onoff-options">
+                                                <h5 class="f-title">
+                                                    <i class="ti-settings"></i>Account Setting
+                                                </h5>
+                                                <form method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {{ setting_form.as_p }}
+                                                    <button type="submit" style = "margin :20px">Envoyer</button>
+                                                </form>
+                                                {% if error %}<div class="alert alert-danger d-flex align-items-center" role="alert">{{ error }}</div>{% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- centerl meta -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% include 'home/footer.html' %}
+        </div>
+    </body>
+</html>
