@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENV DJANGO_DEBUG=False
+ENV DJANGO_DEBUG=True
 RUN python manage.py collectstatic
 
 EXPOSE 8000
