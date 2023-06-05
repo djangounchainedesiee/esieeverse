@@ -7,6 +7,15 @@ const handleSuccessAbonne = function (response) {
     ADD_FRIEND.off('click');
 };
 
+const handleSuccessDesabonne = function () {
+    location.reload();
+};
+
+
+const handleSuccessAbonneProfilTopBar = function(){
+    location.reload();
+}
+
 $(document).ready(function () {
     $(".followers .friend-meta .add_friend").click(function () {
         const id_utilisateur = $(this).data("pk");
@@ -17,6 +26,28 @@ $(document).ready(function () {
             csrfmiddlewaretoken: CSFR_TOKEN_CHOIX ,
         },
         success: handleSuccessAbonne,
+        });
+    });
+    $(".followers .friend-meta .delete_friend").click(function () {
+        const id_utilisateur = $(this).data("pk");
+        $.ajax({
+        url: "/add_friend/" + id_utilisateur + "/",
+        type: "POST",
+        data: {
+            csrfmiddlewaretoken: CSFR_TOKEN_CHOIX ,
+        },
+        success: handleSuccessDesabonne,
+        });
+    });
+    $(".add-btn .add_friend").click(function () {
+        const id_utilisateur = $(this).data("pk");
+        $.ajax({
+        url: "/add_friend/" + id_utilisateur + "/",
+        type: "POST",
+        data: {
+            csrfmiddlewaretoken: CSFR_TOKEN_CHOIX ,
+        },
+        success: handleSuccessAbonneProfilTopBar,
         });
     });
 });
