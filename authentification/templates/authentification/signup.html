@@ -86,8 +86,10 @@
 
     .profile-picture-preview{
       font-size:0px;
+      background-image: url('/media/Ellipse.png');
+      background-size: cover;
+      background-position: center;
     }
-
 
     .form-input {
       padding: 5px;
@@ -143,14 +145,19 @@
       {% csrf_token %}
       <div id="form-fields">
         <div class="form-field">
+
+
           <label class="form-label" for="{{ form.profile_picture.id_for_label }}">Photo de profil:</label>
+          
           <div class="profile-picture-wrapper">
-            <img class="profile-picture-preview" src="#" alt="Preview">
+            <img class="profile-picture-preview" id="profile-picture-preview" src="#" alt="Preview">
             <div class="profile-picture-overlay" onclick="document.getElementById('profile-picture-input').click()">
               <span class="profile-picture-overlay-text">Changer</span>
             </div>
             <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" onchange="handleFileInputChange(event)">
           </div>
+
+
         </div>
         
         <div class="form-field">
@@ -209,6 +216,26 @@
   </div>
 
   
+  
+  <script>
+    function handleFileInputChange(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById("profile-picture-preview");
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+          preview.src = reader.result;
+        }
+
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "/media/Ellipse.png";
+      }
+    }
+  </script>
+
 
   <script>
     // Fonction pour afficher les champs en fonction des sélections

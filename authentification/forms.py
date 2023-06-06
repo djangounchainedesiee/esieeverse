@@ -27,7 +27,7 @@ class SignUpForm(forms.Form):
     
     #champs information utilisateur
 
-    profile_picture = forms.ImageField(required=False, widget=forms.ClearableFileInput(),  label='Photo du profil')
+    profile_picture = forms.ImageField(required=False, widget=forms.ClearableFileInput(),  label='Photo du profil (facultatif)')
 
     Prénom = forms.CharField(label='Prénom', max_length=150)
 
