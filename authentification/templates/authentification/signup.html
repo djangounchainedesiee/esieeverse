@@ -1,118 +1,265 @@
 {% block content %}
-  <h2>Inscription</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div id="form-fields">
-      <div class="form-field">
-        {{ form.profile_picture.label_tag }}
-        {{ form.profile_picture }}
+  <style>
+    .form-container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .form-heading {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 36px;
+      color: #000000;
+      margin-bottom: 20px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-field input[type="file"] {
+      display: none;
+    }
+
+    .profile-picture-wrapper {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .profile-picture-preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-picture-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .profile-picture-wrapper:hover .profile-picture-overlay {
+      opacity: 1;
+    }
+
+    .profile-picture-overlay-text {
+      font-size: 16px;
+    }
+
+    .profile-picture-overlay-text:hover {
+      cursor: pointer;
+    }
+
+    .profile-picture-wrapper input[type="file"] {
+      display: none;
+    }
+
+    .profile-picture-preview{
+      font-size:0px;
+    }
+
+
+    .form-input {
+      padding: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+    }
+
+    .form-submit {
+      padding: 10px;
+      background: #003F5E;
+      border-radius: 6px;
+      color: #FFFFFF;
+      margin-top: 10px;
+    }
+
+    .form-submit:hover {
+      background: #002D43;
+      cursor: pointer;
+    }
+
+    .form-link {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .login-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .login-section-text {
+      font-size: 14px;
+      color: #808080;
+    }
+
+    .login-section-link {
+      padding: 10px;
+      background: #003F5E;
+      border-radius: 6px;
+      color: #FFFFFF;
+      margin-top: 10px;
+    }
+
+    .login-section-link:hover {
+      background: #002D43;
+      cursor: pointer;
+    }
+  </style>
+
+  <div class="form-container">
+    <h2 class="form-heading">Inscription</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="form-fields">
+        <div class="form-field">
+          <label class="form-label" for="{{ form.profile_picture.id_for_label }}">Photo de profil:</label>
+          <div class="profile-picture-wrapper">
+            <img class="profile-picture-preview" src="#" alt="Preview">
+            <div class="profile-picture-overlay" onclick="document.getElementById('profile-picture-input').click()">
+              <span class="profile-picture-overlay-text">Changer</span>
+            </div>
+            <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" onchange="handleFileInputChange(event)">
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label class="form-label" for="{{ form.Prénom.id_for_label }}">Prénom:</label>
+          {{ form.Prénom }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.Nom.id_for_label }}">Nom:</label>
+          {{ form.Nom }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.username.id_for_label }}">Nom d'utilisateur:</label>
+          {{ form.username }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
+          {{ form.email }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.password.id_for_label }}">Mot de passe:</label>
+          {{ form.password }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.password_confirm.id_for_label }}">Confirmer le mot de passe:</label>
+          {{ form.password_confirm }}
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="{{ form.ma_promotion.id_for_label }}">Promotion:</label>
+          {{ form.ma_promotion }}
+        </div>
+        <div class="form-field" id="cursus-field">
+          <label class="form-label" for="{{ form.cursus.id_for_label }}">Cursus:</label>
+          {{ form.cursus }}
+        </div>
+        <div class="form-field" id="filliere-app-field">
+          <label class="form-label" for="{{ form.ma_filliere_app.id_for_label }}">Filière Apprentissage:</label>
+          {{ form.ma_filliere_app }}
+        </div>
+        <div class="form-field" id="filliere-tp-field">
+          <label class="form-label" for="{{ form.ma_filliere_tp.id_for_label }}">Filière Temps Plein:</label>
+          {{ form.ma_filliere_tp }}
+        </div>
+        <div class="form-field" id="entreprise-field">
+          <label class="form-label" for="{{ form.entreprise.id_for_label }}">Entreprise:</label>
+          {{ form.entreprise }}
+        </div>
       </div>
-      <div class="form-field">
-        {{ form.Prénom.label_tag }}
-        {{ form.Prénom }}
-      </div>
-      <div class="form-field">
-        {{ form.Nom.label_tag }}
-        {{ form.Nom }}
-      </div>
-      <div class="form-field">
-        {{ form.username.label_tag }}
-        {{ form.username }}
-      </div>
-      <div class="form-field">
-        {{ form.email.label_tag }}
-        {{ form.email }}
-      </div>
-      <div class="form-field">
-        {{ form.password.label_tag }}
-        {{ form.password }}
-      </div>
-      <div class="form-field">
-        {{ form.password_confirm.label_tag }}
-        {{ form.password_confirm }}
-      </div>
-      <div class="form-field">
-        {{ form.ma_promotion.label_tag }}
-        {{ form.ma_promotion }}
-      </div>
-      <div class="form-field" id="cursus-field">
-        {{ form.cursus.label_tag }}
-        {{ form.cursus }}
-      </div>
-      <div class="form-field" id="filliere-app-field">
-        {{ form.ma_filliere_app.label_tag }}
-        {{ form.ma_filliere_app }}
-      </div>
-      <div class="form-field" id="filliere-tp-field">
-        {{ form.ma_filliere_tp.label_tag }}
-        {{ form.ma_filliere_tp }}
-      </div>
-      <div class="form-field" id="entreprise-field">
-        {{ form.entreprise.label_tag }}
-        {{ form.entreprise }}
-      </div>
+      <button class="form-submit" type="submit">S'inscrire</button>
+    </form>
+
+    <div class="login-section">
+      <p class="login-section-text">Déjà inscrit.e?</p>
+      <a href="{% url 'auth:login' %}" class="login-section-link">Se connecter</a>
     </div>
-    <button type="submit">S'inscrire</button>
-  </form>
-{% endblock %}
 
+  </div>
 
-<div>
-  <small>
-    Déjà inscrit.e?
-    <a href="{% url 'auth:login' %}">Se connecter</a>
-  </small>
-</div>
+  
 
-<script>
-  // Fonction pour afficher les champs en fonction des sélections
-  function afficherChamps() {
-    const promotion = document.getElementById("id_ma_promotion");
-    const cursus = document.querySelector('input[name="cursus"]:checked');
-    const maFilliereAppElement = document.getElementById("filliere-app-field");
-    const maFilliereTpElement = document.getElementById("filliere-tp-field");
-    const entrepriseElement = document.getElementById("entreprise-field");
+  <script>
+    // Fonction pour afficher les champs en fonction des sélections
+    function afficherChamps() {
+      const promotion = document.getElementById("id_ma_promotion");
+      const cursus = document.querySelector('input[name="cursus"]:checked');
+      const maFilliereAppElement = document.getElementById("filliere-app-field");
+      const maFilliereTpElement = document.getElementById("filliere-tp-field");
+      const entrepriseElement = document.getElementById("entreprise-field");
 
-    if (
-      promotion.value === "E3" ||
-      promotion.value === "E4" ||
-      promotion.value === "E5"
-    ) {
-      // Afficher le champ "Cursus"
-      document.getElementById("cursus-field").style.display = "block";
+      if (
+        promotion.value === "E3" ||
+        promotion.value === "E4" ||
+        promotion.value === "E5"
+      ) {
+        // Afficher le champ "Cursus"
+        document.getElementById("cursus-field").style.display = "block";
 
-      if (cursus.value === "apprentissage") {
-        // Afficher le champ "Filière Apprentissage" et "Entreprise"
-        maFilliereAppElement.style.display = "block";
-        entrepriseElement.style.display = "block";
+        if (cursus.value === "apprentissage") {
+          // Afficher le champ "Filière Apprentissage" et "Entreprise"
+          maFilliereAppElement.style.display = "block";
+          entrepriseElement.style.display = "block";
 
-        // Cacher le champ "Filière Temps Plein"
-        maFilliereTpElement.style.display = "none";
-      } else if (cursus.value === "temps plein") {
-        // Afficher le champ "Filière Temps Plein"
-        maFilliereTpElement.style.display = "block";
+          // Cacher le champ "Filière Temps Plein"
+          maFilliereTpElement.style.display = "none";
+        } else if (cursus.value === "temps plein") {
+          // Afficher le champ "Filière Temps Plein"
+          maFilliereTpElement.style.display = "block";
 
-        // Cacher le champ "Filière Apprentissage" et "Entreprise"
+          // Cacher le champ "Filière Apprentissage" et "Entreprise"
+          maFilliereAppElement.style.display = "none";
+          entrepriseElement.style.display = "none";
+        }
+      } else {
+        // Cacher tous les champs
+        document.getElementById("cursus-field").style.display = "none";
         maFilliereAppElement.style.display = "none";
+        maFilliereTpElement.style.display = "none";
         entrepriseElement.style.display = "none";
       }
-    } else {
-      // Cacher tous les champs
-      document.getElementById("cursus-field").style.display = "none";
-      maFilliereAppElement.style.display = "none";
-      maFilliereTpElement.style.display = "none";
-      entrepriseElement.style.display = "none";
     }
-  }
 
-  // Appel de la fonction au chargement de la page
-  window.addEventListener("DOMContentLoaded", afficherChamps);
+    // Appel de la fonction au chargement de la page
+    window.addEventListener("DOMContentLoaded", afficherChamps);
 
-  // Appel de la fonction lorsque les sélections changent
-  document
-    .getElementById("id_ma_promotion")
-    .addEventListener("change", afficherChamps);
-  document
-    .querySelectorAll('input[name="cursus"]')
-    .forEach(radio => radio.addEventListener("change", afficherChamps));
-</script>
+    // Appel de la fonction lorsque les sélections changent
+    document
+      .getElementById("id_ma_promotion")
+      .addEventListener("change", afficherChamps);
+    document
+      .querySelectorAll('input[name="cursus"]')
+      .forEach(radio => radio.addEventListener("change", afficherChamps));
+  </script>
+{% endblock %}
