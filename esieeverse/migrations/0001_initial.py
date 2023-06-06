@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             name='Promotion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('annee_fin', models.PositiveSmallIntegerField(default=1900, validators=[django.core.validators.MinValueValidator(1900)])),
+                ('nom', models.CharField(max_length=5)),
                 ('filieres', models.ManyToManyField(to='esieeverse.filiere')),
             ],
         ),
