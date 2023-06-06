@@ -31,8 +31,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '2(68e+wd$q9sv&a#gwz=^!2*ms+cen
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://esieeverse.up.railway.app', 'http://127.0.0.1']
-
 # Application definition
 
 INSTALLED_APPS = [
