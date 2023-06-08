@@ -5,6 +5,4 @@ app_name = 'profilSetting'
 
 urlpatterns = [
     path('', views.profil_setting, name="profil_setting"),
-    
-    
 ]

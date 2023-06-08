@@ -1,3 +1,4 @@
+{% load static %}
 {% block content %}
   <style>
     .signin-container {
@@ -98,6 +99,7 @@
   </style>
 
   <div class="signin-container">
+    <img src="/media/logo_esieeverse.png" alt="logo">
     <h2 class="body-heading">Connexion</h2>
     <form class="signin-form" method="post">
       {% csrf_token %}
